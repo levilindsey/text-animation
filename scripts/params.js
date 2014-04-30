@@ -43,6 +43,8 @@
   params.SMALL_SCREEN_WIDTH_THRESHOLD = 900;
   params.SMALL_SCREEN_HEIGHT_THRESHOLD = 675;
 
+  params.STYLESHEET_ID = 'stylesheet';
+
   // --- Expose this module --- //
 
   if (!window.app) window.app = {};

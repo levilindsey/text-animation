@@ -17,6 +17,16 @@
   // ------------------------------------------------------------------------------------------- //
   // Public dynamic functions
 
+  /**
+   * @function AnimatingCharacter#recycle
+   * @param {HTMLElement} parent
+   */
+  function recycle(parent) {
+    var animatingCharacter = this;
+
+    // TODO:
+  }
+
   // ------------------------------------------------------------------------------------------- //
   // Public static functions
 
@@ -43,6 +53,8 @@
     var animatingCharacter = this;
 
     animatingCharacter.parent = parent;
+
+    animatingCharacter.recycle = recycle;
   }
 
   // Expose this module

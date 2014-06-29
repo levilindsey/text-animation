@@ -1,6 +1,7 @@
 /**
  * This module defines a constructor for Log objects, which can be used by the modules in this
  * application for descriptive logging.
+ *
  * @module log
  */
 (function () {
@@ -15,6 +16,7 @@
   /**
    * Creates a log entry message with the given parameters, records a copy of the entry, and
    * writes the message out to the console.
+   *
    * @function Log~write
    * @param {string} severity A character indicating the type of this log entry.
    * @param {string} methodName The name of the calling method.
@@ -37,6 +39,7 @@
   /**
    * Logs app info--specifically: the name, the current version, the copyright info, and the
    * current date and time.
+   *
    * @function Log~writeAppInfo
    * @param {Date} dateObj A Date object representing the start time of the app.
    */
@@ -52,6 +55,7 @@
   /**
    * Adds a new VERBOSE log entry. Typically, this type of entry records information that could be
    * helpful for debugging, but is un-important for normal circumstances.
+   *
    * @function Log#v
    * @param {string} methodName The name of the calling method.
    * @param {string} [message] The message for this log entry.
@@ -65,6 +69,7 @@
   /**
    * Adds a new DEBUG log entry. Typically, this type of entry records information that could be
    * helpful for debugging, but is un-important for normal circumstances.
+   *
    * @function Log#d
    * @param {string} methodName The name of the calling method.
    * @param {string} [message] The message for this log entry.
@@ -78,6 +83,7 @@
   /**
    * Adds a new INFORMATION log entry. Typically, this type of entry records information that
    * could be helpful for debugging, but is un-important for normal circumstances.
+   *
    * @function Log#i
    * @param {string} methodName The name of the calling method.
    * @param {string} [message] The message for this log entry.
@@ -89,6 +95,7 @@
   /**
    * Adds a new WARNING log entry. Typically, this type of entry records information that could be
    * helpful for debugging, but is un-important for normal circumstances.
+   *
    * @function Log#w
    * @param {string} methodName The name of the calling method.
    * @param {string} [message] The message for this log entry.
@@ -100,6 +107,7 @@
   /**
    * Adds a new ERROR log entry. Typically, this type of entry records information that could be
    * helpful for debugging, but is un-important for normal circumstances.
+   *
    * @function Log#e
    * @param {string} methodName The name of the calling method.
    * @param {string} [message] The message for this log entry.
@@ -118,6 +126,7 @@
 
   /**
    * Gets the time (in milliseconds) since the app started.
+   *
    * @function Log#getCurrentRunTime
    * @returns {number} The number of milliseconds since the app started.
    */
@@ -130,6 +139,7 @@
 
   /**
    * Initializes some static state for this module.
+   * 
    * @function Log.initStaticFields
    */
   function initStaticFields() {

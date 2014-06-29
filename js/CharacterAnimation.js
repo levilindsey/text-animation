@@ -12,22 +12,16 @@
   // Private dynamic functions
 
   /**
-   * Creates a span to hold this character, and adds this span to its parent.
-   *
-   * @param {HTMLElement} parent
-   * @param {string} character
+   * Creates a span to hold this character.
    */
-  function createSpan(parent, character) {
+  function createSpan() {
     var characterAnimation, span;
 
     characterAnimation = this;
 
     span = document.createElement('span');
     span.className += ' character-animation';
-    span.innerHTML = character;
     characterAnimation.span = span;
-
-    addToParent.call(characterAnimation, parent);
   }
 
   /**
@@ -49,12 +43,24 @@
   // Public dynamic functions
 
   /**
-   * Updates this animation to the given progress level through its overall animation curve.
+   * Updates this animation for the given current time to the appropriate progress level through
+   * its overall animation curve.
    *
-   * @param {number} progress A number between 0 and 1.
+   * @param {number} currentTime
    */
-  function update(progress) {
-    // TODO:
+  function update(currentTime) {
+    var characterAnimation, progress;
+
+    characterAnimation = this;
+
+    progress = (currentTime - characterAnimation.startTime) / characterAnimation.duration;
+
+    if (progress >= 1) {
+      progress = 1;
+      characterAnimation.isComplete = true;
+    }
+
+    // TODO: use progress to set values according to animation...
   }
 
   /**
@@ -62,22 +68,31 @@
    *
    * @param {HTMLElement} parent
    * @param {string} character
+   * @param {number} startTime
+   * @param {number} duration
    */
-  function recycle(parent, character) {
+  function reset(parent, character, startTime, duration) {
     var characterAnimation = this;
 
     characterAnimation.span.innerHTML = character;
+    characterAnimation.duration = duration;
+    characterAnimation.startTime = startTime;
+    characterAnimation.isComplete = false;
 
     addToParent.call(characterAnimation, parent);
   }
 
   /**
-   * Removes this span from its parent.
+   * Removes this span from its parent, and replaces it with the character it was animating.
    */
   function remove() {
-    var characterAnimation = this;
+    var characterAnimation, parent;
 
-    characterAnimation.span.parentNode.removeChild(characterAnimation.span);
+    characterAnimation = this;
+    parent = characterAnimation.span.parentNode;
+
+    parent.removeChild(characterAnimation.span);
+    parent.innerHTML += characterAnimation.span.innerHTML;
   }
 
   // ------------------------------------------------------------------------------------------- //
@@ -85,8 +100,6 @@
 
   /**
    * Initializes some static state for this module.
-   *
-   * @function CharacterAnimation.initStaticFields
    */
   function initStaticFields() {
     config = app.config;
@@ -101,21 +114,30 @@
   /**
    * @constructor
    * @global
-   * @param {HTMLElement} parent
-   * @param {string} character
-   * @param {Function} animation
+   * @param {Object} animationConfig
+   * @param {HTMLElement} [parent]
+   * @param {string} [character]
+   * @param {number} [startTime]
+   * @param {number} [duration]
    */
-  function CharacterAnimation(parent, character, animation) {
+  function CharacterAnimation(animationConfig, parent, character, startTime, duration) {
     var characterAnimation = this;
 
-    characterAnimation.animation = animation;
+    characterAnimation.animationConfig = animationConfig;
     characterAnimation.span = null;
+    characterAnimation.isComplete = false;
+    characterAnimation.startTime = 0;
+    characterAnimation.duration = 0;
 
     characterAnimation.update = update;
-    characterAnimation.recycle = recycle;
+    characterAnimation.reset = reset;
     characterAnimation.remove = remove;
 
-    createSpan.call(characterAnimation, parent, character);
+    createSpan.call(characterAnimation);
+
+    if (parent && character && startTime && duration) {
+      reset.call(characterAnimation, parent, character, startTime, duration);
+    }
   }
 
   // Expose this module

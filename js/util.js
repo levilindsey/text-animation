@@ -400,7 +400,7 @@
        * @function util.addTapEventListener
        * @param {HTMLElement} element The element to listen for the event on.
        * @param {Function} callback The callback function to handle the event.
-       * @param {Boolean} preventDefault True if the default browser response should be prevented.
+       * @param {boolean} preventDefault True if the default browser response should be prevented.
        * @returns {Function} The event-handler shim which is used to prevent the default browser
        * response (if the preventDefault flag is set to true). It is important for the client to
        * keep track of this, so that if the tap event-lister is later removed, the default browser
@@ -456,7 +456,7 @@
        * @function util.addTapEventListener
        * @param {HTMLElement} element The element to listen for the event on.
        * @param {Function} callback The callback function to handle the event.
-       * @param {Boolean} preventDefault True if the default browser response should be prevented.
+       * @param {boolean} preventDefault True if the default browser response should be prevented.
        * @returns {Function} The event-handler shim which is used to prevent the default browser
        * response (if the preventDefault flag is set to true). It is important for the client to
        * keep track of this, so that if the tap event-lister is later removed, the default browser
@@ -546,7 +546,7 @@
    * Sends an asynchronous GET request to the given URL, and calls the appropriate callback
    * function when the request succeeds or fails.
    * @function util.sendRequest
-   * @param {String} url The URL to send the GET request to.
+   * @param {string} url The URL to send the GET request to.
    * @param {Function} onSuccess The function to call when a response is successfully received.
    * @param {Function} [onError] The function to call when the request does not complete successfully.
    * @returns {Object} The XHR object used to send the request.
@@ -592,7 +592,7 @@
   /**
    *
    * @function util.loadImageViaXHR
-   * @param {String} src
+   * @param {string} src
    * @param {Image} imageElement
    * @param {Function} onSuccess
    * @param {Function} onError
@@ -687,7 +687,7 @@
    * Converts a Date object into a string representation in the form "yyyy/mm/dd@hh:mm:ss.mmm".
    * @function util.dateObjToDateTimeString
    * @param {Date} dateObj The Date object to get a string representation of.
-   * @returns {String} A string representation of the date and time.
+   * @returns {string} A string representation of the date and time.
    */
   function dateObjToDateTimeString(dateObj) {
     return dateObj.getFullYear() + '/' + (dateObj.getMonth() + 1) + '/' + dateObj.getDate() + '@' +
@@ -699,8 +699,8 @@
    * Converts a number of milliseconds into a string representation of the time in the form
    * "[hh:]mm:ss.mmm".
    * @function util.millisToTimeString
-   * @param {Number} millis The number of milliseconds to convert to a string representation.
-   * @returns {String} A string representation of the number of milliseconds.
+   * @param {number} millis The number of milliseconds to convert to a string representation.
+   * @returns {string} A string representation of the number of milliseconds.
    */
   function millisToTimeString(millis) {
     var hours, minutes, seconds;
@@ -739,9 +739,9 @@
    * Creates a DOM element with the given tag name, appends it to the given parent element, and
    * gives it the given id and classes.
    * @function util.createElement
-   * @param {String} tagName The tag name to give the new element.
+   * @param {string} tagName The tag name to give the new element.
    * @param {HTMLElement} [parent] The parent element to append the new element to.
-   * @param {String} [id] The id to give the new element.
+   * @param {string} [id] The id to give the new element.
    * @param {Array.<String>} [classes] The classes to give the new element.
    * @returns {HTMLElement} The new element.
    */
@@ -765,8 +765,8 @@
    * Determines whether the given element contains the given class.
    * @function util~containsClass
    * @param {HTMLElement} element The element to check.
-   * @param {String} className The class to check for.
-   * @returns {Boolean} True if the element does contain the class.
+   * @param {string} className The class to check for.
+   * @returns {boolean} True if the element does contain the class.
    */
   function containsClass(element, className) {
     var startIndex, indexAfterEnd;
@@ -790,8 +790,8 @@
    * class; if enabled=undefined, then this will simply toggle whether the element has the class.
    * @function util.toggleClass
    * @param {HTMLElement} element The element to add the class to or remove the class from.
-   * @param {String} className The class to add or remove.
-   * @param {Boolean} [enabled] If given, then the inclusion of the class will be forced.
+   * @param {string} className The class to add or remove.
+   * @param {boolean} [enabled] If given, then the inclusion of the class will be forced.
    */
   function toggleClass(element, className, enabled) {
     if (typeof enabled === 'undefined') {
@@ -857,7 +857,7 @@
    * @function util.removeChildIfPresent
    * @param {HTMLElement} parent The parent to remove the child from.
    * @param {HTMLElement} child The child to remove.
-   * @returns {Boolean} True if the child did indeed belong to the parent.
+   * @returns {boolean} True if the child did indeed belong to the parent.
    */
   function removeChildIfPresent(parent, child) {
     if (child && child.parentNode === parent) {
@@ -871,7 +871,7 @@
    * Adds the given class to the given element.
    * @function util.addClass
    * @param {HTMLElement} element The element to add the class to.
-   * @param {String} className The class to add.
+   * @param {string} className The class to add.
    */
   function addClass(element, className) {
     element.className += ' ' + className;
@@ -881,7 +881,7 @@
    * Removes the given class from the given element.
    * @function util.removeClass
    * @param {HTMLElement} element The element to remove the class from.
-   * @param {String} className The class to remove.
+   * @param {string} className The class to remove.
    */
   function removeClass(element, className) {
     element.className = element.className.split(' ').filter(function (value) {
@@ -902,13 +902,13 @@
    * Calculates the width that the DOM would give to a div with the given text. The given tag
    * name, parent, id, and classes allow the width to be affected by various CSS rules.
    * @function util.getTextWidth
-   * @param {String} text The text to determine the width of.
-   * @param {String} tagName The tag name this text would supposedly have.
+   * @param {string} text The text to determine the width of.
+   * @param {string} tagName The tag name this text would supposedly have.
    * @param {HTMLElement} [parent] The parent this text would supposedly be a child of; defaults
    * to the document body.
-   * @param {String} [id] The id this text would supposedly have.
+   * @param {string} [id] The id this text would supposedly have.
    * @param {Array.<String>} [classes] The classes this text would supposedly have.
-   * @returns {Number} The width of the text under these conditions.
+   * @returns {number} The width of the text under these conditions.
    */
   function getTextWidth(text, tagName, parent, id, classes) {
     var tmpElement, width;
@@ -929,7 +929,7 @@
    * @function util.encodeQueryString
    * @param {Object} rawParams An object whose properties represent the URL query string
    * parameters.
-   * @return {String} The query string.
+   * @return {string} The query string.
    */
   function encodeQueryString(rawParams) {
     var parameter, encodedParams;
@@ -947,8 +947,8 @@
    * Retrieves the value corresponding to the given name from the given query string.
    * (borrowed from http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript)
    * @function util.getQueryStringParameterValue
-   * @param {String} queryString The query string containing the parameter.
-   * @param {String} name The (non-encoded) name of the parameter value to retrieve.
+   * @param {string} queryString The query string containing the parameter.
+   * @param {string} name The (non-encoded) name of the parameter value to retrieve.
    * @returns {string} The query string parameter value, or null if the parameter was not found.
    */
   function getQueryStringParameterValue(queryString, name) {
@@ -964,7 +964,7 @@
    * Sets the CSS transition duration style of the given element.
    * @function util.setTransitionDurationSeconds
    * @param {HTMLElement} element The element.
-   * @param {Number} value The duration.
+   * @param {number} value The duration.
    */
   function setTransitionDurationSeconds(element, value) {
     element.style.transitionDuration = value + 's';
@@ -978,7 +978,7 @@
    * Sets the CSS transition delay style of the given element.
    * @function util.setTransitionDelaySeconds
    * @param {HTMLElement} element The element.
-   * @param {Number} value The delay.
+   * @param {number} value The delay.
    */
   function setTransitionDelaySeconds(element, value) {
     element.style.transitionDelay = value + 's';
@@ -1010,9 +1010,9 @@
    * Returns a pseudo-random number between the given lower and upper bounds and according to a
    * uniform distribution.
    * @function util.getRandom
-   * @param {Number} lowerBound The lower bound.
-   * @param {Number} upperBound The upper bound.
-   * @returns {Number} The random number.
+   * @param {number} lowerBound The lower bound.
+   * @param {number} upperBound The upper bound.
+   * @returns {number} The random number.
    */
   function getRandom(lowerBound, upperBound) {
     return Math.random() * (upperBound - lowerBound) + lowerBound;
@@ -1021,10 +1021,10 @@
   /**
    * Calculates an eased progress value.
    * @function util.getEasedProgress
-   * @param {Number} deltaTime The elapsed time since the start.
-   * @param {Number} duration The duration.
+   * @param {number} deltaTime The elapsed time since the start.
+   * @param {number} duration The duration.
    * @param {Function} easingFunction The easing function to use.
-   * @returns {Number} The eased progress value.
+   * @returns {number} The eased progress value.
    */
   function getEasedProgress(deltaTime, duration, easingFunction) {
     return easingFunction(deltaTime / duration);
@@ -1033,11 +1033,11 @@
   /**
    * Interpolates the given values using the given weights.
    * @function util.interpolate
-   * @param {Number} value1 The first value.
-   * @param {Number} value2 The second value.
-   * @param {Number} weight1 The weight of the first value.
-   * @param {Number} weight2 The weight of the second value.
-   * @returns {Number} The interpolated value.
+   * @param {number} value1 The first value.
+   * @param {number} value2 The second value.
+   * @param {number} weight1 The weight of the first value.
+   * @param {number} weight2 The weight of the second value.
+   * @returns {number} The interpolated value.
    */
   function interpolate(value1, value2, weight1, weight2) {
     return value1 * weight1 + value2 * weight2;
@@ -1088,7 +1088,7 @@
 
   /**
    * Gets an easing function by name. Defaults to linear if given an invalid name.
-   * @param {String} easingFunctionName The name of an easing function.
+   * @param {string} easingFunctionName The name of an easing function.
    * @returns {Function} The easing function.
    */
   function getEasingFunction(easingFunctionName) {
@@ -1099,7 +1099,7 @@
    * Removes any children elements from the given parent that have the given class.
    * @function util.removeChildrenWithClass
    * @param {HTMLElement} parent The parent to remove children from.
-   * @param {String} className The class to match.
+   * @param {string} className The class to match.
    */
   function removeChildrenWithClass(parent, className) {
     var matchingChildren, i, count;

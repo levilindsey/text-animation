@@ -10,10 +10,10 @@
   var config, util, log, TextAnimationJob, textAnimator;
 
   // ------------------------------------------------------------------------------------------- //
-  // Private dynamic functions
+  // Private static functions
 
   /**
-   * @function textAnimator~animationLoop
+   * This is the animation loop that drives all of the text animation.
    */
   function animationLoop() {
     var textAnimator, currentTime;
@@ -22,17 +22,9 @@
     textAnimator.isLooping = true;
     currentTime = Date.now();
 
-    // TODO:
-    // - FIRST:
-    //   - make it work with just one element of only text--no children or anything
-    //   - simply animate with colors or something
-    // - THEN:
-    //   - animate with children elements
-    // - THEN:
-    //   - add complicated additional animation options
-
-    if () {// TODO:
-
+    if (!textAnimator.isPaused) {
+      updateJobs(currentTime);
+      util.requestAnimationFrame(animationLoop);
     } else {
       textAnimator.isLooping = false;
     }
@@ -40,24 +32,28 @@
     textAnimator.previousTime = currentTime;
   }
 
-  // ------------------------------------------------------------------------------------------- //
-  // Private static functions
-
-  // ------------------------------------------------------------------------------------------- //
-  // Public dynamic functions
-
   /**
+   * Updates all of the active TextAnimationJobs.
    *
-   * @param {HTMLElement} element
-   * @param {Number} totalDuration In milliseconds.
-   * @param {Number} characterDuration In milliseconds.
+   * @param {number} currentTime
    */
-  function animateText(element, totalDuration, characterDuration) {
-    var job;
+  function updateJobs(currentTime) {
+    var i, count;
 
-    job = new TextAnimationJob(element, totalDuration, characterDuration);
+    for (i = 0, count = textAnimator.jobs.length; i < count; i+=1) {
+      textAnimator.jobs[i].update(currentTime);
 
-    textAnimator.jobs.push(job);
+      // Remove jobs from the list after they are complete
+      if (textAnimator.jobs[i].isComplete) {
+        textAnimator.jobs.splice(i, 1);
+        i--;
+
+        // Stop the animation loop when there are no more jobs to animate
+        if (textAnimator.jobs.length === 0) {
+          textAnimator.isPaused = true;
+        }
+      }
+    }
   }
 
   // ------------------------------------------------------------------------------------------- //
@@ -65,7 +61,6 @@
 
   /**
    * Initializes some static state for this module.
-   * @function textAnimator.initStaticFields
    */
   function initStaticFields() {
     config = app.config;
@@ -75,13 +70,47 @@
     log.d('initStaticFields', 'Module initialized');
   }
 
+  /**
+   * Creates a new TextAnimationJob, which can animate all of the text within the given element
+   * according to the given parameters.
+   *
+   * @param {HTMLElement} element
+   * @param {number} totalDuration In milliseconds.
+   * @param {number} characterDuration In milliseconds.
+   * @param {Object} animationConfig
+   * @param {Function} onComplete
+   * @returns {TextAnimationJob}
+   */
+  function createJob(element, totalDuration, characterDuration, animationConfig, onComplete) {
+    return new TextAnimationJob(element, totalDuration, characterDuration, animationConfig,
+        onComplete);
+  }
+
+  /**
+   * Starts the given TextAnimationJob.
+   *
+   * @param {TextAnimationJob} job
+   */
+  function startJob(job) {
+    job.start();
+    textAnimator.jobs.push(job);
+
+    // Start the animation loop if it were not already running
+    textAnimator.isPaused = false;
+    if (!textAnimator.isLooping) {
+      animationLoop();
+    }
+  }
+
   // ------------------------------------------------------------------------------------------- //
   // Expose this singleton
 
   textAnimator = {};
   textAnimator.jobs = [];
   textAnimator.initStaticFields = initStaticFields;
-  textAnimator.animateText = animateText;
+  textAnimator.createJob = createJob;
+  textAnimator.startJob = startJob;
+  textAnimator.isPaused = true;
 
   // Expose this module
   if (!window.app) window.app = {};

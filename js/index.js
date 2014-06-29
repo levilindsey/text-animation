@@ -5,15 +5,13 @@
  */
 (function () {
 
-  var config, util, log, textAnimator, textAnimator;
+  var config, util, log, textAnimator;
 
   // ------------------------------------------------------------------------------------------- //
   // Private static functions
 
   /**
    * Initializes this app.
-   *
-   * @function index~init
    */
   function init() {
     config = app.config;
@@ -30,11 +28,9 @@
 
   /**
    * Resets all of the state for this app.
-   *
-   * @function index~reset
    */
   function reset() {
-    var container;
+    var container, totalDuration, characterDuration, animationConfig, onComplete, job;
 
     textAnimator = app.textAnimator;
 
@@ -43,15 +39,25 @@
     log.i('reset', 'All modules initialized');
 
     container = document.getElementById('container');
-    textAnimator = new textAnimator(container);
+    totalDuration = 5000;
+    characterDuration = 100;
+    animationConfig = {
+      // TODO:
+    };
+    onComplete = function () {
+      document.getElementsByTagName('body')[0].style.backgroundColor = '#44ccee';
+    };
+
+    job = textAnimator.createJob(container, totalDuration, characterDuration, animationConfig, onComplete);
+    setTimeout(function () {
+      textAnimator.startJob(job);
+    }, 1000);
 
     checkBrowserCompatibility();
   }
 
   /**
    * This is the event handler for the completion of the DOM loading.
-   *
-   * @function index~onDocumentLoad
    */
   function onDocumentLoad() {
     log.i('onDocumentLoad');
@@ -60,7 +66,7 @@
   }
 
   /**
-   * @function index~checkBrowserCompatibility
+   * Checks browser compatibility with some of the features that this app requires.
    */
   function checkBrowserCompatibility() {
     if (!util.isBrowserCompatible) {
@@ -72,7 +78,7 @@
    * Adds an error message ribbon overtop of the document body. This message can be closed by
    * tapping on it.
    *
-   * @param {String} message The text to show in the error display.
+   * @param {string} message The text to show in the error display.
    */
   function showErrorMessage(message) {
     var body, errorMessageElement;

@@ -7,7 +7,7 @@
   // ------------------------------------------------------------------------------------------- //
   // Private static variables
 
-  var log, params, util, runStartTime, recentEntries;
+  var log, config, util, runStartTime, recentEntries;
 
   // ------------------------------------------------------------------------------------------- //
   // Private static functions
@@ -27,7 +27,7 @@
 
     // Record each entry in a queue of fixed-size
     recentEntries.push(message);
-    if (recentEntries.length > params.LOG.RECENT_ENTRIES_LIMIT) {
+    if (recentEntries.length > config.LOG.RECENT_ENTRIES_LIMIT) {
       recentEntries.shift();
     }
 
@@ -41,8 +41,8 @@
    * @param {Date} dateObj A Date object representing the start time of the app.
    */
   function writeAppInfo(dateObj) {
-    log.i('writeAppInfo', params.APP.TITLE + ' (Version ' + params.APP.VERSION + ')');
-    log.i('writeAppInfo', params.APP.LICENSE);
+    log.i('writeAppInfo', config.APP.TITLE + ' (Version ' + config.APP.VERSION + ')');
+    log.i('writeAppInfo', config.APP.LICENSE);
     log.i('writeAppInfo', 'Start time=' + util.dateObjToDateTimeString(dateObj));
   }
 
@@ -57,7 +57,7 @@
    * @param {string} [message] The message for this log entry.
    */
   function v(methodName, message) {
-    if (params.LOG.VERBOSE) {
+    if (config.LOG.VERBOSE) {
       write.call(this, 'V', methodName, message);
     }
   }
@@ -70,7 +70,7 @@
    * @param {string} [message] The message for this log entry.
    */
   function d(methodName, message) {
-    if (params.LOG.DEBUG) {
+    if (config.LOG.DEBUG) {
       write.call(this, 'D', methodName, message);
     }
   }
@@ -135,7 +135,7 @@
   function initStaticFields() {
     var dateObj = new Date();
     runStartTime = dateObj.getTime();
-    params = app.params;
+    config = app.config;
     util = app.util;
     recentEntries = [];
     log = new app.Log('log');

@@ -1,18 +1,19 @@
 /**
  * This module defines a collection of parameters used throughout this app.
- * @module params
+ *
+ * @module config
  */
 (function () {
-  var params, moduleParams;
+  var config, moduleParams;
 
-  params = {};
+  config = {};
 
-  params.BASE_DIR = '/..';
+  config.BASE_DIR = '/..';
 
   // --- General app parameters --- //
 
   moduleParams = {};
-  params.APP = moduleParams;
+  config.APP = moduleParams;
 
   moduleParams.TITLE = 'Text Animator';
   moduleParams.VERSION = '??.??.??';
@@ -22,7 +23,7 @@
   // --- Log parameters --- //
 
   moduleParams = {};
-  params.LOG = moduleParams;
+  config.LOG = moduleParams;
 
   moduleParams.RECENT_ENTRIES_LIMIT = 80;
   moduleParams.DEBUG = true;
@@ -30,25 +31,25 @@
 
   // --- Localization parameters --- //
 
-  params.L18N = {};
+  config.L18N = {};
 
   moduleParams = {};
-  params.L18N.EN = moduleParams;
+  config.L18N.EN = moduleParams;
 
   moduleParams.BAD_BROWSER_MESSAGE =
       ':( Sorry, but some of the fancy features of this app may not work on your browser. You should really upgrade to a newer version.';
 
   // --- Miscellaneous parameters --- //
 
-  params.SMALL_SCREEN_WIDTH_THRESHOLD = 900;
-  params.SMALL_SCREEN_HEIGHT_THRESHOLD = 675;
+  config.SMALL_SCREEN_WIDTH_THRESHOLD = 900;
+  config.SMALL_SCREEN_HEIGHT_THRESHOLD = 675;
 
-  params.STYLESHEET_ID = 'stylesheet';
+  config.STYLESHEET_ID = 'stylesheet';
 
   // --- Expose this module --- //
 
   if (!window.app) window.app = {};
-  window.app.params = params;
+  window.app.config = config;
 
-  console.log('params module loaded');
+  console.log('config module loaded');
 })();

@@ -25,13 +25,35 @@ a:visited { color: #90c080; }
   margin: 70px auto;
 }
 
-.shown-text { }
-.hidden-text { visibility: hidden; }
-
-.animating-character {
+span.character-animation {
   position: relative;
   -webkit-transform: translate3d(0, 0, 0);
   -moz-transform: translate3d(0, 0, 0);
   -o-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
+  /*left: 1000000000px;*/
+  /*top: 1000000000px;*/
+}
+
+.shown-text { }
+.hidden-text { visibility: hidden; }
+
+/* TODO: give (and test) good fade-in/fade-out transition CSS rules for the waiting-to-animate, is-animating, done-animating classes */
+
+.waiting-to-animate {
+  overflow: visible;
+  opacity: 0;
+  -webkit-transform: opacity 0.3s;
+  -moz-transform: opacity 0.3s;
+  -o-transform: opacity 0.3s;
+  transform: opacity 0.3s;
+}
+
+.is-animating {
+  overflow: visible;
+  opacity: 1;
+}
+
+.done-animating {
+  opacity: 1;
 }

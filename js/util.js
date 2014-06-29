@@ -6,7 +6,7 @@
   // ------------------------------------------------------------------------------------------- //
   // Private static variables
 
-  var util, params, log;
+  var util, config, log;
 
   /**
    * Sets up a cross-browser compatible XHR function. This function is stored as util.XHR.
@@ -384,8 +384,8 @@
    */
   function checkIfSmallScreen() {
     util.isSmallScreen =
-        screen.width < params.SMALL_SCREEN_WIDTH_THRESHOLD ||
-            screen.height < params.SMALL_SCREEN_HEIGHT_THRESHOLD;
+        screen.width < config.SMALL_SCREEN_WIDTH_THRESHOLD ||
+            screen.height < config.SMALL_SCREEN_HEIGHT_THRESHOLD;
   }
 
   /**
@@ -517,7 +517,7 @@
    * @function util.init
    */
   function init() {
-    params = app.params;
+    config = app.config;
     log = new app.Log('util');
 
     util.isBrowserCompatible = true;

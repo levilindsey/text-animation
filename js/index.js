@@ -34,6 +34,9 @@
 
     textAnimator = app.textAnimator;
 
+    app.ElementNode.initStaticFields();
+    app.CharacterAnimation.initStaticFields();
+    app.TextAnimationJob.initStaticFields();
     textAnimator.initStaticFields();
 
     log.i('reset', 'All modules initialized');

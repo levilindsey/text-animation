@@ -1,5 +1,6 @@
 /**
  * This module defines a constructor for CharacterAnimation objects.
+ *
  * @module CharacterAnimation
  */
 (function () {
@@ -29,14 +30,14 @@
    * - Calculates the dimensions of the character in its default style, and forces the span to
    *   maintain those dimensions.
    *
-   * @param {HTMLElement} parent
+   * @param {ElementNode} elementNode
    */
-  function addToParent(parent) {
+  function addToParent(elementNode) {
     var characterAnimation;
 
     characterAnimation = this;
 
-    parent.appendChild(characterAnimation.span);
+    elementNode.element.appendChild(characterAnimation.span);
   }
 
   // ------------------------------------------------------------------------------------------- //
@@ -66,12 +67,12 @@
   /**
    * Resets this CharacterAnimation object to represent a new letter.
    *
-   * @param {HTMLElement} parent
+   * @param {ElementNode} elementNode
    * @param {string} character
    * @param {number} startTime
    * @param {number} duration
    */
-  function reset(parent, character, startTime, duration) {
+  function reset(elementNode, character, startTime, duration) {
     var characterAnimation = this;
 
     characterAnimation.span.innerHTML = character;
@@ -79,7 +80,7 @@
     characterAnimation.startTime = startTime;
     characterAnimation.isComplete = false;
 
-    addToParent.call(characterAnimation, parent);
+    addToParent.call(characterAnimation, elementNode);
   }
 
   /**
@@ -115,12 +116,12 @@
    * @constructor
    * @global
    * @param {Object} animationConfig
-   * @param {HTMLElement} [parent]
+   * @param {ElementNode} [elementNode]
    * @param {string} [character]
    * @param {number} [startTime]
    * @param {number} [duration]
    */
-  function CharacterAnimation(animationConfig, parent, character, startTime, duration) {
+  function CharacterAnimation(animationConfig, elementNode, character, startTime, duration) {
     var characterAnimation = this;
 
     characterAnimation.animationConfig = animationConfig;
@@ -135,8 +136,8 @@
 
     createSpan.call(characterAnimation);
 
-    if (parent && character && startTime && duration) {
-      reset.call(characterAnimation, parent, character, startTime, duration);
+    if (elementNode && character && startTime && duration) {
+      reset.call(characterAnimation, elementNode, character, startTime, duration);
     }
   }
 

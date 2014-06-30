@@ -1,7 +1,7 @@
 /**
- * This module defines a constructor for ElementNode objects.
+ * This module defines a constructor for AnimationTextNode objects.
  *
- * @module ElementNode
+ * @module AnimationTextNode
  */
 (function () {
   // ------------------------------------------------------------------------------------------- //
@@ -24,7 +24,7 @@
   function initStaticFields() {
     config = app.config;
     util = app.util;
-    log = new app.Log('ElementNode');
+    log = new app.Log('AnimationTextNode');
     log.d('initStaticFields', 'Module initialized');
   }
 
@@ -34,21 +34,20 @@
   /**
    * @constructor
    * @global
-   * @param {HTMLElement} element
+   * @param {HTMLElement} parentElement
+   * @param {string} text
    */
-  function ElementNode(element) {
-    var elementNode = this;
+  function AnimationTextNode(parentElement, text) {
+    var animationTextNode = this;
 
-    elementNode.element = element;
-    elementNode.childNodes = null;
-    elementNode.characterCount = 0;
-    elementNode.parentNode = null;
+    animationTextNode.parentElement = parentElement;
+    animationTextNode.text = text;
   }
 
   // Expose this module
   if (!window.app) window.app = {};
-  window.app.ElementNode = ElementNode;
-  ElementNode.initStaticFields = initStaticFields;
+  window.app.AnimationTextNode = AnimationTextNode;
+  AnimationTextNode.initStaticFields = initStaticFields;
 
-  console.log('ElementNode module loaded');
+  console.log('AnimationTextNode module loaded');
 })();

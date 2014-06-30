@@ -34,7 +34,8 @@
 
     textAnimator = app.textAnimator;
 
-    app.ElementNode.initStaticFields();
+    app.AnimationElementNode.initStaticFields();
+    app.AnimationTextNode.initStaticFields();
     app.CharacterAnimation.initStaticFields();
     app.TextAnimationJob.initStaticFields();
     textAnimator.initStaticFields();

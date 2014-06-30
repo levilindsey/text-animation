@@ -11,26 +11,105 @@
       ELEMENT_NODE = 1,
       TEXT_NODE = 3;
 
-  var config, util, log, ElementNode, CharacterAnimation;
+  var config, util, log, AnimationElementNode, AnimationTextNode, CharacterAnimation;
 
   // TODO: add the ability to shuffle the animation order!!
   // - this will require:
   //   - splitting the pre-parsed nodes at arbitrary indices
-  //   - then storing the contents of a node as a mixed array of strings and CharacterAnimations
+  //   - storing the contents of a node as a mixed array of strings and CharacterAnimations
+  //   - having all characters remain in the DOM inside 'visibility: hidden' spans
+  //   - and then splitting these spans and adding additional when needing to animate one of the characters
 
   // ------------------------------------------------------------------------------------------- //
   // Private dynamic functions
 
   /**
-   * - Walks through the content of this job's element.
-   * - Saves a representation of the DOM structure and textual content to use later for animating
-   *   text in order.
+   * Uses an iterative approach (not recursive) to walk through the DOM structure of this job's
+   * root element, and creates a textual
+   *
+   * - Saves a representation of the text nodes and their textual content to use later for
+   *   animating text in order.
    * - Counts the total number of characters.
+   * - Fixes the dimensions of block elements.
+   * - Clears out the text from each element.
+   * - Marks each element as 'waiting-to-animate'.
    */
   function parseJobElement() {
+    var job, element, childNode, elementStack, indexStack, stackIndex, childNodeIndex,
+      childNodeCount, animationTextNodesIndex, animationElementNode;
+
+    job = this;
+
+    job.animationTextNodes = [];
+    job.totalCharacterCount = 0;
+    animationTextNodesIndex = 0;
+
+    animationElementNode = new AnimationElementNode(job.element, null);
+    elementStack = [animationElementNode];
+    indexStack = [0];
+    stackIndex = 0;
+
+    // Keep traversing the DOM structure until we have removed our starting, root element
+    while (stackIndex >= 0) {
+      // Retrieve the variables from the top of the stack
+      animationElementNode = elementStack[stackIndex];
+      element = animationElementNode.element;
+      childNodeIndex = indexStack[stackIndex];
+      childNode = null;
+
+      // Parse any text nodes
+      for (childNodeCount = element.childNodes.length;
+           childNodeIndex < childNodeCount &&
+             element.childNodes[childNodeIndex].nodeType !== ELEMENT_NODE;
+           childNodeIndex += 1) {
+        childNode = element.childNodes[childNodeIndex];
+
+        // Check whether this child node is a text node
+        if (childNode.nodeType === TEXT_NODE) {
+          // Base case: text node
+          job.animationTextNodes[animationTextNodesIndex++] =
+            new AnimationTextNode(animationElementNode, childNode.textContent);
+          job.totalCharacterCount += childNode.textContent.length;
+          childNode.textContent = '';
+        }
+
+        // Ignore other types of DOM nodes
+      }
+
+      // Check whether we will continue iterating down into one of the current element's child
+      // elements, or up into the current element's sibling nodes
+      if (childNode && childNode.nodeType === ELEMENT_NODE) {
+        // "Recursive" case: ElementNode
+        // We found a child element; so we will push the child element on to the stack and iterate
+        // through its child nodes
+
+        stackIndex++;
+        elementStack[stackIndex] = new AnimationElementNode(childNode, animationElementNode);
+        indexStack[stackIndex] = childNodeIndex;
+
+        //if (getComputedStyle(node).display !== 'inline') {// TODO: add this condition back in? (it might have a performance impact)
+        childNode.width = childNode.offsetWidth;
+        childNode.height = childNode.offsetHeight;
+        //}
+
+        setAnimatingClassOnElement(childNode, 'waiting-to-animate');
+      } else {
+        // We iterated through all of the current element's child nodes, and we found no more
+        // elements; so we will pop this element off of the stack and continue iterating through
+        // its siblings
+
+        stackIndex--;
+
+        // Remove all descendant nodes from the DOM
+        element.innerHTML = '';
+      }
+    }
+  }
+
+  function logStructureForDebugging() {
     var job = this;
 
-    job.rootElementNode = parseElement(job.element);
+    log('');// TODO:
   }
 
   /**
@@ -52,7 +131,7 @@
     }
 
     job.characterDuration = characterDuration;
-    job.characterStartTimeOffset = (totalDuration - characterDuration) / job.rootElementNode.characterCount;
+    job.characterStartTimeOffset = (totalDuration - characterDuration) / job.totalCharacterCount;
   }
 
   /**
@@ -112,9 +191,7 @@
     job.inactiveCharacterAnimations[index].push(job.activeCharacterAnimations[index]);
     job.activeCharacterAnimations.splice(index, 1);
 
-    **;// TODO: check if this was the last CharacterAnimation for the given parent element, and if so, call setAnimatingClassOnElement with 'done-animating'
-    // - this check can't just check whether there are any currently active animations on the parent. it MUST check that this character was indeed the final character in the parent.
-    // TODO: give CharacterAnimations a reference to their ElementNode and their index?
+    // TODO: check if this was the last CharacterAnimation for the given parent element, and if so, call setAnimatingClassOnElement with 'done-animating'??
   }
 
   /**
@@ -133,8 +210,8 @@
     // Make sure we don't try to create more CharacterAnimations than the total number of
     // characters
     characterAnimationsToHaveStartedCount =
-        job.rootElementNode.characterCount < characterAnimationsToHaveStartedCount ?
-          job.rootElementNode.characterCount : characterAnimationsToHaveStartedCount;
+        job.totalCharacterCount < characterAnimationsToHaveStartedCount ?
+          job.totalCharacterCount : characterAnimationsToHaveStartedCount;
 
     while (characterAnimationsToHaveStartedCount > job.characterAnimationsStartedCount) {
       startNextCharacterAnimation.call(job);
@@ -146,78 +223,52 @@
    * animation sequence.
    */
   function startNextCharacterAnimation() {
-    var job, elementNode, elementNodeIndex, stringIndex;
+    var job = this;
 
-    job = this;
+    // Check whether there are any remaining text nodes to animate
+    if (job.currentTextNodeIndex < job.animationTextNodes.length) {
+      job.currentStringIndex++;
 
-    elementNode = job.currentElementNode;
-    elementNodeIndex = job.currentElementNodeIndex;
-    stringIndex = job.currentStringIndex;
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //
-
-    // TODO: check whether elementNode.childNodes[elementNodeIndex] is in bounds
-    // - then, continue checking things outward, until I can put this into recursion or a while loop
-    if () {
-      // Check whether the old ElementNode and ElementNode child index point to a text node
-      if (typeof elementNode.childNodes[elementNodeIndex] === 'string') {
-        // Does the next string index still point to a valid position in the old string
-        if () {
-          // Use this next string index with the old ElementNode and ElementNode child index
-          stringIndex++;
-        } else {
-          // Iterate to the next ElementNode child index in the old ElementNode
-          elementNodeIndex++;
-        }
+      // Check whether there are any remaining characters to animate within the current text node
+      if (job.currentStringIndex < job.animationTextNodes[job.currentTextNodeIndex].length) {
+        startCharacterAnimationAtCurrentPosition.call(job);
       } else {
-        // Iterate down into the current child ElementNode
-        elementNode = elementNode.childNodes[elementNodeIndex];
+        job.currentTextNodeIndex++;
+        job.currentStringIndex = -1;
+
+        // Check whether there is another text node to animate
+        if (job.currentTextNodeIndex < job.animationTextNodes.length) {
+          // Mark this text node's parent element as 'is-animating'
+          setAnimatingClassOnElement(
+            job.animationTextNodes[job.currentTextNodeIndex].parentElement, 'is-animating');
+
+          startNextCharacterAnimation.call(job);
+        }
       }
     }
-
-    //
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    // Find the elementNode, elementNodeIndex, and stringIndex that point to the next character in
-    // the DOM
-    while () {
-
-      // TODO:
-    }
-
-    // TODO: call setAnimatingClassOnElement with 'is-animating' when getting to a new parent element
-
-    startCharacterAnimationAtPosition.call(job, elementNode, elementNodeIndex, stringIndex);
   }
 
   /**
-   * Starts a new active CharacterAnimation according to the given position parameters.
+   * Starts a new active CharacterAnimation according to the job's current position parameters.
    *
-   * The given indices should point to a valid character position.
+   * The job's current indices should point to a valid character position.
    *
    * This recycles an inactive CharacterAnimation object.
-   *
-   * @param {ElementNode} elementNode
-   * @param {number} elementNodeIndex
-   * @param {number} stringIndex
    */
-  function startCharacterAnimationAtPosition(elementNode, elementNodeIndex, stringIndex) {
-    var job, character, startTime, characterAnimation;
+  function startCharacterAnimationAtCurrentPosition() {
+    var job, textNode, character, startTime, characterAnimation;
 
     job = this;
 
-    character = elementNode.childNodes[elementNodeIndex][stringIndex];
+    textNode = job.animationTextNodes[job.currentTextNodeIndex];
+    character = textNode[job.currentStringIndex];
     startTime = job.characterAnimationsStartedCount * job.startTime;
 
     // Recycle a pre-existing CharacterAnimation object
     characterAnimation = job.inactiveCharacterAnimations.pop();
     job.activeCharacterAnimations.push(characterAnimation);
-    characterAnimation.reset(elementNode, character, startTime, job.characterDuration);
+    characterAnimation.reset(textNode, character, startTime, job.characterDuration);
 
-    job.currentElementNode = elementNode;
-    job.currentElementNodeIndex = elementNodeIndex;
-    job.currentStringIndex = stringIndex;
     job.characterAnimationsStartedCount++;
   }
 
@@ -244,59 +295,11 @@
    * @param {'waiting-to-animate'|'is-animating'|'done-animating'} animatingClass
    */
   function setAnimatingClassOnElement(element, animatingClass) {
+    // TODO: re-work this style logic??
     util.removeClass(element, 'waiting-to-animate');
     util.removeClass(element, 'is-animating');
     util.removeClass(element, 'done-animating');
     util.addClass(element, animatingClass);
-  }
-
-  /**
-   * - Recursive helper function for parseJobElement.
-   * - Walks through the content of the given element.
-   * - Saves a representation of the DOM structure and textual content to use later for animating
-   *   text in order.
-   * - Counts the total number of characters in each element.
-   * - Fixes the dimensions of block elements.
-   * - Clears out the text from each element.
-   *
-   * @param {HTMLElement} element
-   * @returns {ElementNode}
-   */
-  function parseElement(element) {
-    var i, count, childNodes, characterCount, node, elementNode;
-
-    childNodes = [];
-    characterCount = 0;
-    elementNode = new ElementNode(element);
-
-    for (i = 0, count = element.childNodes.length; i < count; i+=1) {
-      node = element.childNodes[i];
-
-      // Check whether this child node is a text node or an element node
-      if (node.nodeType === TEXT_NODE) {
-        // Base case: text node
-        childNodes[i] = node.textContent;
-        characterCount += childNodes[i].length;
-        node.textContent = '';
-      } else if (node.nodeType === ELEMENT_NODE) {
-        // Recursive case: ElementNode
-        //if (getComputedStyle(node).display !== 'inline') {// TODO: add this condition back in? (it might have a performance impact)
-          node.width = node.offsetWidth;
-          node.height = node.offsetHeight;
-        //}
-        setAnimatingClassOnElement(node, 'waiting-to-animate');
-        childNodes[i] = parseElement(node);
-        characterCount += childNodes[i].characterCount;
-        childNodes[i].parentNode = elementNode;
-      } else {
-        // Ignore other types of DOM nodes
-      }
-    }
-
-    elementNode.childNodes = childNodes;
-    elementNode.characterCount = characterCount;
-
-    return elementNode;
   }
 
   // ------------------------------------------------------------------------------------------- //
@@ -310,8 +313,7 @@
 
     job.startTime = Date.now();
     job.isComplete = false;
-    job.currentElementNode = job.rootElementNode;
-    job.currentElementNodeIndex = 0;
+    job.currentTextNodeIndex = 0;
     job.currentStringIndex = -1;
   }
 
@@ -338,7 +340,8 @@
     config = app.config;
     util = app.util;
     log = new app.Log('TextAnimationJob');
-    ElementNode = app.ElementNode;
+    AnimationElementNode = app.AnimationElementNode;
+    AnimationTextNode = app.AnimationTextNode;
     CharacterAnimation = app.CharacterAnimation;
     log.d('initStaticFields', 'Module initialized');
   }
@@ -360,6 +363,7 @@
 
     job.element = element;
     job.rootElementNode = null;
+    job.animationTextNodes = null;
     job.startTime = 0;
     job.totalCharacterCount = 0;
     job.characterDuration = 0;
@@ -368,8 +372,7 @@
     job.activeCharacterAnimations = [];
     job.inactiveCharacterAnimations = [];
     job.isComplete = false;
-    job.currentElementNode = null;
-    job.currentElementNodeIndex = 0;
+    job.currentTextNodeIndex = 0;
     job.currentStringIndex = 0;
 
     job.start = start;

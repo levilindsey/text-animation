@@ -46,6 +46,17 @@
 
   config.STYLESHEET_ID = 'stylesheet';
 
+  // --- Text animation parameters --- //
+
+  moduleParams = {};
+  config.textAnimation = moduleParams;
+
+  moduleParams.totalDuration = 12000;
+  moduleParams.characterDuration = 600;
+  moduleParams.animationConfig = {
+
+  };
+
   // --- Expose this module --- //
 
   if (!window.app) window.app = {};

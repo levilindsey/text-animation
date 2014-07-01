@@ -35,12 +35,14 @@
    * @constructor
    * @global
    * @param {AnimationElementNode} parentAnimationElementNode
+   * @param {Object} domTextNode
    * @param {string} text
    */
-  function AnimationTextNode(parentAnimationElementNode, text) {
+  function AnimationTextNode(parentAnimationElementNode, domTextNode, text) {
     var animationTextNode = this;
 
     animationTextNode.parentAnimationElementNode = parentAnimationElementNode;
+    animationTextNode.domTextNode = domTextNode;
     animationTextNode.text = text;
   }
 

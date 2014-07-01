@@ -73,9 +73,8 @@
    * @param {string} character
    * @param {number} startTime
    * @param {number} duration
-   * @param {Object} domTextNode
    */
-  function reset(animationTextNode, character, startTime, duration, domTextNode) {
+  function reset(animationTextNode, character, startTime, duration) {
     var characterAnimation = this;
 
     characterAnimation.span.innerHTML = character;
@@ -83,7 +82,6 @@
     characterAnimation.character = character;
     characterAnimation.startTime = startTime;
     characterAnimation.duration = duration;
-    characterAnimation.domTextNode = domTextNode;
     characterAnimation.isComplete = false;
 
     addToParent.call(characterAnimation);
@@ -99,7 +97,7 @@
 
     characterAnimation.animationTextNode.parentAnimationElementNode.element
         .removeChild(characterAnimation.span);
-    characterAnimation.domTextNode.textContent += characterAnimation.character;
+    characterAnimation.animationTextNode.domTextNode.textContent += characterAnimation.character;
   }
 
   // ------------------------------------------------------------------------------------------- //
@@ -126,10 +124,8 @@
    * @param {string} [character]
    * @param {number} [startTime]
    * @param {number} [duration]
-   * @param {Object} [domTextNode]
    */
-  function CharacterAnimation(animationConfig, animationTextNode, character, startTime, duration,
-                              domTextNode) {
+  function CharacterAnimation(animationConfig, animationTextNode, character, startTime, duration) {
     var characterAnimation = this;
 
     characterAnimation.animationConfig = animationConfig;
@@ -139,7 +135,6 @@
     characterAnimation.character = null;
     characterAnimation.startTime = 0;
     characterAnimation.duration = 0;
-    characterAnimation.domTextNode = null;
 
     characterAnimation.update = update;
     characterAnimation.reset = reset;
@@ -148,8 +143,7 @@
     createSpan.call(characterAnimation);
 
     if (animationTextNode && character && startTime && duration) {
-      reset.call(characterAnimation, animationTextNode, character, startTime, duration,
-          domTextNode);
+      reset.call(characterAnimation, animationTextNode, character, startTime, duration);
     }
   }
 

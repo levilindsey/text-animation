@@ -66,12 +66,16 @@
         // Check whether this child node is a text node
         if (childNode.nodeType === TEXT_NODE) {
           // Base case: text node
-          text = childNode.textContent.trim();
-          job.animationTextNodes[animationTextNodesIndex++] =
-              new AnimationTextNode(animationElementNode, text);
-          job.totalCharacterCount += text.length;
-          childNode.textContent = '';
-        } else if (childNode.nodeType !== ELEMENT_NODE) {
+          text = partialTrim(childNode.textContent);
+
+          // Ignore empty text nodes
+          if (text.length > 0) {
+            job.animationTextNodes[animationTextNodesIndex++] =
+              new AnimationTextNode(animationElementNode, childNode, text);
+            job.totalCharacterCount += text.length;
+            childNode.textContent = '';
+          }
+        } else if (childNode.nodeType === ELEMENT_NODE) {
           break;
         }
 
@@ -85,9 +89,11 @@
         // We found a child element; so we will push the child element on to the stack and iterate
         // through its child nodes
 
+        indexStack[stackIndex] = childNodeIndex + 1;
+
         stackIndex++;
         elementStack[stackIndex] = new AnimationElementNode(childNode, animationElementNode);
-        indexStack[stackIndex] = childNodeIndex + 1;
+        indexStack[stackIndex] = 0;
 
         //if (getComputedStyle(node).display !== 'inline') {// TODO: add this condition back in? (it might have a performance impact)
         childNode.width = childNode.offsetWidth;
@@ -101,15 +107,8 @@
         // its siblings
 
         stackIndex--;
-
-        // Remove all descendant nodes from the DOM
-        element.innerHTML = '';
       }
     }
-
-    // Create the actual text node that resides in the DOM before the animating spans
-    job.domTextNode = document.createTextNode('');
-    element.appendChild(job.domTextNode);
 
     logStructureForDebugging.call(job);
   }
@@ -120,7 +119,7 @@
     log.d('logStructureForDebugging', '--- START TEXT NODES ---');
 
     job.animationTextNodes.forEach(function (node) {
-      var animationElementNode, prefix;
+      var animationElementNode, prefix, name;
 
       animationElementNode = node.parentAnimationElementNode;
       prefix = '   ';
@@ -128,7 +127,9 @@
       log.d('', '=-- BASE TEXT NODE: ' + node.text);
 
       while (animationElementNode) {
-        log.d('', prefix + '\\-- PARENT ELEMENT NODE: ' + animationElementNode.element.tagName);
+        name = animationElementNode.element.tagName +
+          (animationElementNode.element.id ? '#' + animationElementNode.element.id : '');
+        log.d('', prefix + '\\-- PARENT ELEMENT NODE: ' + name);
         animationElementNode = animationElementNode.parentAnimationElementNode;
         prefix += '   ';
       }
@@ -265,9 +266,8 @@
 
         // Check whether there is another text node to animate
         if (job.currentTextNodeIndex < job.animationTextNodes.length) {
-          // Mark this text node's parent element as 'is-animating'
-          setAnimatingClassOnElement(
-              job.animationTextNodes[job.currentTextNodeIndex].parentAnimationElementNode.element, 'is-animating');
+          startAnimatingElementNode.call(job,
+            job.animationTextNodes[job.currentTextNodeIndex].parentAnimationElementNode);
 
           startNextCharacterAnimation.call(job);
         }
@@ -294,8 +294,7 @@
     // Recycle a pre-existing CharacterAnimation object
     characterAnimation = job.inactiveCharacterAnimations.pop();
     job.activeCharacterAnimations.push(characterAnimation);
-    characterAnimation.reset(textNode, character, startTime, job.characterDuration,
-        job.domTextNode);
+    characterAnimation.reset(textNode, character, startTime, job.characterDuration);
 
     job.characterAnimationsStartedCount++;
   }
@@ -311,6 +310,35 @@
       job.isComplete = true;
       job.onComplete();
     }
+  }
+
+  /**
+   * Appends the element to its parent element. Sets the element with the 'is-animating' class.
+   *
+   * @params {AnimationElementNode} animationElementNode
+   */
+  function startAnimatingElementNode(animationElementNode) {
+    var job = this;
+
+    animationElementNode.insertIntoDOM();**;// TODO: combine this recursion with the setAnimatingClassOnElement recursion (move setAnimatingClassOnElement into the AnimationElementNode?)
+
+    // Mark this text node's parent element as 'is-animating'
+    giveElementAndAncestorsIsAnimatingClass.call(job, animationElementNode);
+  }
+
+  /**
+   * Sets the 'is-animating' class on the given element and on all of its ancestor elements up to
+   * the root animation element.
+   *
+   * @param {AnimationElementNode} animationElementNode
+   */
+  function giveElementAndAncestorsIsAnimatingClass(animationElementNode) {
+    var job = this;
+
+    do {
+      setAnimatingClassOnElement(animationElementNode.element, 'is-animating');
+      animationElementNode = animationElementNode.parentAnimationElementNode;
+    } while (animationElementNode !== job.rootAnimationElementNode);
   }
 
   // ------------------------------------------------------------------------------------------- //
@@ -331,6 +359,30 @@
     util.addClass(element, animatingClass);
   }
 
+  /**
+   * Removes all leading and trailing whitespace from the given string, EXCEPT for a single space
+   * on either end if a single space exists on that end.
+   *
+   * @param {string} text
+   */
+  function partialTrim(text) {
+    var trimmedText, index;
+
+    trimmedText = text.trim();
+
+    index = text.indexOf(trimmedText);
+    if (text[index - 1] === ' ') {
+      trimmedText = ' ' + trimmedText;
+    }
+
+    index = text.indexOf(trimmedText);
+    if (text[index + trimmedText.length] === ' ') {
+      trimmedText += ' ';
+    }
+
+    return trimmedText;
+  }
+
   // ------------------------------------------------------------------------------------------- //
   // Public dynamic functions
 
@@ -344,6 +396,9 @@
     job.isComplete = false;
     job.currentTextNodeIndex = 0;
     job.currentStringIndex = -1;
+
+    startAnimatingElementNode.call(job,
+      job.animationTextNodes[job.currentTextNodeIndex].parentAnimationElementNode);
 
     log.i('start');
   }
@@ -393,7 +448,7 @@
     var job = this;
 
     job.element = element;
-    job.rootElementNode = null;
+    job.rootAnimationElementNode = null;
     job.animationTextNodes = null;
     job.startTime = 0;
     job.totalCharacterCount = 0;

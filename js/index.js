@@ -30,7 +30,7 @@
    * Resets all of the state for this app.
    */
   function reset() {
-    var container, totalDuration, characterDuration, animationConfig, onComplete, job;
+    var container, onComplete, job;
 
     textAnimator = app.textAnimator;
 
@@ -43,16 +43,12 @@
     log.i('reset', 'All modules initialized');
 
     container = document.getElementById('container');
-    totalDuration = 3000;
-    characterDuration = 100;
-    animationConfig = {
-      // TODO:
-    };
     onComplete = function () {
-      container.style.backgroundColor = '#112266';
+      //container.style.backgroundColor = '#112266';
     };
 
-    job = textAnimator.createJob(container, totalDuration, characterDuration, animationConfig, onComplete);
+    job = textAnimator.createJob(container, config.textAnimation.totalDuration,
+      config.textAnimation.characterDuration, config.textAnimation.animationConfig, onComplete);
     textAnimator.startJob(job);
 
     checkBrowserCompatibility();

@@ -43,13 +43,13 @@
     log.i('reset', 'All modules initialized');
 
     container = document.getElementById('container');
-    totalDuration = 20000;
-    characterDuration = 500;
+    totalDuration = 3000;
+    characterDuration = 100;
     animationConfig = {
       // TODO:
     };
     onComplete = function () {
-      document.getElementsByTagName('body')[0].style.backgroundColor = '#44ccee';
+      container.style.backgroundColor = '#112266';
     };
 
     job = textAnimator.createJob(container, totalDuration, characterDuration, animationConfig, onComplete);

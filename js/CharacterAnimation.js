@@ -35,7 +35,7 @@
 
     characterAnimation = this;
 
-    characterAnimation.textNode.parentAnimationElementNode.element
+    characterAnimation.animationTextNode.parentAnimationElementNode.element
         .appendChild(characterAnimation.span);
 
     // TODO: Calculate the dimensions of the character in its default style, and force the span to maintain those dimensions.
@@ -69,19 +69,21 @@
   /**
    * Resets this CharacterAnimation object to represent a new letter.
    *
-   * @param {AnimationTextNode} textNode
+   * @param {AnimationTextNode} animationTextNode
    * @param {string} character
    * @param {number} startTime
    * @param {number} duration
+   * @param {Object} domTextNode
    */
-  function reset(textNode, character, startTime, duration) {
+  function reset(animationTextNode, character, startTime, duration, domTextNode) {
     var characterAnimation = this;
 
     characterAnimation.span.innerHTML = character;
-    characterAnimation.textNode = textNode;
+    characterAnimation.animationTextNode = animationTextNode;
     characterAnimation.character = character;
     characterAnimation.startTime = startTime;
     characterAnimation.duration = duration;
+    characterAnimation.domTextNode = domTextNode;
     characterAnimation.isComplete = false;
 
     addToParent.call(characterAnimation);
@@ -95,10 +97,9 @@
   function remove() {
     var characterAnimation = this;
 
-    characterAnimation.textNode.parentAnimationElementNode.element
+    characterAnimation.animationTextNode.parentAnimationElementNode.element
         .removeChild(characterAnimation.span);
-    characterAnimation.textNode.parentAnimationElementNode.element.innerHTML +=
-        characterAnimation.character;
+    characterAnimation.domTextNode.textContent += characterAnimation.character;
   }
 
   // ------------------------------------------------------------------------------------------- //
@@ -121,21 +122,24 @@
    * @constructor
    * @global
    * @param {Object} animationConfig
-   * @param {AnimationTextNode} [textNode]
+   * @param {AnimationTextNode} [animationTextNode]
    * @param {string} [character]
    * @param {number} [startTime]
    * @param {number} [duration]
+   * @param {Object} [domTextNode]
    */
-  function CharacterAnimation(animationConfig, textNode, character, startTime, duration) {
+  function CharacterAnimation(animationConfig, animationTextNode, character, startTime, duration,
+                              domTextNode) {
     var characterAnimation = this;
 
     characterAnimation.animationConfig = animationConfig;
     characterAnimation.span = null;
     characterAnimation.isComplete = false;
-    characterAnimation.textNode = null;
+    characterAnimation.animationTextNode = null;
     characterAnimation.character = null;
     characterAnimation.startTime = 0;
     characterAnimation.duration = 0;
+    characterAnimation.domTextNode = null;
 
     characterAnimation.update = update;
     characterAnimation.reset = reset;
@@ -143,8 +147,9 @@
 
     createSpan.call(characterAnimation);
 
-    if (textNode && character && startTime && duration) {
-      reset.call(characterAnimation, textNode, character, startTime, duration);
+    if (animationTextNode && character && startTime && duration) {
+      reset.call(characterAnimation, animationTextNode, character, startTime, duration,
+          domTextNode);
     }
   }
 

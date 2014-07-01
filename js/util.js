@@ -1111,6 +1111,21 @@
     }
   }
 
+  /**
+   * A cross-browser compatible requestAnimationFrame. From
+   * https://hacks.mozilla.org/2011/08/animating-with-javascript-from-setinterval-to-requestanimationframe/
+   * @type {Function}
+   */
+  var requestAnimationFrame =
+      window.requestAnimationFrame || // the standard
+      window.webkitRequestAnimationFrame || // chrome/safari
+      window.mozRequestAnimationFrame || // firefox
+      window.oRequestAnimationFrame || // opera
+      window.msRequestAnimationFrame || // ie
+      function (callback) { // default
+        window.setTimeout(callback, 16); // 60fps
+      };
+
   // ------------------------------------------------------------------------------------------- //
   // Expose this module
 
@@ -1146,6 +1161,7 @@
     interpolate: interpolate,
     getEasingFunction: getEasingFunction,
     removeChildrenWithClass: removeChildrenWithClass,
+    requestAnimationFrame: requestAnimationFrame,
     XHR: null,
     listen: null,
     stopListening: null,

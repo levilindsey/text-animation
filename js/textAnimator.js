@@ -16,15 +16,14 @@
    * This is the animation loop that drives all of the text animation.
    */
   function animationLoop() {
-    var textAnimator, currentTime;
-
-    textAnimator = this;
+    var currentTime = Date.now();
     textAnimator.isLooping = true;
-    currentTime = Date.now();
+
+    log.v('animationLoop', 'currentTime=' + currentTime);// TODO: remove me!!
 
     if (!textAnimator.isPaused) {
       updateJobs(currentTime);
-      requestAnimationFrame(animationLoop);
+      util.requestAnimationFrame.call(window, animationLoop);
     } else {
       textAnimator.isLooping = false;
     }
@@ -56,21 +55,6 @@
       }
     }
   }
-
-  /**
-   * A cross-browser compatible requestAnimationFrame. From
-   * https://hacks.mozilla.org/2011/08/animating-with-javascript-from-setinterval-to-requestanimationframe/
-   * @type {Function}
-   */
-  var requestAnimationFrame =
-    window.requestAnimationFrame || // the standard
-    window.webkitRequestAnimationFrame || // chrome/safari
-    window.mozRequestAnimationFrame || // firefox
-    window.oRequestAnimationFrame || // opera
-    window.msRequestAnimationFrame || // ie
-    function (callback) { // default
-      window.setTimeout(callback, 16); // 60fps
-    };
 
   // ------------------------------------------------------------------------------------------- //
   // Public static functions

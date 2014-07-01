@@ -36,7 +36,7 @@
    */
   function parseJobElement() {
     var job, element, childNode, elementStack, indexStack, stackIndex, childNodeIndex,
-        childNodeCount, animationTextNodesIndex, animationElementNode;
+        childNodeCount, animationTextNodesIndex, animationElementNode, text;
 
     job = this;
 
@@ -59,18 +59,20 @@
 
       // Parse any text nodes
       for (childNodeCount = element.childNodes.length;
-           childNodeIndex < childNodeCount &&
-               element.childNodes[childNodeIndex].nodeType !== ELEMENT_NODE;
+           childNodeIndex < childNodeCount;
            childNodeIndex += 1) {
         childNode = element.childNodes[childNodeIndex];
 
         // Check whether this child node is a text node
         if (childNode.nodeType === TEXT_NODE) {
           // Base case: text node
+          text = childNode.textContent.trim();
           job.animationTextNodes[animationTextNodesIndex++] =
-              new AnimationTextNode(animationElementNode, childNode.textContent.trim());
-          job.totalCharacterCount += childNode.textContent.length;
+              new AnimationTextNode(animationElementNode, text);
+          job.totalCharacterCount += text.length;
           childNode.textContent = '';
+        } else if (childNode.nodeType !== ELEMENT_NODE) {
+          break;
         }
 
         // Ignore other types of DOM nodes
@@ -85,7 +87,7 @@
 
         stackIndex++;
         elementStack[stackIndex] = new AnimationElementNode(childNode, animationElementNode);
-        indexStack[stackIndex] = childNodeIndex;
+        indexStack[stackIndex] = childNodeIndex + 1;
 
         //if (getComputedStyle(node).display !== 'inline') {// TODO: add this condition back in? (it might have a performance impact)
         childNode.width = childNode.offsetWidth;
@@ -105,6 +107,10 @@
       }
     }
 
+    // Create the actual text node that resides in the DOM before the animating spans
+    job.domTextNode = document.createTextNode('');
+    element.appendChild(job.domTextNode);
+
     logStructureForDebugging.call(job);
   }
 
@@ -117,14 +123,14 @@
       var animationElementNode, prefix;
 
       animationElementNode = node.parentAnimationElementNode;
-      prefix = '    ';
+      prefix = '   ';
 
       log.d('', '=-- BASE TEXT NODE: ' + node.text);
 
       while (animationElementNode) {
         log.d('', prefix + '\\-- PARENT ELEMENT NODE: ' + animationElementNode.element.tagName);
         animationElementNode = animationElementNode.parentAnimationElementNode;
-        prefix += '    ';
+        prefix += '   ';
       }
     });
 
@@ -283,12 +289,13 @@
 
     textNode = job.animationTextNodes[job.currentTextNodeIndex];
     character = textNode.text[job.currentStringIndex];
-    startTime = job.characterAnimationsStartedCount * job.startTime;
+    startTime = job.characterAnimationsStartedCount * job.characterStartTimeOffset + job.startTime;
 
     // Recycle a pre-existing CharacterAnimation object
     characterAnimation = job.inactiveCharacterAnimations.pop();
     job.activeCharacterAnimations.push(characterAnimation);
-    characterAnimation.reset(textNode, character, startTime, job.characterDuration);
+    characterAnimation.reset(textNode, character, startTime, job.characterDuration,
+        job.domTextNode);
 
     job.characterAnimationsStartedCount++;
   }

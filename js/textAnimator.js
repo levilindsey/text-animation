@@ -24,7 +24,7 @@
 
     if (!textAnimator.isPaused) {
       updateJobs(currentTime);
-      util.requestAnimationFrame(animationLoop);
+      requestAnimationFrame(animationLoop);
     } else {
       textAnimator.isLooping = false;
     }
@@ -40,13 +40,14 @@
   function updateJobs(currentTime) {
     var i, count;
 
-    for (i = 0, count = textAnimator.jobs.length; i < count; i+=1) {
+    for (i = 0, count = textAnimator.jobs.length; i < count; i += 1) {
       textAnimator.jobs[i].update(currentTime);
 
       // Remove jobs from the list after they are complete
       if (textAnimator.jobs[i].isComplete) {
         textAnimator.jobs.splice(i, 1);
         i--;
+        count--;
 
         // Stop the animation loop when there are no more jobs to animate
         if (textAnimator.jobs.length === 0) {
@@ -55,6 +56,21 @@
       }
     }
   }
+
+  /**
+   * A cross-browser compatible requestAnimationFrame. From
+   * https://hacks.mozilla.org/2011/08/animating-with-javascript-from-setinterval-to-requestanimationframe/
+   * @type {Function}
+   */
+  var requestAnimationFrame =
+    window.requestAnimationFrame || // the standard
+    window.webkitRequestAnimationFrame || // chrome/safari
+    window.mozRequestAnimationFrame || // firefox
+    window.oRequestAnimationFrame || // opera
+    window.msRequestAnimationFrame || // ie
+    function (callback) { // default
+      window.setTimeout(callback, 16); // 60fps
+    };
 
   // ------------------------------------------------------------------------------------------- //
   // Public static functions

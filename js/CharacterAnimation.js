@@ -29,15 +29,14 @@
    * - Appends this span to its parent element.
    * - Calculates the dimensions of the character in its default style, and forces the span to
    *   maintain those dimensions.
-   *
-   * @param {AnimationTextNode} textNode
    */
-  function addToParent(textNode) {
+  function addToParent() {
     var characterAnimation;
 
     characterAnimation = this;
 
-    textNode.parentElement.appendChild(characterAnimation.span);
+    characterAnimation.textNode.parentAnimationElementNode.element
+        .appendChild(characterAnimation.span);
 
     // TODO: Calculate the dimensions of the character in its default style, and force the span to maintain those dimensions.
   }
@@ -61,7 +60,7 @@
     if (progress >= 1) {
       progress = 1;
       characterAnimation.isComplete = true;
-      log('update', 'Completed animation: ' + characterAnimation.span.innerHTML);// TODO: remove me!!
+      log.v('update', 'Completed animation: ' + characterAnimation.character);// TODO: remove me!!
     }
 
     // TODO: use progress to set values according to animation...
@@ -79,25 +78,27 @@
     var characterAnimation = this;
 
     characterAnimation.span.innerHTML = character;
-    characterAnimation.duration = duration;
+    characterAnimation.textNode = textNode;
+    characterAnimation.character = character;
     characterAnimation.startTime = startTime;
+    characterAnimation.duration = duration;
     characterAnimation.isComplete = false;
 
-    addToParent.call(characterAnimation, textNode);
-    log('reset', characterAnimation.span.innerHTML);// TODO: remove me!!
+    addToParent.call(characterAnimation);
+
+    log.v('reset', characterAnimation.character);// TODO: remove me!!
   }
 
   /**
    * Removes this span from its parent, and replaces it with the character it was animating.
    */
   function remove() {
-    var characterAnimation, parent;
+    var characterAnimation = this;
 
-    characterAnimation = this;
-    parent = characterAnimation.span.parentNode;
-
-    parent.removeChild(characterAnimation.span);
-    parent.innerHTML += characterAnimation.span.innerHTML;
+    characterAnimation.textNode.parentAnimationElementNode.element
+        .removeChild(characterAnimation.span);
+    characterAnimation.textNode.parentAnimationElementNode.element.innerHTML +=
+        characterAnimation.character;
   }
 
   // ------------------------------------------------------------------------------------------- //
@@ -131,6 +132,8 @@
     characterAnimation.animationConfig = animationConfig;
     characterAnimation.span = null;
     characterAnimation.isComplete = false;
+    characterAnimation.textNode = null;
+    characterAnimation.character = null;
     characterAnimation.startTime = 0;
     characterAnimation.duration = 0;
 

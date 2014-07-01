@@ -43,8 +43,8 @@
     log.i('reset', 'All modules initialized');
 
     container = document.getElementById('container');
-    totalDuration = 5000;
-    characterDuration = 100;
+    totalDuration = 20000;
+    characterDuration = 500;
     animationConfig = {
       // TODO:
     };
@@ -53,9 +53,7 @@
     };
 
     job = textAnimator.createJob(container, totalDuration, characterDuration, animationConfig, onComplete);
-    setTimeout(function () {
-      textAnimator.startJob(job);
-    }, 1000);
+    textAnimator.startJob(job);
 
     checkBrowserCompatibility();
   }
@@ -67,6 +65,7 @@
     log.i('onDocumentLoad');
 
     reset();
+    util.stopListening(window, 'load', onDocumentLoad);
   }
 
   /**

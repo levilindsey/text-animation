@@ -36,7 +36,7 @@
    */
   function parseJobElement() {
     var job, element, childNode, elementStack, indexStack, stackIndex, childNodeIndex,
-      childNodeCount, animationTextNodesIndex, animationElementNode;
+        childNodeCount, animationTextNodesIndex, animationElementNode;
 
     job = this;
 
@@ -53,14 +53,14 @@
     while (stackIndex >= 0) {
       // Retrieve the variables from the top of the stack
       animationElementNode = elementStack[stackIndex];
-      element = animationElementNode.element;
       childNodeIndex = indexStack[stackIndex];
+      element = animationElementNode.element;
       childNode = null;
 
       // Parse any text nodes
       for (childNodeCount = element.childNodes.length;
            childNodeIndex < childNodeCount &&
-             element.childNodes[childNodeIndex].nodeType !== ELEMENT_NODE;
+               element.childNodes[childNodeIndex].nodeType !== ELEMENT_NODE;
            childNodeIndex += 1) {
         childNode = element.childNodes[childNodeIndex];
 
@@ -68,7 +68,7 @@
         if (childNode.nodeType === TEXT_NODE) {
           // Base case: text node
           job.animationTextNodes[animationTextNodesIndex++] =
-            new AnimationTextNode(animationElementNode, childNode.textContent);
+              new AnimationTextNode(animationElementNode, childNode.textContent.trim());
           job.totalCharacterCount += childNode.textContent.length;
           childNode.textContent = '';
         }
@@ -104,12 +104,31 @@
         element.innerHTML = '';
       }
     }
+
+    logStructureForDebugging.call(job);
   }
 
   function logStructureForDebugging() {
     var job = this;
 
-    log('');// TODO:
+    log.d('logStructureForDebugging', '--- START TEXT NODES ---');
+
+    job.animationTextNodes.forEach(function (node) {
+      var animationElementNode, prefix;
+
+      animationElementNode = node.parentAnimationElementNode;
+      prefix = '    ';
+
+      log.d('', '=-- BASE TEXT NODE: ' + node.text);
+
+      while (animationElementNode) {
+        log.d('', prefix + '\\-- PARENT ELEMENT NODE: ' + animationElementNode.element.tagName);
+        animationElementNode = animationElementNode.parentAnimationElementNode;
+        prefix += '    ';
+      }
+    });
+
+    log.d('logStructureForDebugging', '--- END TEXT NODES ---');
   }
 
   /**
@@ -149,7 +168,7 @@
     count = parseInt(job.characterDuration / job.characterStartTimeOffset) + 1;
 
     for (i = 0; i < count; i+=1) {
-      job.inactiveCharacterAnimations.push(new CharacterAnimation(animationConfig));
+      job.inactiveCharacterAnimations[i] = new CharacterAnimation(animationConfig);
     }
   }
 
@@ -170,6 +189,8 @@
       // Remove any active CharacterAnimations that have completed
       if (job.activeCharacterAnimations[i].isComplete) {
         removeCharacterAnimation.call(job, i);
+        i--;
+        count--;
       }
     }
   }
@@ -188,7 +209,7 @@
 
     // Transfer the CharacterAnimation object between active and inactive arrays, so that we can
     // recycle it for a future character
-    job.inactiveCharacterAnimations[index].push(job.activeCharacterAnimations[index]);
+    job.inactiveCharacterAnimations.push(job.activeCharacterAnimations[index]);
     job.activeCharacterAnimations.splice(index, 1);
 
     // TODO: check if this was the last CharacterAnimation for the given parent element, and if so, call setAnimatingClassOnElement with 'done-animating'??
@@ -205,13 +226,13 @@
     job = this;
 
     characterAnimationsToHaveStartedCount =
-        parseInt((currentTime - job.startTime) / job.characterStartTimeOffset) + 1;
+        parseInt((currentTime - job.startTime) / job.characterStartTimeOffset);
 
     // Make sure we don't try to create more CharacterAnimations than the total number of
     // characters
     characterAnimationsToHaveStartedCount =
-        job.totalCharacterCount < characterAnimationsToHaveStartedCount ?
-          job.totalCharacterCount : characterAnimationsToHaveStartedCount;
+            job.totalCharacterCount < characterAnimationsToHaveStartedCount ?
+        job.totalCharacterCount : characterAnimationsToHaveStartedCount;
 
     while (characterAnimationsToHaveStartedCount > job.characterAnimationsStartedCount) {
       startNextCharacterAnimation.call(job);
@@ -230,7 +251,7 @@
       job.currentStringIndex++;
 
       // Check whether there are any remaining characters to animate within the current text node
-      if (job.currentStringIndex < job.animationTextNodes[job.currentTextNodeIndex].length) {
+      if (job.currentStringIndex < job.animationTextNodes[job.currentTextNodeIndex].text.length) {
         startCharacterAnimationAtCurrentPosition.call(job);
       } else {
         job.currentTextNodeIndex++;
@@ -240,7 +261,7 @@
         if (job.currentTextNodeIndex < job.animationTextNodes.length) {
           // Mark this text node's parent element as 'is-animating'
           setAnimatingClassOnElement(
-            job.animationTextNodes[job.currentTextNodeIndex].parentElement, 'is-animating');
+              job.animationTextNodes[job.currentTextNodeIndex].parentAnimationElementNode.element, 'is-animating');
 
           startNextCharacterAnimation.call(job);
         }
@@ -261,7 +282,7 @@
     job = this;
 
     textNode = job.animationTextNodes[job.currentTextNodeIndex];
-    character = textNode[job.currentStringIndex];
+    character = textNode.text[job.currentStringIndex];
     startTime = job.characterAnimationsStartedCount * job.startTime;
 
     // Recycle a pre-existing CharacterAnimation object
@@ -278,7 +299,8 @@
   function checkForComplete() {
     var job = this;
 
-    if (job.activeCharacterAnimations.length === 0) {
+    if (job.characterAnimationsStartedCount === job.totalCharacterCount &&
+        job.activeCharacterAnimations.length === 0) {
       job.isComplete = true;
       job.onComplete();
     }
@@ -315,6 +337,8 @@
     job.isComplete = false;
     job.currentTextNodeIndex = 0;
     job.currentStringIndex = -1;
+
+    log.i('start');
   }
 
   /**
@@ -382,6 +406,8 @@
     parseJobElement.call(job);
     calculateDurationValues.call(job, totalDuration, characterDuration);
     createCharacterAnimationObjects.call(job, animationConfig);
+
+    log.i('constructor', 'Job parsed and ready');
   }
 
   // Expose this module

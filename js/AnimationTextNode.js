@@ -34,13 +34,13 @@
   /**
    * @constructor
    * @global
-   * @param {HTMLElement} parentElement
+   * @param {AnimationElementNode} parentAnimationElementNode
    * @param {string} text
    */
-  function AnimationTextNode(parentElement, text) {
+  function AnimationTextNode(parentAnimationElementNode, text) {
     var animationTextNode = this;
 
-    animationTextNode.parentElement = parentElement;
+    animationTextNode.parentAnimationElementNode = parentAnimationElementNode;
     animationTextNode.text = text;
   }
 

@@ -35,7 +35,7 @@
    * @constructor
    * @global
    * @param {AnimationElementNode} parentAnimationElementNode
-   * @param {Object} domTextNode
+   * @param {Node} domTextNode
    * @param {string} text
    */
   function AnimationTextNode(parentAnimationElementNode, domTextNode, text) {

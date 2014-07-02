@@ -36,7 +36,7 @@
    */
   function parseJobElement() {
     var job, element, childNode, elementStack, indexStack, stackIndex, childNodeIndex,
-        childNodeCount, animationTextNodesIndex, animationElementNode, text;
+        childNodeCount, animationTextNodesIndex, animationElementNode, text, nextChildTextNode;
 
     job = this;
 
@@ -92,7 +92,10 @@
         indexStack[stackIndex] = childNodeIndex + 1;
 
         stackIndex++;
-        elementStack[stackIndex] = new AnimationElementNode(childNode, animationElementNode);
+
+        nextChildTextNode = getNextChildTextNode(element.childNodes, childNodeIndex);
+        elementStack[stackIndex] = new AnimationElementNode(childNode, animationElementNode,
+            nextChildTextNode);
         indexStack[stackIndex] = 0;
 
         //if (getComputedStyle(node).display !== 'inline') {// TODO: add this condition back in? (it might have a performance impact)
@@ -107,6 +110,15 @@
         // its siblings
 
         stackIndex--;
+
+        // Remove the element nodes from the DOM (we will add them back in when they begin
+        // animating)
+        if (animationElementNode.parentAnimationElementNode) {
+          indexStack[stackIndex]--;
+
+          animationElementNode.parentAnimationElementNode.element.removeChild(
+              animationElementNode.element)
+        }
       }
     }
 
@@ -320,7 +332,7 @@
   function startAnimatingElementNode(animationElementNode) {
     var job = this;
 
-    animationElementNode.insertIntoDOM();**;// TODO: combine this recursion with the setAnimatingClassOnElement recursion (move setAnimatingClassOnElement into the AnimationElementNode?)
+    animationElementNode.insertIntoDOM();// TODO: combine this recursion with the setAnimatingClassOnElement recursion (move setAnimatingClassOnElement into the AnimationElementNode?)
 
     // Mark this text node's parent element as 'is-animating'
     giveElementAndAncestorsIsAnimatingClass.call(job, animationElementNode);
@@ -357,6 +369,27 @@
     util.removeClass(element, 'is-animating');
     util.removeClass(element, 'done-animating');
     util.addClass(element, animatingClass);
+  }
+
+  /**
+   * Gets the first text node in the given array of child nodes after the given index.
+   *
+   * Returns null if no following text nodes are found.
+   *
+   * @param {NodeList} childNodes
+   * @param {number} currentIndex
+   * @returns {?Node}
+   */
+  function getNextChildTextNode(childNodes, currentIndex) {
+    var count;
+
+    for (currentIndex += 1, count = childNodes.length; currentIndex < count; currentIndex += 1) {
+      if (childNodes[currentIndex].nodeType === TEXT_NODE) {
+        return childNodes[currentIndex];
+      }
+    }
+
+    return null;
   }
 
   /**

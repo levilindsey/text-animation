@@ -53,8 +53,17 @@
 
   moduleParams.totalDuration = 12000;
   moduleParams.characterDuration = 600;
-  moduleParams.animationFunction = function () {
 
+  /**
+   * Sets the style of the given span according to the given progress value and this animation
+   * function's custom animation curve functionality.
+   *
+   * @param {HTMLElement} span
+   * @param {number} progress Between 0 and 1.
+   */
+  moduleParams.animationFunction = function (span, progress) {
+    // TODO:
+    // - apply easing in here
   };
 
   // --- Expose this module --- //

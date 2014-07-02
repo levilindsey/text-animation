@@ -236,6 +236,7 @@
     characterAnimationsToHaveStartedCount =
         parseInt((currentTime - job.startTime) / job.characterStartTimeOffset);
 
+    // TODO: use job.easingFunction here
     // Make sure we don't try to create more CharacterAnimations than the total number of
     // characters
     characterAnimationsToHaveStartedCount =
@@ -441,10 +442,12 @@
    * @param {HTMLElement} element
    * @param {number} totalDuration In milliseconds.
    * @param {number} characterDuration In milliseconds.
+   * @param {string} easingFunctionName
    * @param {Function} animationFunction
    * @param {Function} onComplete
    */
-  function TextAnimationJob(element, totalDuration, characterDuration, animationFunction, onComplete) {
+  function TextAnimationJob(element, totalDuration, characterDuration, easingFunctionName,
+                            animationFunction, onComplete) {
     var job = this;
 
     job.element = element;
@@ -461,6 +464,7 @@
     job.currentTextNodeIndex = 0;
     job.currentStringIndex = 0;
 
+    job.easingFunction = util.getEasingFunction(easingFunctionName);
     job.start = start;
     job.update = update;
     job.onComplete = onComplete;

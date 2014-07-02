@@ -82,8 +82,8 @@
    * @returns {TextAnimationJob}
    */
   function createJob(element, totalDuration, characterDuration, animationFunction, onComplete) {
-    return new TextAnimationJob(element, totalDuration, characterDuration, animationFunction,
-        onComplete);
+    return new TextAnimationJob(element, totalDuration, characterDuration, 'easeInOutQuad',
+        animationFunction, onComplete);
   }
 
   /**

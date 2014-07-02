@@ -31,8 +31,6 @@ span.character-animation {
   -moz-transform: translate3d(0, 0, 0);
   -o-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
-  /*left: 1000000000px;*/
-  /*top: 1000000000px;*/
 }
 
 .shown-text { }

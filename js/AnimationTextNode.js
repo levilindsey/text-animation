@@ -36,13 +36,15 @@
    * @global
    * @param {AnimationElementNode} parentAnimationElementNode
    * @param {Node} domTextNode
+   * @param {?Node} nextSiblingNode
    * @param {string} text
    */
-  function AnimationTextNode(parentAnimationElementNode, domTextNode, text) {
+  function AnimationTextNode(parentAnimationElementNode, domTextNode, nextSiblingNode, text) {
     var animationTextNode = this;
 
     animationTextNode.parentAnimationElementNode = parentAnimationElementNode;
     animationTextNode.domTextNode = domTextNode;
+    animationTextNode.nextSiblingNode = nextSiblingNode;
     animationTextNode.text = text;
   }
 

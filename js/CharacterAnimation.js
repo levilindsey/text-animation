@@ -35,8 +35,17 @@
 
     characterAnimation = this;
 
-    characterAnimation.animationTextNode.parentAnimationElementNode.element
-        .appendChild(characterAnimation.span);
+
+    // Check whether we should insert this span element before another sibling node or simply at
+    // the end of the parent element
+    if (characterAnimation.animationTextNode.nextSiblingNode) {
+      characterAnimation.animationTextNode.parentAnimationElementNode.element
+          .insertBefore(characterAnimation.span,
+            characterAnimation.animationTextNode.nextSiblingNode);
+    } else {
+      characterAnimation.animationTextNode.parentAnimationElementNode.element
+          .appendChild(characterAnimation.span);
+    }
 
     // TODO: Calculate the dimensions of the character in its default style, and force the span to maintain those dimensions.
   }

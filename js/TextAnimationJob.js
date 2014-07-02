@@ -108,16 +108,6 @@
         // its siblings
 
         stackIndex--;
-
-        // TODO: ?!?!?!?!?!?!?!?!?
-//        // Remove the element nodes from the DOM (we will add them back in when they begin
-//        // animating)
-//        if (animationElementNode.parentAnimationElementNode) {
-//          indexStack[stackIndex]--;
-//
-//          animationElementNode.parentAnimationElementNode.element.removeChild(
-//              animationElementNode.element)
-//        }
       }
     }
 
@@ -176,9 +166,9 @@
    *   for animating the text of this job.
    * - These are stored in the job.inactiveCharacterAnimations array.
    *
-   * @param {Object} animationConfig
+   * @param {Function} animationFunction
    */
-  function createCharacterAnimationObjects(animationConfig) {
+  function createCharacterAnimationObjects(animationFunction) {
     var job, i, count;
 
     job = this;
@@ -186,7 +176,7 @@
     count = parseInt(job.characterDuration / job.characterStartTimeOffset) + 1;
 
     for (i = 0; i < count; i+=1) {
-      job.inactiveCharacterAnimations[i] = new CharacterAnimation(animationConfig);
+      job.inactiveCharacterAnimations[i] = new CharacterAnimation(animationFunction);
     }
   }
 
@@ -444,16 +434,17 @@
   // ------------------------------------------------------------------------------------------- //
   // Expose this module's constructor
 
+  // TODO: add a onLastCharacterAnimationStarted event handler
   /**
    * @constructor
    * @global
    * @param {HTMLElement} element
    * @param {number} totalDuration In milliseconds.
    * @param {number} characterDuration In milliseconds.
-   * @param {Object} animationConfig
+   * @param {Function} animationFunction
    * @param {Function} onComplete
    */
-  function TextAnimationJob(element, totalDuration, characterDuration, animationConfig, onComplete) {
+  function TextAnimationJob(element, totalDuration, characterDuration, animationFunction, onComplete) {
     var job = this;
 
     job.element = element;
@@ -476,7 +467,7 @@
 
     parseJobElement.call(job);
     calculateDurationValues.call(job, totalDuration, characterDuration);
-    createCharacterAnimationObjects.call(job, animationConfig);
+    createCharacterAnimationObjects.call(job, animationFunction);
 
     log.i('constructor', 'Job parsed and ready');
   }

@@ -53,7 +53,7 @@
 
   moduleParams.totalDuration = 12000;
   moduleParams.characterDuration = 600;
-  moduleParams.animationConfig = {
+  moduleParams.animationFunction = function () {
 
   };
 

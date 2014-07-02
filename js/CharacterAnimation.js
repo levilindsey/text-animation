@@ -128,16 +128,16 @@
   /**
    * @constructor
    * @global
-   * @param {Object} animationConfig
+   * @param {Function} animationFunction
    * @param {AnimationTextNode} [animationTextNode]
    * @param {string} [character]
    * @param {number} [startTime]
    * @param {number} [duration]
    */
-  function CharacterAnimation(animationConfig, animationTextNode, character, startTime, duration) {
+  function CharacterAnimation(animationFunction, animationTextNode, character, startTime, duration) {
     var characterAnimation = this;
 
-    characterAnimation.animationConfig = animationConfig;
+    characterAnimation.animationFunction = animationFunction;
     characterAnimation.span = null;
     characterAnimation.isComplete = false;
     characterAnimation.animationTextNode = null;

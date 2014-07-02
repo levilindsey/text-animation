@@ -77,12 +77,12 @@
    * @param {HTMLElement} element
    * @param {number} totalDuration In milliseconds.
    * @param {number} characterDuration In milliseconds.
-   * @param {Object} animationConfig
+   * @param {Function} animationFunction
    * @param {Function} onComplete
    * @returns {TextAnimationJob}
    */
-  function createJob(element, totalDuration, characterDuration, animationConfig, onComplete) {
-    return new TextAnimationJob(element, totalDuration, characterDuration, animationConfig,
+  function createJob(element, totalDuration, characterDuration, animationFunction, onComplete) {
+    return new TextAnimationJob(element, totalDuration, characterDuration, animationFunction,
         onComplete);
   }
 

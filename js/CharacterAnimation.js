@@ -69,10 +69,10 @@
     if (progress >= 1) {
       progress = 1;
       characterAnimation.isComplete = true;
-      log.v('update', 'Completed animation: ' + characterAnimation.character);// TODO: remove me!!
+      //log.v('update', 'Completed animation: ' + characterAnimation.character);// TODO: remove me!!
     }
 
-    // TODO: use progress to set values according to animation...
+    characterAnimation.animationFunction(characterAnimation.span, progress);
   }
 
   /**
@@ -95,7 +95,7 @@
 
     addToParent.call(characterAnimation);
 
-    log.v('reset', characterAnimation.character);// TODO: remove me!!
+    //log.v('reset', characterAnimation.character);// TODO: remove me!!
   }
 
   /**

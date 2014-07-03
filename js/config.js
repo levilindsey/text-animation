@@ -51,8 +51,8 @@
   moduleParams = {};
   config.textAnimation = moduleParams;
 
-  moduleParams.totalDuration = 12000;
-  moduleParams.characterDuration = 600;
+  moduleParams.totalDuration = 4000;
+  moduleParams.characterDuration = 300;
 
   /**
    * Sets the style of the given span according to the given progress value and this animation
@@ -62,8 +62,17 @@
    * @param {number} progress Between 0 and 1.
    */
   moduleParams.animationFunction = function (span, progress) {
+    var startBottom, endBottom;
+
+    startBottom = -80;
+    endBottom = 0;
+
+    span.style.opacity = progress;
+    span.style.bottom = startBottom * (1 - progress) + endBottom * progress + 'px';
+
     // TODO:
     // - apply easing in here
+    // - add other animations
   };
 
   // --- Expose this module --- //

@@ -48,7 +48,8 @@
     };
 
     job = textAnimator.createJob(container, config.textAnimation.totalDuration,
-      config.textAnimation.characterDuration, config.textAnimation.animationFunction, onComplete);
+        config.textAnimation.characterDuration, config.textAnimation.animationFunctions[0].fn,
+        onComplete);
     textAnimator.startJob(job);
 
     checkBrowserCompatibility();

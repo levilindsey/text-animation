@@ -1126,6 +1126,76 @@
         window.setTimeout(callback, 16); // 60fps
       };
 
+  /**
+   * Calculates the x and y coordinates represented by the given Bezier curve at the given
+   * percentage.
+   *
+   * @param {number} percent Expressed as a number between 0 and 1.
+   * @param {Array.<{x: number, y: number}>} controlPoints
+   * @returns {{x: number, y: number}}
+   */
+  function getXYFromPercentWithBezier(percent, controlPoints) {
+    var x, y, oneMinusPercent, tmp1, tmp2, tmp3, tmp4;
+
+    oneMinusPercent = 1 - percent;
+    tmp1 = percent * percent * percent;
+    tmp2 = 3 * percent * percent * oneMinusPercent;
+    tmp3 = 3 * percent * oneMinusPercent * oneMinusPercent;
+    tmp4 = oneMinusPercent * oneMinusPercent * oneMinusPercent;
+
+    x = controlPoints[0].x * tmp1 +
+        controlPoints[1].x * tmp2 +
+        controlPoints[2].x * tmp3 +
+        controlPoints[3].x * tmp4;
+    y = controlPoints[0].y * tmp1 +
+        controlPoints[1].y * tmp2 +
+        controlPoints[2].y * tmp3 +
+        controlPoints[3].y * tmp4;
+
+    return {x: x, y: y};
+  }
+
+  function B1(t) { return t*t*t }
+  function B2(t) { return 3*t*t*(1-t) }
+  function B3(t) { return 3*t*(1-t)*(1-t) }
+  function B4(t) { return (1-t)*(1-t)*(1-t) }
+
+  function getBezier(percent,C1,C2,C3,C4) {
+    var pos = new coord();
+    pos.x = C1.x*B1(percent) + C2.x*B2(percent) + C3.x*B3(percent) + C4.x*B4(percent);
+    pos.y = C1.y*B1(percent) + C2.y*B2(percent) + C3.y*B3(percent) + C4.y*B4(percent);
+    return pos;
+  }
+
+  /**
+   * Calculates the y coordinate of the given Bezier curve at the given x coordinate.
+   *
+   * This is helpful as an easing function for determining the value at a given time.
+   *
+   * @param {number} x
+   * @param {Array.<{x: number, y: number}>} controlPoints
+   * @returns {number}
+   */
+  function getYFromXWithBezier(x, controlPoints) {
+    // TODO: use this bucket algorithm; this will require adding a bucket setup function in util, calling it for each of the easing functions in config, and storing these buckets with the config objects
+
+//  From: http://gamedev.stackexchange.com/questions/71845/cubic-bezier-for-easing
+//
+//    Other method:
+//
+//        Calculate the Y and X values for a 1000 values of t (in advance). Put the results into
+// buckets in an array of length N. x is between [0 1] so place all results between M/N and
+// (M + 1)/N in the list in index M in the bucket array. You can later use a (fast) lookup to find
+// the x,y pair you want (by radix/range). Binary search (and Newton Raphson) are you friends when
+// you want to quickly answer complex mathematical questions with the use of a computer. You can
+// still use the binary search to increase precision after the look up by searching between the
+// two closest values.
+//
+//        A quick recap: you store the x,y pairs in linked-lists within an array of buckets by
+// creating lists of x,y pairs where the values of x(s) that are between [m/n (m+1)/n] are all
+// stored in the mth index (i.e. in listarray[m]).
+  }
+
   // ------------------------------------------------------------------------------------------- //
   // Expose this module
 
@@ -1162,6 +1232,8 @@
     getEasingFunction: getEasingFunction,
     removeChildrenWithClass: removeChildrenWithClass,
     requestAnimationFrame: requestAnimationFrame,
+    getXYFromPercentWithBezier: getXYFromPercentWithBezier,
+    getYFromXWithBezier: getYFromXWithBezier,
     XHR: null,
     listen: null,
     stopListening: null,

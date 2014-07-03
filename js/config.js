@@ -6,6 +6,52 @@
 (function () {
   var config, moduleParams;
 
+  // ---  --- //
+
+  var easingFunctions = {
+    linear: function (t) {
+      return t;
+    },
+    easeInQuad: function (t) {
+      return t * t;
+    },
+    easeOutQuad: function (t) {
+      return t * (2 - t);
+    },
+    easeInOutQuad: function (t) {
+      return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+    },
+    easeInCubic: function (t) {
+      return t * t * t;
+    },
+    easeOutCubic: function (t) {
+      return 1 + --t * t * t;
+    },
+    easeInOutCubic: function (t) {
+      return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+    },
+    easeInQuart: function (t) {
+      return t * t * t * t;
+    },
+    easeOutQuart: function (t) {
+      return 1 - --t * t * t * t;
+    },
+    easeInOutQuart: function (t) {
+      return t < 0.5 ? 8 * t * t * t * t : 1 - 8 * --t * t * t * t;
+    },
+    easeInQuint: function (t) {
+      return t * t * t * t * t;
+    },
+    easeOutQuint: function (t) {
+      return 1 + --t * t * t * t * t;
+    },
+    easeInOutQuint: function (t) {
+      return t < 0.5 ? 16 * t * t * t * t * t : 1 + 16 * --t * t * t * t * t;
+    }
+  };
+
+  // ---  --- //
+
   config = {};
 
   config.BASE_DIR = '/..';
@@ -52,28 +98,35 @@
   config.textAnimation = moduleParams;
 
   moduleParams.totalDuration = 4000;
-  moduleParams.characterDuration = 300;
+  moduleParams.characterDuration = 400;
 
   /**
-   * Sets the style of the given span according to the given progress value and this animation
-   * function's custom animation curve functionality.
+   * These set the style of the given span according to the given progress value and this
+   * animation function's custom animation curve functionality.
    *
    * @param {HTMLElement} span
    * @param {number} progress Between 0 and 1.
    */
-  moduleParams.animationFunction = function (span, progress) {
-    var startBottom, endBottom;
+  moduleParams.animationFunctions = [
+    {
+      name: 'Slide Up',
+      fn: function (span, progress) {
+        var opacityProgress, bottomProgress, startBottom, endBottom, bottom;
 
-    startBottom = -80;
-    endBottom = 0;
+        opacityProgress = easingFunctions.easeOutCubic(progress);
 
-    span.style.opacity = progress;
-    span.style.bottom = startBottom * (1 - progress) + endBottom * progress + 'px';
+        bottomProgress = easingFunctions.easeOutQuint(progress);
 
-    // TODO:
-    // - apply easing in here
-    // - add other animations
-  };
+        startBottom = -80;
+        endBottom = 0;
+        bottom = startBottom * (1 - bottomProgress) + endBottom * bottomProgress + 'px';
+
+        span.style.opacity = opacityProgress;
+        span.style.bottom = bottom;
+      }
+    }
+    // TODO: add other animations
+  ];
 
   // --- Expose this module --- //
 

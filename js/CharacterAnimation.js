@@ -35,6 +35,8 @@
 
     characterAnimation = this;
 
+    // Make the character initially invisible
+    characterAnimation.span.style.opacity = 0;
 
     // Check whether we should insert this span element before another sibling node or simply at
     // the end of the parent element

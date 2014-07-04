@@ -1,7 +1,9 @@
 
 body {
-  background: #101810;
-  color: #c2c6b4;
+  height: 1000px;
+  margin: 0; padding: 0;
+  background: #242824;
+  color: #c3c6ba;
   font-size: 18px;
 }
 
@@ -20,7 +22,7 @@ a:hover { color: #80c050; text-decoration: underline; }
 a:active { color: #509020; }
 a:visited { color: #90c080; }
 
-#container {
+#recipe, #controls {
   width: 600px;
   margin: 70px auto;
 }

@@ -5,7 +5,7 @@
  */
 (function () {
 
-  var config, util, log, textAnimator;
+  var config, util, log, textAnimator, currentJob;
 
   // ------------------------------------------------------------------------------------------- //
   // Private static functions
@@ -31,8 +31,6 @@
    * Resets all of the state for this app.
    */
   function reset() {
-    var container, onComplete, job;
-
     textAnimator = app.textAnimator;
 
     app.AnimationElementNode.initStaticFields();
@@ -41,19 +39,47 @@
     app.TextAnimationJob.initStaticFields();
     textAnimator.initStaticFields();
 
+    currentJob = null;
+
     log.i('reset', 'All modules initialized');
 
-    container = document.getElementById('container');
+    checkBrowserCompatibility();
+
+    addAnimationButtons();
+  }
+
+  /**
+   * Creates a button for each pre-configured animation function.
+   */
+  function addAnimationButtons() {
+    var buttonContainer, textContainer, onComplete, i, count, button;
+
+    buttonContainer = document.getElementById('buttons');
+    textContainer = document.getElementById('recipe');
+
     onComplete = function () {
-      //container.style.backgroundColor = '#112266';
+      currentJob = null;
     };
 
-    job = textAnimator.createJob(container, config.textAnimation.totalDuration,
-        config.textAnimation.characterDuration, config.textAnimation.animationFunctions[1].fn,
-        onComplete);
-    textAnimator.startJob(job);
+    for (i = 0, count = config.textAnimations.length; i < count; i += 1) {
+      button = document.createElement('button');
 
-    checkBrowserCompatibility();
+      button.innerHTML = config.textAnimations[i].name;
+      button.animationConfig = config.textAnimations[i];
+
+      util.listen(button, 'click', function () {
+        if (currentJob) {
+          textAnimator.cancelJob(currentJob);
+        }
+
+        currentJob = textAnimator.createJob(textContainer, this.animationConfig.totalDuration,
+            this.animationConfig.characterDuration, this.animationConfig.fn, onComplete);
+
+        textAnimator.startJob(currentJob);
+      });
+
+      buttonContainer.appendChild(button);
+    }
   }
 
   /**

@@ -416,6 +416,24 @@
     checkForComplete.call(job);
   }
 
+  /**
+   * Stops this TextAnimationJob, and returns all of the text to its original form.
+   */
+  function cancel() {
+    var job;
+
+    job = this;
+
+    // TODO: loop over stuff and replace all of the text in the DOM
+
+    job.isComplete = true;
+    job.characterAnimationsStartedCount = job.totalCharacterCount;
+    job.activeCharacterAnimations = [];
+    job.inactiveCharacterAnimations = [];
+    job.rootAnimationElementNode = null;
+    job.animationTextNodes = null;
+  }
+
   // ------------------------------------------------------------------------------------------- //
   // Public static functions
 
@@ -467,6 +485,7 @@
     job.easingFunction = util.getEasingFunction(easingFunctionName);
     job.start = start;
     job.update = update;
+    job.cancel = cancel;
     job.onComplete = onComplete;
 
     parseJobElement.call(job);

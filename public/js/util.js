@@ -1138,10 +1138,10 @@
     var x, y, oneMinusPercent, tmp1, tmp2, tmp3, tmp4;
 
     oneMinusPercent = 1 - percent;
-    tmp1 = percent * percent * percent;
-    tmp2 = 3 * percent * percent * oneMinusPercent;
-    tmp3 = 3 * percent * oneMinusPercent * oneMinusPercent;
-    tmp4 = oneMinusPercent * oneMinusPercent * oneMinusPercent;
+    tmp1 = oneMinusPercent * oneMinusPercent * oneMinusPercent;
+    tmp2 = 3 * percent * oneMinusPercent * oneMinusPercent;
+    tmp3 = 3 * percent * percent * oneMinusPercent;
+    tmp4 = percent * percent * percent;
 
     x = controlPoints[0].x * tmp1 +
         controlPoints[1].x * tmp2 +

@@ -94,22 +94,26 @@
 
   // --- Text animation parameters --- //
 
-  moduleParams = {};
-  config.textAnimation = moduleParams;
-
-  moduleParams.totalDuration = 4000;
-  moduleParams.characterDuration = 400;
-
   /**
-   * These set the style of the given span according to the given progress value and this
-   * animation function's custom animation curve functionality.
+   * These functions set the style of the given span according to the given progress value and
+   * this animation function's custom animation curve functionality.
    *
    * @param {HTMLElement} span
    * @param {number} progress Between 0 and 1.
    */
-  moduleParams.animationFunctions = [
+  config.textAnimations = [
+    {
+      name: 'Fade In',
+      totalDuration: 2500,
+      characterDuration: 400,
+      fn: function (span, progress) {
+        span.style.opacity = easingFunctions.easeOutCubic(progress);
+      }
+    },
     {
       name: 'Slide Up',
+      totalDuration: 4000,
+      characterDuration: 400,
       fn: function (span, progress) {
         var opacityProgress, bottomProgress, startBottom, endBottom, bottom;
 
@@ -127,14 +131,16 @@
     },
     {
       name: 'Slide Around',
+      totalDuration: 4000,
+      characterDuration: 400,
       fn: function (span, progress) {
         var controlPoints, opacityProgress, slideProgress, pos;
 
         controlPoints = [
           { x: -50, y: 50 },
           { x: 20, y: 100 },
-          { x: 30, y: -25 },
-          { x: 0.001, y: 0.001 }
+          { x: 50, y: -50 },
+          { x: 0, y: 0 }
         ];
 
         opacityProgress = easingFunctions.easeOutCubic(progress);

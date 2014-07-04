@@ -102,6 +102,15 @@
     }
   }
 
+  /**
+   * Cancels the given TextAnimationJob.
+   *
+   * @param {TextAnimationJob} job
+   */
+  function cancelJob(job) {
+    job.cancel();
+  }
+
   // ------------------------------------------------------------------------------------------- //
   // Expose this singleton
 
@@ -110,6 +119,7 @@
   textAnimator.initStaticFields = initStaticFields;
   textAnimator.createJob = createJob;
   textAnimator.startJob = startJob;
+  textAnimator.cancelJob = cancelJob;
   textAnimator.isPaused = true;
 
   // Expose this module

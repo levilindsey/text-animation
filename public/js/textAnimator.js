@@ -19,7 +19,7 @@
     var currentTime = Date.now();
     textAnimator.isLooping = true;
 
-    log.v('animationLoop', 'currentTime=' + currentTime);// TODO: remove me!!
+    //log.v('animationLoop', 'currentTime=' + currentTime);// TODO: remove me!!
 
     if (!textAnimator.isPaused) {
       updateJobs(currentTime);

@@ -1,6 +1,6 @@
 # text-animation
 
-#### General-purpose animation for showing and hiding text
+#### Character-by-character animation of text
 
 _THIS PROJECT IN A WORK IN PROGRESS_
 

@@ -4,7 +4,7 @@
  * @module config
  */
 (function () {
-  var config, moduleParams;
+  var config, moduleParams, util;
 
   // ---  --- //
 
@@ -124,11 +124,38 @@
         span.style.opacity = opacityProgress;
         span.style.bottom = bottom;
       }
+    },
+    {
+      name: 'Slide Around',
+      fn: function (span, progress) {
+        var controlPoints, opacityProgress, slideProgress, pos;
+
+        controlPoints = [
+          { x: -50, y: 50 },
+          { x: 20, y: 100 },
+          { x: 30, y: -25 },
+          { x: 0.001, y: 0.001 }
+        ];
+
+        opacityProgress = easingFunctions.easeOutCubic(progress);
+
+        slideProgress = easingFunctions.easeOutQuad(progress);
+
+        pos = util.getXYFromPercentWithBezier(slideProgress, controlPoints);
+        console.log('pos=' + pos.x + ', ' + pos.y);///// TODO /////
+        span.style.opacity = opacityProgress;
+        span.style.top = pos.y + 'px';
+        span.style.left = pos.x + 'px';
+      }
     }
     // TODO: add other animations
   ];
 
   // --- Expose this module --- //
+
+  config.init = function () {
+    util = app.util;
+  };
 
   if (!window.app) window.app = {};
   window.app.config = config;

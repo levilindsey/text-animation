@@ -1,0 +1,24 @@
+{
+  "name": "text-animation",
+  "version": "0.3.0",
+  "author": {
+    "name": "Levi Lindsey",
+    "email": "levisl176@gmail.com",
+    "url": "http://jackieandlevi.com/levi"
+  },
+  "description": "Character-by-character animation text",
+  "scripts": {
+    "start": "node app/init.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/levisl176/text-animation"
+  },
+  "dependencies": {
+    "express": "~3.4.0",
+    "ejs": "*"
+  },
+  "devDependencies": {
+  },
+  "license": "MIT"
+}

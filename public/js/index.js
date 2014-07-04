@@ -21,6 +21,7 @@
 
     log.d('init');
 
+    config.init();
     util.init();
 
     util.listen(window, 'load', onDocumentLoad);
@@ -48,7 +49,7 @@
     };
 
     job = textAnimator.createJob(container, config.textAnimation.totalDuration,
-        config.textAnimation.characterDuration, config.textAnimation.animationFunctions[0].fn,
+        config.textAnimation.characterDuration, config.textAnimation.animationFunctions[1].fn,
         onComplete);
     textAnimator.startJob(job);
 

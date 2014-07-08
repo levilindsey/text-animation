@@ -1192,10 +1192,11 @@
    * @param {string} transform
    */
   function applyTransform(element, transform) {
-    element.style.transform = transform;
-    element.style.WebkitTransform = transform;
+    element.style.webkitTransform = transform;
     element.style.MozTransform = transform;
+    element.style.msTransform = transform;
     element.style.OTransform = transform;
+    element.style.transform = transform;
   }
 
   // ------------------------------------------------------------------------------------------- //

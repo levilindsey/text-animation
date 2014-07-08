@@ -369,7 +369,7 @@
     {
       name: 'Rotate Right',
       totalDuration: 2000,
-      characterDuration: 400,
+      characterDuration: 1200,
       fn: function (span, progress) {
         var rotationProgress, endRotation, startRotation, rotation;
 
@@ -391,7 +391,7 @@
         var colorProgress, endSaturation, startSaturation, saturation, endLightness,
             startLightness, lightness, endHue, startHue, hue;
 
-        colorProgress = progress
+        colorProgress = progress;
 
         startHue = 80;
         endHue = 440;

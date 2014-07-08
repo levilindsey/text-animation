@@ -108,7 +108,8 @@
       characterDuration: 100,
       fn: function (span, progress) {
         span.style.opacity = 1;
-      }
+      },
+      inlineBlock: false
     },
     {
       name: 'Fade In Fast',
@@ -116,7 +117,8 @@
       characterDuration: 1200,
       fn: function (span, progress) {
         span.style.opacity = progress;
-      }
+      },
+      inlineBlock: false
     },
     {
       name: 'Fade In Slow',
@@ -124,7 +126,8 @@
       characterDuration: 200,
       fn: function (span, progress) {
         span.style.opacity = progress;
-      }
+      },
+      inlineBlock: false
     },
     {
       name: 'Slide Down',
@@ -141,7 +144,8 @@
 
         span.style.opacity = 1;
         span.style.bottom = top + 'px';
-      }
+      },
+      inlineBlock: false
     },
     {
       name: 'Slide Up',
@@ -158,7 +162,8 @@
 
         span.style.opacity = 1;
         span.style.bottom = top + 'px';
-      }
+      },
+      inlineBlock: false
     },
     {
       name: 'Slide Right',
@@ -175,7 +180,8 @@
 
         span.style.opacity = 1;
         span.style.left = left + 'px';
-      }
+      },
+      inlineBlock: false
     },
     {
       name: 'Slide Left',
@@ -192,7 +198,8 @@
 
         span.style.opacity = 1;
         span.style.left = left + 'px';
-      }
+      },
+      inlineBlock: false
     },
     {
       name: 'Bounce Up',
@@ -215,7 +222,8 @@
         span.style.opacity = 1;
         span.style.top = pos.y + 'px';
         span.style.left = pos.x + 'px';
-      }
+      },
+      inlineBlock: false
     },
     {
       name: 'Bounce Down',
@@ -238,7 +246,8 @@
         span.style.opacity = 1;
         span.style.top = pos.y + 'px';
         span.style.left = pos.x + 'px';
-      }
+      },
+      inlineBlock: false
     },
     {
       name: 'Slide Around 1',
@@ -263,7 +272,8 @@
         span.style.opacity = opacityProgress;
         span.style.top = pos.y + 'px';
         span.style.left = pos.x + 'px';
-      }
+      },
+      inlineBlock: false
     },
     {
       name: 'Slide Around 2',
@@ -288,7 +298,8 @@
         span.style.opacity = opacityProgress;
         span.style.top = pos.y + 'px';
         span.style.left = pos.x + 'px';
-      }
+      },
+      inlineBlock: false
     },
     {
       name: 'Slide Around 3',
@@ -313,7 +324,8 @@
         span.style.opacity = opacityProgress;
         span.style.top = pos.y + 'px';
         span.style.left = pos.x + 'px';
-      }
+      },
+      inlineBlock: false
     },
     {
       name: 'Font Size Down',
@@ -330,7 +342,8 @@
 
         span.style.opacity = 1;
         span.style.fontSize = fontSize + '%';
-      }
+      },
+      inlineBlock: false
     },
     {
       name: 'Font Size Up',
@@ -347,12 +360,13 @@
 
         span.style.opacity = 1;
         span.style.fontSize = fontSize + '%';
-      }
+      },
+      inlineBlock: false
     },
     {
       name: 'Rotate Left',
-      totalDuration: 2000,
-      characterDuration: 400,
+      totalDuration: 2800,
+      characterDuration: 300,
       fn: function (span, progress) {
         var rotationProgress, endRotation, startRotation, rotation;
 
@@ -363,13 +377,15 @@
         rotation = startRotation * (1 - rotationProgress) + endRotation * rotationProgress;
 
         span.style.opacity = 1;
-        util.applyTransform(span, 'rotate(' + rotation + 'deg)');// TODO: fix this
-      }
+        util.applyTransform(span, 'rotate(' + rotation + 'deg)');
+      },
+      inlineBlock: true**;// TODO: use this flag in CharacterAnimation to change the display type of the span; and change the CSS rule to default to span
+      // TODO: also, make sure that we do NOT need to set opacity to 1 for every frame when we are not fading things
     },
     {
       name: 'Rotate Right',
-      totalDuration: 2000,
-      characterDuration: 1200,
+      totalDuration: 2800,
+      characterDuration: 300,
       fn: function (span, progress) {
         var rotationProgress, endRotation, startRotation, rotation;
 
@@ -381,7 +397,8 @@
 
         span.style.opacity = 1;
         util.applyTransform(span, 'rotate(' + rotation + 'deg)');// TODO: fix this
-      }
+      },
+      inlineBlock: true
     },
     {
       name: 'Color Slow',
@@ -407,7 +424,8 @@
 
         span.style.opacity = 1;
         span.style.color = 'hsl(' + hue + ',' + saturation + '%,' + lightness + '%)'
-      }
+      },
+      inlineBlock: false
     },
     {
       name: 'Color Fast',
@@ -433,7 +451,8 @@
 
         span.style.opacity = 1;
         span.style.color = 'hsl(' + hue + ',' + saturation + '%,' + lightness + '%)'
-      }
+      },
+      inlineBlock: false
     },
     {
       name: 'Color Subtle',
@@ -459,22 +478,20 @@
 
         span.style.opacity = 1;
         span.style.color = 'hsl(' + hue + ',' + saturation + '%,' + lightness + '%)'
-      }
+      },
+      inlineBlock: false
     }
 
     // TODO: add other animations
-    // - (stuff from email)
-    // -
-    // -
-    // -
-    // -
-    // -
-    // -
-    // -
-    // -
-    // -
-    // -
-    // -
+    // - add overall number-of-characters-to-have-started easing logic
+    //
+    // - add some animation functions whose start/end values actually transition as well (so that one character's animation might be bigger than another's)
+    //
+    // - text-shadow: h-shadow v-shadow blur color|none|initial|inherit;
+    // - -webkit-/-moz-/-ms-/transform: rotateX/Y/Z(130deg); // 2D
+    // - -webkit-/-moz-/-ms-/transform: scaleX/Y/Z(1.5); // 3D
+    // - -webkit-/-moz-/-ms-/transform: rotate(130deg); // 2D
+    // - -webkit-/-moz-/-ms-/transform: skew(30deg,20deg); // 30deg around the x-axis, 20deg around the y-axis
   ];
 
   // --- Expose this module --- //

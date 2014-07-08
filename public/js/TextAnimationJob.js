@@ -326,30 +326,6 @@
       setAnimatingClassOnElementAndAncestors.call(job,
           job.animationTextNodes[i].parentAnimationElementNode, 'waiting-to-animate');
     }
-
-    // TODO: the above doesn't work (when spamming); why?
-
-
-//    // Check whether there are any remaining text nodes to animate
-//    if (job.currentTextNodeIndex < ) {
-//      job.currentStringIndex++;
-//
-//      // Check whether there are any remaining characters to animate within the current text node
-//      if (job.currentStringIndex < job.animationTextNodes[job.currentTextNodeIndex].text.length) {
-//        startCharacterAnimationAtCurrentPosition.call(job);
-//      } else {
-//        job.currentTextNodeIndex++;
-//        job.currentStringIndex = -1;
-//
-//        // Check whether there is another text node to animate
-//        if (job.currentTextNodeIndex < job.animationTextNodes.length) {
-//          startAnimatingElementNode.call(job,
-//              job.animationTextNodes[job.currentTextNodeIndex].parentAnimationElementNode);
-//
-//          startNextCharacterAnimation.call(job);
-//        }
-//      }
-//    }
   }
 
   /**

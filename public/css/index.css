@@ -29,6 +29,7 @@ a:visited { color: #90c080; }
 
 span.character-animation {
   position: relative;
+  display: inline-block;
   -webkit-transform: translate3d(0, 0, 0);
   -moz-transform: translate3d(0, 0, 0);
   -o-transform: translate3d(0, 0, 0);
@@ -38,15 +39,11 @@ span.character-animation {
 .shown-text { }
 .hidden-text { visibility: hidden; }
 
-/* TODO: give (and test) good fade-in/fade-out transition CSS rules for the waiting-to-animate, is-animating, done-animating classes */
+/* TODO: do something with the waiting-to-animate, is-animating, done-animating classes? */
 
 .waiting-to-animate {
   overflow: visible;
   opacity: 0;
-  -webkit-transform: opacity 0.3s;
-  -moz-transform: opacity 0.3s;
-  -o-transform: opacity 0.3s;
-  transform: opacity 0.3s;
 }
 
 .is-animating {

@@ -44,15 +44,36 @@
 
       // Remove jobs from the list after they are complete
       if (textAnimator.jobs[i].isComplete) {
-        textAnimator.jobs.splice(i, 1);
+        removeJob(textAnimator.jobs[i], i);
         i--;
         count--;
+      }
+    }
+  }
 
-        // Stop the animation loop when there are no more jobs to animate
-        if (textAnimator.jobs.length === 0) {
-          textAnimator.isPaused = true;
+  /**
+   * Removes the given job from the collection of active, animating jobs.
+   *
+   * @param {TextAnimationJob} job
+   * @param {number} [index]
+   */
+  function removeJob(job, index) {
+    var count;
+
+    if (typeof index === 'number') {
+      textAnimator.jobs.splice(index, 1);
+    } else {
+      for (index = 0, count = textAnimator.jobs.length; index < count; index += 1) {
+        if (textAnimator.jobs[index] === job) {
+          textAnimator.jobs.splice(index, 1);
+          break;
         }
       }
+    }
+
+    // Stop the animation loop when there are no more jobs to animate
+    if (textAnimator.jobs.length === 0) {
+      textAnimator.isPaused = true;
     }
   }
 
@@ -109,6 +130,7 @@
    */
   function cancelJob(job) {
     job.cancel();
+    removeJob(job);
   }
 
   // ------------------------------------------------------------------------------------------- //

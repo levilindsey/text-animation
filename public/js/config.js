@@ -434,6 +434,32 @@
         span.style.opacity = 1;
         span.style.color = 'hsl(' + hue + ',' + saturation + '%,' + lightness + '%)'
       }
+    },
+    {
+      name: 'Color Subtle',
+      totalDuration: 2400,
+      characterDuration: 200,
+      fn: function (span, progress) {
+        var colorProgress, endSaturation, startSaturation, saturation, endLightness,
+            startLightness, lightness, endHue, startHue, hue;
+
+        colorProgress = progress;
+
+        startHue = 10;
+        endHue = 80;
+        hue = startHue * (1 - colorProgress) + endHue * colorProgress;
+
+        startSaturation = 24;
+        endSaturation = 3.05;
+        saturation = startSaturation * (1 - colorProgress) + endSaturation * colorProgress;
+
+        startLightness = 20;
+        endLightness = 77.25;
+        lightness = startLightness * (1 - colorProgress) + endLightness * colorProgress;
+
+        span.style.opacity = 1;
+        span.style.color = 'hsl(' + hue + ',' + saturation + '%,' + lightness + '%)'
+      }
     }
 
     // TODO: add other animations

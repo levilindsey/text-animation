@@ -15,7 +15,11 @@
     "url": "https://github.com/levisl176/text-animation"
   },
   "dependencies": {
-    "express": "~3.4.0",
+    "express": "~4.0.0",
+    "morgan": "~1.0.0",
+    "serve-favicon": "~2.0.0",
+    "serve-static": "~1.0.0",
+    "q": "~1.0.1",
     "ejs": "*"
   },
   "devDependencies": {

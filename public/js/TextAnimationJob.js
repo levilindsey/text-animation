@@ -472,12 +472,11 @@
    * Stops this TextAnimationJob, and returns all of the text to its original form.
    */
   function cancel() {
-    var job;
-
-    job = this;
+    var job = this;
 
     cancelActiveCharacterAnimations.call(job);
     resetAllContainerText.call(job);
+    job.onComplete();
 
     job.isComplete = true;
     job.characterAnimationsStartedCount = job.totalCharacterCount;

@@ -49,37 +49,49 @@
   }
 
   /**
-   * Creates a button for each pre-configured animation function.
+   * Creates a button for each pre-configured animation settings.
    */
   function addAnimationButtons() {
-    var buttonContainer, textContainer, onComplete, i, count, button;
+    var buttonContainer, textContainer, onJobEnd, i, count;
 
     buttonContainer = document.getElementById('buttons');
     textContainer = document.getElementById('recipe');
 
-    onComplete = function () {
+    onJobEnd = function (completedSuccessfully) {
       currentJob = null;
     };
 
     for (i = 0, count = config.textAnimations.length; i < count; i += 1) {
-      button = document.createElement('button');
-
-      button.innerHTML = config.textAnimations[i].name;
-      button.animationConfig = config.textAnimations[i];
-
-      util.listen(button, 'click', function () {
-        if (currentJob) {
-          textAnimator.cancelJob(currentJob);
-        }
-
-        currentJob = textAnimator.createJob(textContainer, this.animationConfig.totalDuration,
-            this.animationConfig.characterDuration, this.animationConfig.fn, onComplete);
-
-        textAnimator.startJob(currentJob);
-      });
-
-      buttonContainer.appendChild(button);
+      addAnimationButton(config.textAnimations[i], textContainer, buttonContainer, onJobEnd);
     }
+  }
+
+  /**
+   * Creates a button for the given pre-configured animation settings.
+   *
+   * @param {Object} animationConfig
+   * @param {HTMLElement} textContainer
+   * @param {HTMLElement} buttonContainer
+   * @param {Function} onJobEnd
+   */
+  function addAnimationButton(animationConfig, textContainer, buttonContainer, onJobEnd) {
+    var button = document.createElement('button');
+
+    button.innerHTML = animationConfig.name;
+    button.animationConfig = animationConfig;
+
+    util.listen(button, 'click', function () {
+      if (currentJob) {
+        textAnimator.cancelJob(currentJob);
+      }
+
+      currentJob = textAnimator.createJob(textContainer, this.animationConfig.totalDuration,
+          this.animationConfig.characterDuration, this.animationConfig.fn, onJobEnd);
+
+      textAnimator.startJob(currentJob);
+    });
+
+    buttonContainer.appendChild(button);
   }
 
   /**

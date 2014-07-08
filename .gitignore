@@ -39,11 +39,11 @@ Thumbs.db
 
 # node dependencies #
 #####################
-**/node_modules/
+node_modules/
 
 # misc              #
 #####################
-**/selenium/
+selenium/
 
 .idea/
 

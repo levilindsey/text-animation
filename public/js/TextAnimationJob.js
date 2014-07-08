@@ -204,6 +204,18 @@
   }
 
   /**
+   * Cancels all of the currently active CharacterAnimations.
+   */
+  function cancelActiveCharacterAnimations() {
+    var job = this;
+
+    // Cancel all active CharacterAnimations
+    while (job.activeCharacterAnimations.length) {
+      removeCharacterAnimation.call(job, 0);
+    }
+  }
+
+  /**
    * Removes the CharacterAnimation at the given index within the activeCharacterAnimations
    * collection.
    *
@@ -302,6 +314,45 @@
   }
 
   /**
+   * Resets all of the text in the root element to its original content.
+   */
+  function resetAllContainerText() {
+    var job, i, count;
+
+    job = this;
+
+    for (i = 0, count = job.animationTextNodes.length; i < count; i += 1) {
+      job.animationTextNodes[i].domTextNode.textContent = job.animationTextNodes[i].text;
+      setAnimatingClassOnElementAndAncestors.call(job,
+          job.animationTextNodes[i].parentAnimationElementNode, 'waiting-to-animate');
+    }
+
+    // TODO: the above doesn't work (when spamming); why?
+
+
+//    // Check whether there are any remaining text nodes to animate
+//    if (job.currentTextNodeIndex < ) {
+//      job.currentStringIndex++;
+//
+//      // Check whether there are any remaining characters to animate within the current text node
+//      if (job.currentStringIndex < job.animationTextNodes[job.currentTextNodeIndex].text.length) {
+//        startCharacterAnimationAtCurrentPosition.call(job);
+//      } else {
+//        job.currentTextNodeIndex++;
+//        job.currentStringIndex = -1;
+//
+//        // Check whether there is another text node to animate
+//        if (job.currentTextNodeIndex < job.animationTextNodes.length) {
+//          startAnimatingElementNode.call(job,
+//              job.animationTextNodes[job.currentTextNodeIndex].parentAnimationElementNode);
+//
+//          startNextCharacterAnimation.call(job);
+//        }
+//      }
+//    }
+  }
+
+  /**
    * Checks whether this job is complete. If so, a flag is set and a callback is called.
    */
   function checkForComplete() {
@@ -323,7 +374,7 @@
     var job = this;
 
     // Mark this text node's parent element as 'is-animating'
-    giveElementAndAncestorsIsAnimatingClass.call(job, animationElementNode);
+    setAnimatingClassOnElementAndAncestors.call(job, animationElementNode, 'is-animating');
   }
 
   /**
@@ -331,12 +382,13 @@
    * the root animation element.
    *
    * @param {AnimationElementNode} animationElementNode
+   * @param {'waiting-to-animate'|'is-animating'|'done-animating'} animatingClass
    */
-  function giveElementAndAncestorsIsAnimatingClass(animationElementNode) {
+  function setAnimatingClassOnElementAndAncestors(animationElementNode, animatingClass) {
     var job = this;
 
     do {
-      setAnimatingClassOnElement(animationElementNode.element, 'is-animating');
+      setAnimatingClassOnElement(animationElementNode.element, animatingClass);
       animationElementNode = animationElementNode.parentAnimationElementNode;
     } while (animationElementNode !== job.rootAnimationElementNode);
   }
@@ -424,7 +476,8 @@
 
     job = this;
 
-    // TODO: loop over stuff and replace all of the text in the DOM
+    cancelActiveCharacterAnimations.call(job);
+    resetAllContainerText.call(job);
 
     job.isComplete = true;
     job.characterAnimationsStartedCount = job.totalCharacterCount;

@@ -1184,6 +1184,20 @@
 // stored in the mth index (i.e. in listarray[m]).
   }
 
+  /**
+   * Applies the given transform to the given element as a CSS style in a cross-browser compatible
+   * manner.
+   *
+   * @param {HTMLElement} element
+   * @param {string} transform
+   */
+  function applyTransform(element, transform) {
+    element.style.transform = transform;
+    element.style.WebkitTransform = transform;
+    element.style.MozTransform = transform;
+    element.style.OTransform = transform;
+  }
+
   // ------------------------------------------------------------------------------------------- //
   // Expose this module
 
@@ -1222,6 +1236,7 @@
     requestAnimationFrame: requestAnimationFrame,
     getXYFromPercentWithBezier: getXYFromPercentWithBezier,
     getYFromXWithBezier: getYFromXWithBezier,
+    applyTransform: applyTransform,
     XHR: null,
     listen: null,
     stopListening: null,

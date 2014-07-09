@@ -9,6 +9,8 @@
 
   var config, util, log, TextAnimationJob, textAnimator;
 
+  // TODO: there is a bug on mobile devices where zooming or rotating will kill the current animation, then no later animation can run
+
   // ------------------------------------------------------------------------------------------- //
   // Private static functions
 
@@ -18,8 +20,6 @@
   function animationLoop() {
     var currentTime = Date.now();
     textAnimator.isLooping = true;
-
-    //log.v('animationLoop', 'currentTime=' + currentTime);// TODO: remove me!!
 
     if (!textAnimator.isPaused) {
       updateJobs(currentTime);
@@ -99,12 +99,17 @@
    * @param {number} totalDuration In milliseconds.
    * @param {number} characterDuration In milliseconds.
    * @param {Function} animationFunction
+   * @param {boolean} isInlineBlock
    * @param {Function} onComplete
    * @returns {TextAnimationJob}
    */
-  function createJob(element, totalDuration, characterDuration, animationFunction, onComplete) {
+  function createJob(element, totalDuration, characterDuration, animationFunction, isInlineBlock,
+                     onComplete) {
+    // Just make sure that any state that should be completed from a previous animation is ready
+    animationLoop();
+
     return new TextAnimationJob(element, totalDuration, characterDuration, 'easeInOutQuad',
-        animationFunction, isInlineBlock, onComplete);**;// TODO: handle where this is called
+        animationFunction, isInlineBlock, onComplete);
   }
 
   /**

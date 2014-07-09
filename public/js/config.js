@@ -107,9 +107,9 @@
       totalDuration: 2000,
       characterDuration: 100,
       fn: function (span, progress) {
-        span.style.opacity = 1;
+        // Do nothing
       },
-      inlineBlock: false
+      isInlineBlock: false
     },
     {
       name: 'Fade In Fast',
@@ -118,7 +118,7 @@
       fn: function (span, progress) {
         span.style.opacity = progress;
       },
-      inlineBlock: false
+      isInlineBlock: false
     },
     {
       name: 'Fade In Slow',
@@ -127,7 +127,7 @@
       fn: function (span, progress) {
         span.style.opacity = progress;
       },
-      inlineBlock: false
+      isInlineBlock: false
     },
     {
       name: 'Slide Down',
@@ -142,10 +142,9 @@
         endTop = 0;
         top = startTop * (1 - topProgress) + endTop * topProgress;
 
-        span.style.opacity = 1;
         span.style.bottom = top + 'px';
       },
-      inlineBlock: false
+      isInlineBlock: false
     },
     {
       name: 'Slide Up',
@@ -160,10 +159,9 @@
         endTop = 0;
         top = startTop * (1 - topProgress) + endTop * topProgress;
 
-        span.style.opacity = 1;
         span.style.bottom = top + 'px';
       },
-      inlineBlock: false
+      isInlineBlock: false
     },
     {
       name: 'Slide Right',
@@ -178,10 +176,9 @@
         endLeft = 0;
         left = startLeft * (1 - leftProgress) + endLeft * leftProgress;
 
-        span.style.opacity = 1;
         span.style.left = left + 'px';
       },
-      inlineBlock: false
+      isInlineBlock: false
     },
     {
       name: 'Slide Left',
@@ -196,10 +193,9 @@
         endLeft = 0;
         left = startLeft * (1 - leftProgress) + endLeft * leftProgress;
 
-        span.style.opacity = 1;
         span.style.left = left + 'px';
       },
-      inlineBlock: false
+      isInlineBlock: false
     },
     {
       name: 'Bounce Up',
@@ -219,11 +215,10 @@
 
         pos = util.getXYFromPercentWithBezier(slideProgress, controlPoints);
 
-        span.style.opacity = 1;
         span.style.top = pos.y + 'px';
         span.style.left = pos.x + 'px';
       },
-      inlineBlock: false
+      isInlineBlock: false
     },
     {
       name: 'Bounce Down',
@@ -243,11 +238,10 @@
 
         pos = util.getXYFromPercentWithBezier(slideProgress, controlPoints);
 
-        span.style.opacity = 1;
         span.style.top = pos.y + 'px';
         span.style.left = pos.x + 'px';
       },
-      inlineBlock: false
+      isInlineBlock: false
     },
     {
       name: 'Slide Around 1',
@@ -273,7 +267,7 @@
         span.style.top = pos.y + 'px';
         span.style.left = pos.x + 'px';
       },
-      inlineBlock: false
+      isInlineBlock: false
     },
     {
       name: 'Slide Around 2',
@@ -299,7 +293,7 @@
         span.style.top = pos.y + 'px';
         span.style.left = pos.x + 'px';
       },
-      inlineBlock: false
+      isInlineBlock: false
     },
     {
       name: 'Slide Around 3',
@@ -325,7 +319,7 @@
         span.style.top = pos.y + 'px';
         span.style.left = pos.x + 'px';
       },
-      inlineBlock: false
+      isInlineBlock: false
     },
     {
       name: 'Font Size Down',
@@ -340,10 +334,9 @@
         endFontSize = 100;
         fontSize = startFontSize * (1 - fontSizeProgress) + endFontSize * fontSizeProgress;
 
-        span.style.opacity = 1;
         span.style.fontSize = fontSize + '%';
       },
-      inlineBlock: false
+      isInlineBlock: false
     },
     {
       name: 'Font Size Up',
@@ -358,10 +351,9 @@
         endFontSize = 100;
         fontSize = startFontSize * (1 - fontSizeProgress) + endFontSize * fontSizeProgress;
 
-        span.style.opacity = 1;
         span.style.fontSize = fontSize + '%';
       },
-      inlineBlock: false
+      isInlineBlock: false
     },
     {
       name: 'Rotate Left',
@@ -376,11 +368,9 @@
         endRotation = 360;
         rotation = startRotation * (1 - rotationProgress) + endRotation * rotationProgress;
 
-        span.style.opacity = 1;
         util.applyTransform(span, 'rotate(' + rotation + 'deg)');
       },
-      inlineBlock: true**;// TODO: use this flag in CharacterAnimation to change the display type of the span; and change the CSS rule to default to span
-      // TODO: also, make sure that we do NOT need to set opacity to 1 for every frame when we are not fading things
+      isInlineBlock: true
     },
     {
       name: 'Rotate Right',
@@ -395,10 +385,9 @@
         endRotation = -360;
         rotation = startRotation * (1 - rotationProgress) + endRotation * rotationProgress;
 
-        span.style.opacity = 1;
-        util.applyTransform(span, 'rotate(' + rotation + 'deg)');// TODO: fix this
+        util.applyTransform(span, 'rotate(' + rotation + 'deg)');
       },
-      inlineBlock: true
+      isInlineBlock: true
     },
     {
       name: 'Color Slow',
@@ -422,10 +411,9 @@
         endLightness = 77.25;
         lightness = startLightness * (1 - colorProgress) + endLightness * colorProgress;
 
-        span.style.opacity = 1;
         span.style.color = 'hsl(' + hue + ',' + saturation + '%,' + lightness + '%)'
       },
-      inlineBlock: false
+      isInlineBlock: false
     },
     {
       name: 'Color Fast',
@@ -449,10 +437,9 @@
         endLightness = 77.25;
         lightness = startLightness * (1 - colorProgress) + endLightness * colorProgress;
 
-        span.style.opacity = 1;
         span.style.color = 'hsl(' + hue + ',' + saturation + '%,' + lightness + '%)'
       },
-      inlineBlock: false
+      isInlineBlock: false
     },
     {
       name: 'Color Subtle',
@@ -476,10 +463,9 @@
         endLightness = 77.25;
         lightness = startLightness * (1 - colorProgress) + endLightness * colorProgress;
 
-        span.style.opacity = 1;
         span.style.color = 'hsl(' + hue + ',' + saturation + '%,' + lightness + '%)'
       },
-      inlineBlock: false
+      isInlineBlock: false
     }
 
     // TODO: add other animations

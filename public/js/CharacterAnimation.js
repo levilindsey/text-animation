@@ -27,7 +27,7 @@
     span.className += ' character-animation';
 
     if (isInlineBlock) {
-      **;
+      span.style.display = 'inline-block';
     }
 
     characterAnimation.span = span;
@@ -43,8 +43,8 @@
 
     characterAnimation = this;
 
-    // Make the character initially invisible
-    characterAnimation.span.style.opacity = 0;
+    // Start the span's style off with the initial animation values; otherwise, we see a flicker
+    update.call(characterAnimation, 0);
 
     // Check whether we should insert this span element before another sibling node or simply at
     // the end of the parent element
@@ -79,7 +79,6 @@
     if (progress >= 1) {
       progress = 1;
       characterAnimation.isComplete = true;
-      //log.v('update', 'Completed animation: ' + characterAnimation.character);// TODO: remove me!!
     }
 
     characterAnimation.animationFunction(characterAnimation.span, progress);
@@ -104,8 +103,6 @@
     characterAnimation.isComplete = false;
 
     addToParent.call(characterAnimation);
-
-    //log.v('reset', characterAnimation.character);// TODO: remove me!!
   }
 
   /**
@@ -145,8 +142,8 @@
    * @param {number} [startTime]
    * @param {number} [duration]
    */
-  function CharacterAnimation(animationFunction, isInlineBlock, animationTextNode, character,
-                              startTime, duration) {
+  function CharacterAnimation(animationFunction, isInlineBlock, animationTextNode,
+                              character, startTime, duration) {
     var characterAnimation = this;
 
     characterAnimation.animationFunction = animationFunction;

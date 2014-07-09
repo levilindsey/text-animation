@@ -338,7 +338,7 @@
     if (job.characterAnimationsStartedCount === job.totalCharacterCount &&
         job.activeCharacterAnimations.length === 0) {
       job.isComplete = true;
-      job.onComplete();
+      job.onComplete(true);
     }
   }
 
@@ -453,7 +453,7 @@
 
     cancelActiveCharacterAnimations.call(job);
     resetAllContainerText.call(job);
-    job.onComplete();
+    job.onComplete(false);
 
     job.isComplete = true;
     job.characterAnimationsStartedCount = job.totalCharacterCount;

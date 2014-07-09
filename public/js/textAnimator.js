@@ -104,7 +104,7 @@
    */
   function createJob(element, totalDuration, characterDuration, animationFunction, onComplete) {
     return new TextAnimationJob(element, totalDuration, characterDuration, 'easeInOutQuad',
-        animationFunction, onComplete);
+        animationFunction, isInlineBlock, onComplete);**;// TODO: handle where this is called
   }
 
   /**

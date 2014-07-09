@@ -167,8 +167,9 @@
    * - These are stored in the job.inactiveCharacterAnimations array.
    *
    * @param {Function} animationFunction
+   * @param {boolean} isInlineBlock
    */
-  function createCharacterAnimationObjects(animationFunction) {
+  function createCharacterAnimationObjects(animationFunction, isInlineBlock) {
     var job, i, count;
 
     job = this;
@@ -176,7 +177,7 @@
     count = parseInt(job.characterDuration / job.characterStartTimeOffset) + 1;
 
     for (i = 0; i < count; i+=1) {
-      job.inactiveCharacterAnimations[i] = new CharacterAnimation(animationFunction);
+      job.inactiveCharacterAnimations[i] = new CharacterAnimation(animationFunction, isInlineBlock);
     }
   }
 
@@ -490,10 +491,11 @@
    * @param {number} characterDuration In milliseconds.
    * @param {string} easingFunctionName
    * @param {Function} animationFunction
+   * @param {boolean} isInlineBlock
    * @param {Function} onComplete
    */
   function TextAnimationJob(element, totalDuration, characterDuration, easingFunctionName,
-                            animationFunction, onComplete) {
+                            animationFunction, isInlineBlock, onComplete) {
     var job = this;
 
     job.element = element;
@@ -518,7 +520,7 @@
 
     parseJobElement.call(job);
     calculateDurationValues.call(job, totalDuration, characterDuration);
-    createCharacterAnimationObjects.call(job, animationFunction);
+    createCharacterAnimationObjects.call(job, animationFunction, isInlineBlock);
 
     log.i('constructor', 'Job parsed and ready');
   }

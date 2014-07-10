@@ -8,7 +8,7 @@
   },
   "description": "Character-by-character animation text",
   "scripts": {
-    "start": "node app/init.js"
+    "start": "node init.js"
   },
   "repository": {
     "type": "git",

@@ -2,7 +2,7 @@
 
 #### Character-by-character animation of text
 
-_See the app running at www.jackieandlevi.com/text-animation!_
+_See the app running at [www.jackieandlevi.com/text-animation](http://www.jackieandlevi.com/text-animation)!_
 
 ### The In-Order Animation Algorithm
 

@@ -198,7 +198,7 @@
       isInlineBlock: false
     },
     {
-      name: 'Bounce Up',
+      name: 'Bounce Down',
       totalDuration: 4000,
       characterDuration: 400,
       fn: function (span, progress) {
@@ -221,7 +221,7 @@
       isInlineBlock: false
     },
     {
-      name: 'Bounce Down',
+      name: 'Bounce Up',
       totalDuration: 4000,
       characterDuration: 400,
       fn: function (span, progress) {

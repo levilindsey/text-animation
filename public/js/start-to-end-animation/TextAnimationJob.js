@@ -96,11 +96,9 @@
         elementStack[stackIndex] = new AnimationElementNode(childNode, animationElementNode);
         indexStack[stackIndex] = 0;
 
-        //if (getComputedStyle(node).display !== 'inline') {// TODO: add this condition back in? (it might have a performance impact)
-        // TODO: check that this dimension fix is working!!
+        // Fix the dimensions of all elements to their original values
         childNode.width = childNode.offsetWidth;
         childNode.height = childNode.offsetHeight;
-        //}
 
         setAnimatingClassOnElement(childNode, 'waiting-to-animate');
       } else {
@@ -112,7 +110,7 @@
       }
     }
 
-    logStructureForDebugging.call(job);
+    //logStructureForDebugging.call(job);
   }
 
   function logStructureForDebugging() {
@@ -159,6 +157,7 @@
     }
 
     job.characterDuration = characterDuration;
+    job.durationUntilLastCharacterStart = totalDuration - characterDuration;
     job.characterStartTimeOffset = (totalDuration - characterDuration) / job.totalCharacterCount;
   }
 
@@ -166,11 +165,8 @@
    * - Creates the maximum number of CharacterAnimation objects that will be needed simultaneously
    *   for animating the text of this job.
    * - These are stored in the job.inactiveCharacterAnimations array.
-   *
-   * @param {Function} animationFunction
-   * @param {boolean} isInlineBlock
    */
-  function createCharacterAnimationObjects(animationFunction, isInlineBlock) {
+  function createCharacterAnimationObjects() {
     var job, i, count;
 
     job = this;
@@ -178,7 +174,8 @@
     count = parseInt(job.characterDuration / job.characterStartTimeOffset) + 1;
 
     for (i = 0; i < count; i+=1) {
-      job.inactiveCharacterAnimations[i] = new CharacterAnimation(animationFunction, isInlineBlock);
+      job.inactiveCharacterAnimations[i] =
+          new CharacterAnimation(job.animationFunction, job.isInlineBlock);
     }
   }
 
@@ -243,30 +240,39 @@
    * @param {number} currentTime
    */
   function startNewCharacterAnimations(currentTime) {
-    var job, characterAnimationsToHaveStartedCount;
+    var job, currentDuration, timeProgress, characterProgress, characterAnimationsToHaveStartedCount, startTime;
 
     job = this;
 
-    characterAnimationsToHaveStartedCount =
-        parseInt((currentTime - job.startTime) / job.characterStartTimeOffset);
+    // Apply easing for the overall number of characters being animated
+    currentDuration = currentTime - job.startTime;
+    timeProgress = currentDuration / job.durationUntilLastCharacterStart;
+    characterProgress = job.easingFunction(timeProgress);
 
-    // TODO: use job.easingFunction here
+    characterAnimationsToHaveStartedCount = parseInt(characterProgress * job.totalCharacterCount);
+
     // Make sure we don't try to create more CharacterAnimations than the total number of
     // characters
     characterAnimationsToHaveStartedCount =
-            job.totalCharacterCount < characterAnimationsToHaveStartedCount ?
-        job.totalCharacterCount : characterAnimationsToHaveStartedCount;
+            timeProgress > 1 ? job.totalCharacterCount : characterAnimationsToHaveStartedCount;
 
     while (characterAnimationsToHaveStartedCount > job.characterAnimationsStartedCount) {
-      startNextCharacterAnimation.call(job);
+      // Calculate the eased time at which this next character was supposed to have started
+      characterProgress = job.characterAnimationsStartedCount / job.totalCharacterCount;
+      timeProgress = job.inverseEasingFunction(characterProgress);
+      startTime = job.startTime + timeProgress * job.durationUntilLastCharacterStart;
+
+      startNextCharacterAnimation.call(job, startTime);
     }
   }
 
   /**
    * Starts a new active CharacterAnimation according to our current position in the overall
    * animation sequence.
+   *
+   * @param {number} startTime
    */
-  function startNextCharacterAnimation() {
+  function startNextCharacterAnimation(startTime) {
     var job = this;
 
     // Check whether there are any remaining text nodes to animate
@@ -275,7 +281,7 @@
 
       // Check whether there are any remaining characters to animate within the current text node
       if (job.currentStringIndex < job.animationTextNodes[job.currentTextNodeIndex].text.length) {
-        startCharacterAnimationAtCurrentPosition.call(job);
+        startCharacterAnimationAtCurrentPosition.call(job, startTime);
       } else {
         job.currentTextNodeIndex++;
         job.currentStringIndex = -1;
@@ -285,7 +291,7 @@
           startAnimatingElementNode.call(job,
             job.animationTextNodes[job.currentTextNodeIndex].parentAnimationElementNode);
 
-          startNextCharacterAnimation.call(job);
+          startNextCharacterAnimation.call(job, startTime);
         }
       }
     }
@@ -297,15 +303,25 @@
    * The job's current indices should point to a valid character position.
    *
    * This recycles an inactive CharacterAnimation object.
+   *
+   * @param {number} startTime
    */
-  function startCharacterAnimationAtCurrentPosition() {
-    var job, textNode, character, startTime, characterAnimation;
+  function startCharacterAnimationAtCurrentPosition(startTime) {
+    var job, textNode, character, characterAnimation;
 
     job = this;
 
+    // Determine the parameters of the next character animation
     textNode = job.animationTextNodes[job.currentTextNodeIndex];
     character = textNode.text[job.currentStringIndex];
-    startTime = job.characterAnimationsStartedCount * job.characterStartTimeOffset + job.startTime;
+
+    // Because we now have easing for the overall number of characters being animated, it is
+    // harder to pre-calculate how many will be animating at any given time, so we may need to
+    // create a new CharacterAnimation object here
+    if (job.inactiveCharacterAnimations.length <= 0) {
+      job.inactiveCharacterAnimations[0] =
+          new CharacterAnimation(job.animationFunction, job.isInlineBlock);
+    }
 
     // Recycle a pre-existing CharacterAnimation object
     characterAnimation = job.inactiveCharacterAnimations.pop();
@@ -338,6 +354,8 @@
 
     if (job.characterAnimationsStartedCount === job.totalCharacterCount &&
         job.activeCharacterAnimations.length === 0) {
+      log.i('checkForComplete', 'Job completed');
+
       job.isComplete = true;
       job.onComplete(true);
     }
@@ -382,7 +400,6 @@
    * @param {'waiting-to-animate'|'is-animating'|'done-animating'} animatingClass
    */
   function setAnimatingClassOnElement(element, animatingClass) {
-    // TODO: re-work this style logic??
     util.removeClass(element, 'waiting-to-animate');
     util.removeClass(element, 'is-animating');
     util.removeClass(element, 'done-animating');
@@ -422,6 +439,8 @@
   function start() {
     var job = this;
 
+    log.i('start', 'Job starting');
+
     job.startTime = Date.now();
     job.isComplete = false;
     job.currentTextNodeIndex = 0;
@@ -429,8 +448,6 @@
 
     startAnimatingElementNode.call(job,
       job.animationTextNodes[job.currentTextNodeIndex].parentAnimationElementNode);
-
-    log.i('start');
   }
 
   /**
@@ -451,6 +468,8 @@
    */
   function cancel() {
     var job = this;
+
+    log.i('cancel', 'Job cancelling');
 
     cancelActiveCharacterAnimations.call(job);
     resetAllContainerText.call(job);
@@ -483,7 +502,6 @@
   // ------------------------------------------------------------------------------------------- //
   // Expose this module's constructor
 
-  // TODO: add a onLastCharacterAnimationStarted event handler
   /**
    * @constructor
    * @global
@@ -500,11 +518,14 @@
     var job = this;
 
     job.element = element;
+    job.animationFunction = animationFunction;
+    job.isInlineBlock = isInlineBlock;
     job.rootAnimationElementNode = null;
     job.animationTextNodes = null;
     job.startTime = 0;
     job.totalCharacterCount = 0;
     job.characterDuration = 0;
+    job.durationUntilLastCharacterStart = 0;
     job.characterStartTimeOffset = 0;
     job.characterAnimationsStartedCount = 0;
     job.activeCharacterAnimations = [];
@@ -514,6 +535,7 @@
     job.currentStringIndex = 0;
 
     job.easingFunction = util.getEasingFunction(easingFunctionName);
+    job.inverseEasingFunction = util.getInverseEasingFunction(easingFunctionName);
     job.start = start;
     job.update = update;
     job.cancel = cancel;
@@ -521,9 +543,9 @@
 
     parseJobElement.call(job);
     calculateDurationValues.call(job, totalDuration, characterDuration);
-    createCharacterAnimationObjects.call(job, animationFunction, isInlineBlock);
+    createCharacterAnimationObjects.call(job);
 
-    log.i('constructor', 'Job parsed and ready');
+    log.i('constructor', 'Job created');
   }
 
   // Expose this module

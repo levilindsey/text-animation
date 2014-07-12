@@ -1086,6 +1086,22 @@
     }
   };
 
+  // A collection of the inverses of different types of easing functions.
+  var inverseEasingFunctions = {
+    linear: function (t) {
+      return t;
+    },
+    easeInQuad: function (t) {
+      return Math.sqrt(t);
+    },
+    easeOutQuad: function (t) {
+      return 1 - Math.sqrt(1 - t);
+    },
+    easeInOutQuad: function (t) {
+      return t < 0.5 ? Math.sqrt(t * 0.5) : 1 - 0.70710678 * Math.sqrt(1 - t);
+    }
+  };
+
   /**
    * Gets an easing function by name. Defaults to linear if given an invalid name.
    * @param {string} easingFunctionName The name of an easing function.
@@ -1093,6 +1109,15 @@
    */
   function getEasingFunction(easingFunctionName) {
     return easingFunctions[easingFunctionName] || easingFunctions['linear'];
+  }
+
+  /**
+   * Gets the inverse of an easing function by name. Defaults to linear if given an invalid name.
+   * @param {string} easingFunctionName The name of an easing function.
+   * @returns {Function} The easing function.
+   */
+  function getInverseEasingFunction(easingFunctionName) {
+    return inverseEasingFunctions[easingFunctionName];
   }
 
   /**
@@ -1233,6 +1258,7 @@
     getEasedProgress: getEasedProgress,
     interpolate: interpolate,
     getEasingFunction: getEasingFunction,
+    getInverseEasingFunction: getInverseEasingFunction,
     removeChildrenWithClass: removeChildrenWithClass,
     requestAnimationFrame: requestAnimationFrame,
     getXYFromPercentWithBezier: getXYFromPercentWithBezier,

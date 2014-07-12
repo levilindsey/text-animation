@@ -399,16 +399,16 @@
 
         colorProgress = progress;
 
-        startHue = 80;
-        endHue = 440;
+        startHue = 90;
+        endHue = 450;
         hue = startHue * (1 - colorProgress) + endHue * colorProgress;
 
         startSaturation = 42;
-        endSaturation = 3.05;
+        endSaturation = 2;
         saturation = startSaturation * (1 - colorProgress) + endSaturation * colorProgress;
 
         startLightness = 10;
-        endLightness = 77.25;
+        endLightness = 83;
         lightness = startLightness * (1 - colorProgress) + endLightness * colorProgress;
 
         span.style.color = 'hsl(' + hue + ',' + saturation + '%,' + lightness + '%)'
@@ -425,16 +425,16 @@
 
         colorProgress = progress;
 
-        startHue = 80;
-        endHue = 440;
+        startHue = 90;
+        endHue = 450;
         hue = startHue * (1 - colorProgress) + endHue * colorProgress;
 
         startSaturation = 42;
-        endSaturation = 3.05;
+        endSaturation = 2;
         saturation = startSaturation * (1 - colorProgress) + endSaturation * colorProgress;
 
         startLightness = 10;
-        endLightness = 77.25;
+        endLightness = 83;
         lightness = startLightness * (1 - colorProgress) + endLightness * colorProgress;
 
         span.style.color = 'hsl(' + hue + ',' + saturation + '%,' + lightness + '%)'

@@ -97,6 +97,7 @@
         indexStack[stackIndex] = 0;
 
         //if (getComputedStyle(node).display !== 'inline') {// TODO: add this condition back in? (it might have a performance impact)
+        // TODO: check that this dimension fix is working!!
         childNode.width = childNode.offsetWidth;
         childNode.height = childNode.offsetHeight;
         //}

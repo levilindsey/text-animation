@@ -174,8 +174,7 @@
     count = parseInt(job.characterDuration / job.characterStartTimeOffset) + 1;
 
     for (i = 0; i < count; i+=1) {
-      job.inactiveCharacterAnimations[i] =
-          new CharacterAnimation(job.animationFunction, job.isInlineBlock);
+      job.inactiveCharacterAnimations[i] = new CharacterAnimation(job.animationFunction);
     }
   }
 
@@ -319,8 +318,7 @@
     // harder to pre-calculate how many will be animating at any given time, so we may need to
     // create a new CharacterAnimation object here
     if (job.inactiveCharacterAnimations.length <= 0) {
-      job.inactiveCharacterAnimations[0] =
-          new CharacterAnimation(job.animationFunction, job.isInlineBlock);
+      job.inactiveCharacterAnimations[0] = new CharacterAnimation(job.animationFunction);
     }
 
     // Recycle a pre-existing CharacterAnimation object
@@ -510,16 +508,14 @@
    * @param {number} characterDuration In milliseconds.
    * @param {string} easingFunctionName
    * @param {Function} animationFunction
-   * @param {boolean} isInlineBlock
    * @param {Function} onComplete
    */
   function TextAnimationJob(element, totalDuration, characterDuration, easingFunctionName,
-                            animationFunction, isInlineBlock, onComplete) {
+                            animationFunction, onComplete) {
     var job = this;
 
     job.element = element;
     job.animationFunction = animationFunction;
-    job.isInlineBlock = isInlineBlock;
     job.rootAnimationElementNode = null;
     job.animationTextNodes = null;
     job.startTime = 0;

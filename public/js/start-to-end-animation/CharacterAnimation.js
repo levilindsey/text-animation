@@ -14,10 +14,8 @@
 
   /**
    * Creates a span to hold this character.
-   *
-   * @param {boolean} isInlineBlock
    */
-  function createSpan(isInlineBlock) {
+  function createSpan() {
     var characterAnimation, span;
 
     characterAnimation = this;
@@ -26,9 +24,8 @@
 
     span.className += ' character-animation';
 
-    if (isInlineBlock) {
-      span.style.display = 'inline-block';
-    }
+    span.style.display = 'inline-block';
+    span.style.whiteSpace = 'pre';
 
     characterAnimation.span = span;
   }
@@ -57,7 +54,8 @@
           .appendChild(characterAnimation.span);
     }
 
-    // TODO: Calculate the dimensions of the character in its default style, and force the span to maintain those dimensions.
+    characterAnimation.span.style.lineHeight =
+        characterAnimation.animationTextNode.parentAnimationElementNode.fontSize;
   }
 
   // ------------------------------------------------------------------------------------------- //
@@ -136,14 +134,13 @@
    * @constructor
    * @global
    * @param {Function} animationFunction
-   * @param {boolean} isInlineBlock
    * @param {AnimationTextNode} [animationTextNode]
    * @param {string} [character]
    * @param {number} [startTime]
    * @param {number} [duration]
    */
-  function CharacterAnimation(animationFunction, isInlineBlock, animationTextNode,
-                              character, startTime, duration) {
+  function CharacterAnimation(animationFunction, animationTextNode, character, startTime,
+                              duration) {
     var characterAnimation = this;
 
     characterAnimation.animationFunction = animationFunction;
@@ -158,7 +155,7 @@
     characterAnimation.reset = reset;
     characterAnimation.remove = remove;
 
-    createSpan.call(characterAnimation, isInlineBlock);
+    createSpan.call(characterAnimation);
 
     if (animationTextNode && character && startTime && duration) {
       reset.call(characterAnimation, animationTextNode, character, startTime, duration);

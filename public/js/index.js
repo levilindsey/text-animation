@@ -86,8 +86,7 @@
       }
 
       currentJob = textAnimator.createJob(textContainer, this.animationConfig.totalDuration,
-          this.animationConfig.characterDuration, this.animationConfig.fn,
-          this.animationConfig.isInlineBlock, onJobEnd);
+          this.animationConfig.characterDuration, this.animationConfig.fn, onJobEnd);
 
       textAnimator.startJob(currentJob);
     });

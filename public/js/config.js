@@ -108,8 +108,7 @@
       characterDuration: 100,
       fn: function (span, progress) {
         // Do nothing
-      },
-      isInlineBlock: false
+      }
     },
     {
       name: 'Fade In Fast',
@@ -117,8 +116,7 @@
       characterDuration: 1200,
       fn: function (span, progress) {
         span.style.opacity = progress;
-      },
-      isInlineBlock: false
+      }
     },
     {
       name: 'Fade In Slow',
@@ -126,8 +124,7 @@
       characterDuration: 200,
       fn: function (span, progress) {
         span.style.opacity = progress;
-      },
-      isInlineBlock: false
+      }
     },
     {
       name: 'Slide Down',
@@ -143,8 +140,7 @@
         top = startTop * (1 - topProgress) + endTop * topProgress;
 
         span.style.bottom = top + 'px';
-      },
-      isInlineBlock: false
+      }
     },
     {
       name: 'Slide Up',
@@ -160,8 +156,7 @@
         top = startTop * (1 - topProgress) + endTop * topProgress;
 
         span.style.bottom = top + 'px';
-      },
-      isInlineBlock: false
+      }
     },
     {
       name: 'Slide Right',
@@ -177,8 +172,7 @@
         left = startLeft * (1 - leftProgress) + endLeft * leftProgress;
 
         span.style.left = left + 'px';
-      },
-      isInlineBlock: false
+      }
     },
     {
       name: 'Slide Left',
@@ -194,8 +188,7 @@
         left = startLeft * (1 - leftProgress) + endLeft * leftProgress;
 
         span.style.left = left + 'px';
-      },
-      isInlineBlock: false
+      }
     },
     {
       name: 'Bounce Down',
@@ -217,8 +210,7 @@
 
         span.style.top = pos.y + 'px';
         span.style.left = pos.x + 'px';
-      },
-      isInlineBlock: false
+      }
     },
     {
       name: 'Bounce Up',
@@ -240,8 +232,7 @@
 
         span.style.top = pos.y + 'px';
         span.style.left = pos.x + 'px';
-      },
-      isInlineBlock: false
+      }
     },
     {
       name: 'Slide Around 1',
@@ -266,8 +257,7 @@
         span.style.opacity = opacityProgress;
         span.style.top = pos.y + 'px';
         span.style.left = pos.x + 'px';
-      },
-      isInlineBlock: false
+      }
     },
     {
       name: 'Slide Around 2',
@@ -292,8 +282,7 @@
         span.style.opacity = opacityProgress;
         span.style.top = pos.y + 'px';
         span.style.left = pos.x + 'px';
-      },
-      isInlineBlock: false
+      }
     },
     {
       name: 'Slide Around 3',
@@ -318,8 +307,7 @@
         span.style.opacity = opacityProgress;
         span.style.top = pos.y + 'px';
         span.style.left = pos.x + 'px';
-      },
-      isInlineBlock: false
+      }
     },
     {
       name: 'Font Size Down',
@@ -335,8 +323,7 @@
         fontSize = startFontSize * (1 - fontSizeProgress) + endFontSize * fontSizeProgress;
 
         span.style.fontSize = fontSize + '%';
-      },
-      isInlineBlock: false
+      }
     },
     {
       name: 'Font Size Up',
@@ -352,8 +339,7 @@
         fontSize = startFontSize * (1 - fontSizeProgress) + endFontSize * fontSizeProgress;
 
         span.style.fontSize = fontSize + '%';
-      },
-      isInlineBlock: false
+      }
     },
     {
       name: 'Rotate Z Left',
@@ -369,8 +355,7 @@
         rotation = startRotation * (1 - rotationProgress) + endRotation * rotationProgress;
 
         util.applyTransform(span, 'rotate(' + rotation + 'deg)');
-      },
-      isInlineBlock: true
+      }
     },
     {
       name: 'Rotate Z Right',
@@ -386,8 +371,7 @@
         rotation = startRotation * (1 - rotationProgress) + endRotation * rotationProgress;
 
         util.applyTransform(span, 'rotate(' + rotation + 'deg)');
-      },
-      isInlineBlock: true
+      }
     },
     {
       name: 'Rotate X',
@@ -403,8 +387,7 @@
         rotation = startRotation * (1 - rotationProgress) + endRotation * rotationProgress;
 
         util.applyTransform(span, 'rotateX(' + rotation + 'deg)');
-      },
-      isInlineBlock: true
+      }
     },
     {
       name: 'Rotate Y',
@@ -420,8 +403,7 @@
         rotation = startRotation * (1 - rotationProgress) + endRotation * rotationProgress;
 
         util.applyTransform(span, 'rotateY(' + rotation + 'deg)');
-      },
-      isInlineBlock: true
+      }
     },
     {
       name: 'Rotate 3D',
@@ -437,8 +419,7 @@
         rotation = startRotation * (1 - rotationProgress) + endRotation * rotationProgress;
 
         util.applyTransform(span, 'rotate3D(1,1,1,' + rotation + 'deg)');
-      },
-      isInlineBlock: true
+      }
     },
     {
       name: 'Scale Y',
@@ -459,8 +440,7 @@
         scale = util.getXYFromPercentWithBezier(scaleProgress, controlPoints).y;
 
         util.applyTransform(span, 'scaleY(' + scale + ')');
-      },
-      isInlineBlock: true
+      }
     },
     {
       name: 'Skew',
@@ -481,8 +461,7 @@
         skew = util.getXYFromPercentWithBezier(skewProgress, controlPoints).y;
 
         util.applyTransform(span, 'skew(' + skew + 'deg,0deg)');
-      },
-      isInlineBlock: true
+      }
     },
     {
       name: 'Color Slow',
@@ -507,8 +486,7 @@
         lightness = startLightness * (1 - colorProgress) + endLightness * colorProgress;
 
         span.style.color = 'hsl(' + hue + ',' + saturation + '%,' + lightness + '%)'
-      },
-      isInlineBlock: false
+      }
     },
     {
       name: 'Color Fast',
@@ -533,8 +511,7 @@
         lightness = startLightness * (1 - colorProgress) + endLightness * colorProgress;
 
         span.style.color = 'hsl(' + hue + ',' + saturation + '%,' + lightness + '%)'
-      },
-      isInlineBlock: false
+      }
     },
     {
       name: 'Color Subtle',
@@ -559,8 +536,7 @@
         lightness = startLightness * (1 - colorProgress) + endLightness * colorProgress;
 
         span.style.color = 'hsl(' + hue + ',' + saturation + '%,' + lightness + '%)'
-      },
-      isInlineBlock: false
+      }
     },
     {
       name: 'Shadow 1',
@@ -593,8 +569,7 @@
         span.style.top = -shadowOffset + 'px';
         span.style.fontSize = fontSize + '%';
         span.style.textShadow = shadowOffset + 'px ' + shadowOffset + 'px ' + shadowBlur + 'px #000000';
-      },
-      isInlineBlock: false
+      }
     },
     {
       name: 'Shadow 2',
@@ -619,8 +594,7 @@
             -borderThickness + 'px ' + borderThickness + 'px 2px #d4d5d3,' +
             borderThickness + 'px ' + -borderThickness + 'px 2px #d4d5d3,' +
             -borderThickness + 'px ' + -borderThickness + 'px 2px #d4d5d3';
-      },
-      isInlineBlock: false
+      }
     },
     {
       name: 'Background',
@@ -641,8 +615,7 @@
         backgroundOpacity = util.getXYFromPercentWithBezier(backgroundOpacityProgress, controlPoints).y;
 
         span.style.backgroundColor = 'rgba(130,240,12,' + backgroundOpacity +')';
-      },
-      isInlineBlock: false
+      }
     }
   ];
 

@@ -99,17 +99,15 @@
    * @param {number} totalDuration In milliseconds.
    * @param {number} characterDuration In milliseconds.
    * @param {Function} animationFunction
-   * @param {boolean} isInlineBlock
    * @param {Function} onComplete
    * @returns {TextAnimationJob}
    */
-  function createJob(element, totalDuration, characterDuration, animationFunction, isInlineBlock,
-                     onComplete) {
+  function createJob(element, totalDuration, characterDuration, animationFunction, onComplete) {
     // Just make sure that any state that should be completed from a previous animation is ready
     animationLoop();
 
     return new TextAnimationJob(element, totalDuration, characterDuration, 'easeInOutQuad',
-        animationFunction, isInlineBlock, onComplete);
+        animationFunction, onComplete);
   }
 
   /**

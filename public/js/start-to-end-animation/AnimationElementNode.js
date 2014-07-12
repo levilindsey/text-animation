@@ -43,6 +43,8 @@
     animationElementNode.element = element;
     animationElementNode.parentAnimationElementNode = parentAnimationElementNode;
     animationElementNode.isInsertedInDOM = false;
+
+    animationElementNode.fontSize = getComputedStyle(element).getPropertyValue('font-size');
   }
 
   // Expose this module

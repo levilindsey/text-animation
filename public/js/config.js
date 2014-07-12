@@ -356,9 +356,9 @@
       isInlineBlock: false
     },
     {
-      name: 'Rotate Left',
-      totalDuration: 2800,
-      characterDuration: 300,
+      name: 'Rotate Z Left',
+      totalDuration: 4000,
+      characterDuration: 700,
       fn: function (span, progress) {
         var rotationProgress, endRotation, startRotation, rotation;
 
@@ -373,9 +373,9 @@
       isInlineBlock: true
     },
     {
-      name: 'Rotate Right',
-      totalDuration: 2800,
-      characterDuration: 300,
+      name: 'Rotate Z Right',
+      totalDuration: 4000,
+      characterDuration: 700,
       fn: function (span, progress) {
         var rotationProgress, endRotation, startRotation, rotation;
 
@@ -386,6 +386,101 @@
         rotation = startRotation * (1 - rotationProgress) + endRotation * rotationProgress;
 
         util.applyTransform(span, 'rotate(' + rotation + 'deg)');
+      },
+      isInlineBlock: true
+    },
+    {
+      name: 'Rotate X',
+      totalDuration: 4000,
+      characterDuration: 700,
+      fn: function (span, progress) {
+        var rotationProgress, endRotation, startRotation, rotation;
+
+        rotationProgress = easingFunctions.easeOutQuad(progress);
+
+        startRotation = 0;
+        endRotation = -360;
+        rotation = startRotation * (1 - rotationProgress) + endRotation * rotationProgress;
+
+        util.applyTransform(span, 'rotateX(' + rotation + 'deg)');
+      },
+      isInlineBlock: true
+    },
+    {
+      name: 'Rotate Y',
+      totalDuration: 4000,
+      characterDuration: 700,
+      fn: function (span, progress) {
+        var rotationProgress, endRotation, startRotation, rotation;
+
+        rotationProgress = easingFunctions.easeOutQuad(progress);
+
+        startRotation = 0;
+        endRotation = -360;
+        rotation = startRotation * (1 - rotationProgress) + endRotation * rotationProgress;
+
+        util.applyTransform(span, 'rotateY(' + rotation + 'deg)');
+      },
+      isInlineBlock: true
+    },
+    {
+      name: 'Rotate 3D',
+      totalDuration: 8000,
+      characterDuration: 1600,
+      fn: function (span, progress) {
+        var rotationProgress, endRotation, startRotation, rotation;
+
+        rotationProgress = easingFunctions.easeOutQuad(progress);
+
+        startRotation = 0;
+        endRotation = -360;
+        rotation = startRotation * (1 - rotationProgress) + endRotation * rotationProgress;
+
+        util.applyTransform(span, 'rotate3D(1,1,1,' + rotation + 'deg)');
+      },
+      isInlineBlock: true
+    },
+    {
+      name: 'Scale Y',
+      totalDuration: 4000,
+      characterDuration: 400,
+      fn: function (span, progress) {
+        var controlPoints, scaleProgress, scale;
+
+        controlPoints = [
+          { x: 0, y: 0 },
+          { x: 0, y: 4 },
+          { x: 0, y: 4 },
+          { x: 0, y: 0 }
+        ];
+
+        scaleProgress = progress;
+
+        scale = util.getXYFromPercentWithBezier(scaleProgress, controlPoints).y;
+
+        util.applyTransform(span, 'scaleY(' + scale + ')');
+      },
+      isInlineBlock: true
+    },
+    {
+      name: 'Skew',
+      totalDuration: 4000,
+      characterDuration: 500,
+      fn: function (span, progress) {
+        var controlPoints, skewProgress, skew;
+
+        controlPoints = [
+          { x: 0, y: 0 },
+          { x: 0, y: -80 },
+          { x: 0, y: -80 },
+          { x: 0, y: 0 }
+        ];
+
+        skewProgress = progress;
+
+        skew = util.getXYFromPercentWithBezier(skewProgress, controlPoints).y;
+
+        util.applyTransform(span, 'skew(' + skew + 'deg,0deg)');
       },
       isInlineBlock: true
     },
@@ -466,18 +561,89 @@
         span.style.color = 'hsl(' + hue + ',' + saturation + '%,' + lightness + '%)'
       },
       isInlineBlock: false
-    }
+    },
+    {
+      name: 'Shadow 1',
+      totalDuration: 5000,
+      characterDuration: 900,
+      fn: function (span, progress) {
+        var shadowBlurProgress, controlPoints, pos, shadowBlurRatio, shadowOffsetRatio,
+            fontSizeRatio, shadowBlur, shadowOffset, fontSize;
 
-    // TODO: add other animations
-    // - add overall number-of-characters-to-have-started easing logic
-    //
-    // - add some animation functions whose start/end values actually transition as well (so that one character's animation might be bigger than another's)
-    //
-    // - text-shadow: h-shadow v-shadow blur color|none|initial|inherit;
-    // - -webkit-/-moz-/-ms-/transform: rotateX/Y/Z(130deg); // 2D
-    // - -webkit-/-moz-/-ms-/transform: scaleX/Y/Z(1.5); // 3D
-    // - -webkit-/-moz-/-ms-/transform: rotate(130deg); // 2D
-    // - -webkit-/-moz-/-ms-/transform: skew(30deg,20deg); // 30deg around the x-axis, 20deg around the y-axis
+        shadowBlurProgress = progress;
+
+        controlPoints = [
+          { x: 0, y: 0 },
+          { x: 0, y: 3 },
+          { x: 0, y: 3 },
+          { x: 0, y: 0 }
+        ];
+
+        shadowBlurRatio = 6;
+        shadowOffsetRatio = 3;
+        fontSizeRatio = 8;
+
+        pos = util.getXYFromPercentWithBezier(shadowBlurProgress, controlPoints);
+
+        shadowBlur = shadowBlurRatio * pos.y;
+        shadowOffset = shadowOffsetRatio * pos.y;
+        fontSize = 100 + fontSizeRatio * pos.y;
+
+        span.style.left = -shadowOffset + 'px';
+        span.style.top = -shadowOffset + 'px';
+        span.style.fontSize = fontSize + '%';
+        span.style.textShadow = shadowOffset + 'px ' + shadowOffset + 'px ' + shadowBlur + 'px #000000';
+      },
+      isInlineBlock: false
+    },
+    {
+      name: 'Shadow 2',
+      totalDuration: 4000,
+      characterDuration: 300,
+      fn: function (span, progress) {
+        var borderThicknessProgress, controlPoints, borderThickness;
+
+        borderThicknessProgress = progress;
+
+        controlPoints = [
+          { x: 0, y: 0 },
+          { x: 0, y: 4 },
+          { x: 0, y: 4 },
+          { x: 0, y: 0 }
+        ];
+
+        borderThickness = util.getXYFromPercentWithBezier(borderThicknessProgress, controlPoints).y;
+
+        span.style.textShadow =
+            borderThickness + 'px ' + borderThickness + 'px 2px #d4d5d3,' +
+            -borderThickness + 'px ' + borderThickness + 'px 2px #d4d5d3,' +
+            borderThickness + 'px ' + -borderThickness + 'px 2px #d4d5d3,' +
+            -borderThickness + 'px ' + -borderThickness + 'px 2px #d4d5d3';
+      },
+      isInlineBlock: false
+    },
+    {
+      name: 'Background',
+      totalDuration: 4000,
+      characterDuration: 300,
+      fn: function (span, progress) {
+        var backgroundOpacityProgress, controlPoints, backgroundOpacity;
+
+        backgroundOpacityProgress = progress;
+
+        controlPoints = [
+          { x: 0, y: 0 },
+          { x: 0, y: 1.1 },
+          { x: 0, y: 1.1 },
+          { x: 0, y: 0 }
+        ];
+
+        backgroundOpacity = util.getXYFromPercentWithBezier(backgroundOpacityProgress, controlPoints).y;
+
+        span.style.backgroundColor = 'rgba(130,240,12,' + backgroundOpacity +')';
+      },
+      isInlineBlock: false
+    }
   ];
 
   // --- Expose this module --- //

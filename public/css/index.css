@@ -1,8 +1,12 @@
 
+html {
+  overflow: hidden;
+}
+
 body {
   height: 1000px;
   margin: 0; padding: 0;
-  background: #242524;
+  background: #343534;
   color: #d4d5d3;
   font-size: 18px;
 }
@@ -29,7 +33,7 @@ a:hover { color: #a0ea70; text-decoration: underline; }
 a:active { color: #509020; }
 a:visited { color: #90c080; }
 
-#recipe, #controls {
+#recipe, #buttons {
   width: 600px;
   margin: 70px auto;
 }

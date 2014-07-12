@@ -2,8 +2,8 @@
 body {
   height: 1000px;
   margin: 0; padding: 0;
-  background: #242624;
-  color: #c3c5bf;
+  background: #242524;
+  color: #d4d5d3;
   font-size: 18px;
 }
 
@@ -17,8 +17,8 @@ h2 {
   font-size: 26px;
 }
 
-a { color: #f0ffb0; text-decoration: none; }
-a:hover { color: #80c050; text-decoration: underline; }
+a { color: #80c050; text-decoration: none; }
+a:hover { color: #a0ea70; text-decoration: underline; }
 a:active { color: #509020; }
 a:visited { color: #90c080; }
 

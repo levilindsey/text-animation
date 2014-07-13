@@ -4,6 +4,38 @@
 
 _See this running at [www.jackieandlevi.com/text-animation](http://www.jackieandlevi.com/text-animation)!_
 
+_...or at []()!_
+
+===============================
+### Running the example locally
+
+#### Install
+
+You will need to install the following on your system:
+
+  - [Git](http://git-scm.com/downloads)
+  - [Node.js](http://nodejs.org/download/)
+
+#### Fetch code from GitLab
+
+Within a console, run `git clone https://gitlab.idean.com/idean-labs/labs.git`.
+
+#### NPM
+
+I use NPM to manage the server-side packages that the example app depends on.
+
+In order to install these packages, within a console, navigate to the project directory and run 
+`npm install`.
+
+#### Run the Server
+
+Within a console, navigate to the text-animation project directory and run `npm start`.
+
+#### Open the page
+
+Open a browser and navigate to [localhost:3031](localhost:3031).
+
+====================================
 ### The In-Order Animation Algorithm
 
   1. Iterate through each descendant node in the root element's DOM structure

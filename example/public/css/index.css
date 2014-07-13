@@ -1,6 +1,7 @@
 
 html {
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 body {
@@ -9,6 +10,7 @@ body {
   background: #343534;
   color: #d4d5d3;
   font-size: 18px;
+  font-family: sans-serif;
 }
 
 h1 {
@@ -21,23 +23,38 @@ h2 {
   font-size: 26px;
 }
 
-button {
-  width: 146px;
-  padding: 1px 6px;
-  border-width: 1px 2px;
-  margin: 2px;
-}
-
 a { color: #80c050; text-decoration: none; }
 a:hover { color: #a0ea70; text-decoration: underline; }
 a:active { color: #509020; }
 a:visited { color: #90c080; }
 
-#recipe, #buttons {
-  width: 600px;
+#main-area {
+  width: 800px;
   margin: 70px auto;
 }
 
+#buttons {
+  float: left;
+  width: 120px;
+  padding-right: 80px;
+}
+
+#recipe {
+  float: left;
+  width: 600px;
+}
+
+#buttons>button {
+  display: block;
+  margin: 0 0 6px;
+  width: 100%;
+  height: 20px;
+  padding: 1px 6px;
+  border-width: 1px 2px;
+  font-size: 14px;
+}
+
+/* TODO: move this style to within the textAnimator module */
 span.character-animation {
   position: relative;
   -webkit-transform: translate3d(0, 0, 0);

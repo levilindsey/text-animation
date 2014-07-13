@@ -4,7 +4,7 @@
 
 _See this running at [www.jackieandlevi.com/text-animation](http://www.jackieandlevi.com/text-animation)!_
 
-_...or at []()!_
+_...or at [http://codepen.io/levisl176/full/HGJdF](http://codepen.io/levisl176/full/HGJdF)!_
 
 ===============================
 ### Running the example locally

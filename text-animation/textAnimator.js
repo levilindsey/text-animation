@@ -80,15 +80,17 @@
    * @param {HTMLElement} element
    * @param {number} totalDuration In milliseconds.
    * @param {number} characterDuration In milliseconds.
+   * @param {string} easingFunctionName
    * @param {Function} animationFunction
    * @param {Function} onComplete
    * @returns {Window.ta.TextAnimationJob}
    */
-  function createJob(element, totalDuration, characterDuration, animationFunction, onComplete) {
+  function createJob(element, totalDuration, characterDuration, easingFunctionName,
+                     animationFunction, onComplete) {
     // Just make sure that any state that should be completed from a previous animation is ready
     animationLoop();
 
-    return new ta.TextAnimationJob(element, totalDuration, characterDuration, 'easeInOutQuad',
+    return new ta.TextAnimationJob(element, totalDuration, characterDuration, easingFunctionName,
         animationFunction, onComplete);
   }
 

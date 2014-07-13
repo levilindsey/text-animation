@@ -45,8 +45,16 @@
 
     addRandomAnimationButton(buttonContainer);
 
-    for (i = 0, count = app.config.textAnimations.length; i < count; i += 1) {
-      addAnimationButton(app.config.textAnimations[i], textContainer, buttonContainer, onJobEnd);
+    addButtonHeader('Fancy', buttonContainer);
+
+    for (i = 0, count = app.config.textAnimations.fancy.length; i < count; i += 1) {
+      addAnimationButton(app.config.textAnimations.fancy[i], textContainer, buttonContainer, onJobEnd);
+    }
+
+    addButtonHeader('Simple', buttonContainer);
+
+    for (i = 0, count = app.config.textAnimations.simple.length; i < count; i += 1) {
+      addAnimationButton(app.config.textAnimations.simple[i], textContainer, buttonContainer, onJobEnd);
     }
   }
 
@@ -72,7 +80,8 @@
       }
 
       currentJob = ta.textAnimator.createJob(textContainer, this.animationConfig.totalDuration,
-          this.animationConfig.characterDuration, this.animationConfig.fn, onJobEnd);
+          this.animationConfig.characterDuration, this.animationConfig.easingFunctionName,
+          this.animationConfig.fn, onJobEnd);
 
       ta.textAnimator.startJob(currentJob);
     };
@@ -112,6 +121,18 @@
 
     buttonContainer.appendChild(button);
     buttons.push(onClick);
+  }
+
+  /**
+   * Creates a button section header with the given text.
+   *
+   * @param {string} text
+   * @param {HTMLElement} buttonContainer
+   */
+  function addButtonHeader(text, buttonContainer) {
+    var h = document.createElement('h3');
+    h.innerHTML = text;
+    buttonContainer.appendChild(h);
   }
 
   /**

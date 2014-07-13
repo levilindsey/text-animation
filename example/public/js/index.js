@@ -5,7 +5,7 @@
  */
 (function () {
 
-  var currentJob;
+  var currentJob, buttons;
 
   // ------------------------------------------------------------------------------------------- //
   // Private static functions
@@ -34,12 +34,16 @@
   function addAnimationButtons() {
     var buttonContainer, textContainer, onJobEnd, i, count;
 
+    buttons = [];
+
     buttonContainer = document.getElementById('buttons');
     textContainer = document.getElementById('recipe');
 
     onJobEnd = function (completedSuccessfully) {
       currentJob = null;
     };
+
+    addRandomAnimationButton(buttonContainer);
 
     for (i = 0, count = app.config.textAnimations.length; i < count; i += 1) {
       addAnimationButton(app.config.textAnimations[i], textContainer, buttonContainer, onJobEnd);
@@ -55,12 +59,14 @@
    * @param {Function} onJobEnd
    */
   function addAnimationButton(animationConfig, textContainer, buttonContainer, onJobEnd) {
-    var button = document.createElement('button');
+    var button, onClick;
+
+    button = document.createElement('button');
 
     button.innerHTML = animationConfig.name;
     button.animationConfig = animationConfig;
 
-    button.addEventListener('click', function () {
+    onClick = function () {
       if (currentJob) {
         ta.textAnimator.cancelJob(currentJob);
       }
@@ -69,9 +75,43 @@
           this.animationConfig.characterDuration, this.animationConfig.fn, onJobEnd);
 
       ta.textAnimator.startJob(currentJob);
-    }, false);
+    };
+
+    button.addEventListener('click', onClick, false);
 
     buttonContainer.appendChild(button);
+    buttons.push(button);
+
+    // There is a starting animation that is fired automatically shortly after the page loads
+    if (animationConfig.isStartingAnimation) {
+      setTimeout(function () {
+        var event = new Event('click');
+        button.dispatchEvent(event);
+      }, app.config.startingAnimationDelay);
+    }
+  }
+
+  /**
+   * Creates a button that triggers a random animation.
+   *
+   * @param {HTMLElement} buttonContainer
+   */
+  function addRandomAnimationButton(buttonContainer) {
+    var button, onClick;
+
+    button = document.createElement('button');
+
+    button.innerHTML = 'Random';
+
+    onClick = function () {
+      var event = new Event('click');
+      buttons[parseInt(Math.random() * (buttons.length - 1) + 1)].dispatchEvent(event);
+    };
+
+    button.addEventListener('click', onClick, false);
+
+    buttonContainer.appendChild(button);
+    buttons.push(onClick);
   }
 
   /**

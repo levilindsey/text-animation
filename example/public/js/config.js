@@ -8,6 +8,8 @@
 
   // --- Text animation parameters --- //
 
+  config.startingAnimationDelay = 400;
+
   /**
    * These functions set the style of the given span according to the given progress value and
    * this animation function's custom animation curve functionality.
@@ -454,6 +456,7 @@
     },
     {
       name: 'Shadow 1',
+      isStartingAnimation: true,
       totalDuration: 3000,
       characterDuration: 300,
       fn: function (span, progress) {

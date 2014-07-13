@@ -54,18 +54,6 @@ a:visited { color: #90c080; }
   font-size: 14px;
 }
 
-/* TODO: move this style to within the textAnimator module */
-span.character-animation {
-  position: relative;
-  -webkit-transform: translate3d(0, 0, 0);
-  -moz-transform: translate3d(0, 0, 0);
-  -o-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
-}
-
-.shown-text { }
-.hidden-text { visibility: hidden; }
-
 .waiting-to-animate {
   overflow: visible;
   opacity: 0;

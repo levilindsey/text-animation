@@ -5,13 +5,6 @@
  */
 (function () {
   // ------------------------------------------------------------------------------------------- //
-  // Private static variables
-
-  var textAnimator;
-
-  // TODO: there is a bug on mobile devices where zooming or rotating will kill the current animation, then no later animation can run
-
-  // ------------------------------------------------------------------------------------------- //
   // Private static functions
 
   /**
@@ -128,7 +121,7 @@
   // ------------------------------------------------------------------------------------------- //
   // Expose this singleton
 
-  textAnimator = {};
+  var textAnimator = {};
   textAnimator.jobs = [];
   textAnimator.createJob = createJob;
   textAnimator.startJob = startJob;

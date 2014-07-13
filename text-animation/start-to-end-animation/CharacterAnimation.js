@@ -20,7 +20,9 @@
     span.className += ' character-animation';
 
     span.style.display = 'inline-block';
+    span.style.position = 'relative';
     span.style.whiteSpace = 'pre';
+    ta.util.applyTransform(span, 'translate3d(0,0,0)');
 
     characterAnimation.span = span;
   }

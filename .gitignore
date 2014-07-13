@@ -41,8 +41,8 @@ Thumbs.db
 #####################
 node_modules/
 
-# misc              #
-#####################
+# misc #
+########
 selenium/
 
 .idea/

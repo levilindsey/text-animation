@@ -49,8 +49,6 @@ span.character-animation {
 .shown-text { }
 .hidden-text { visibility: hidden; }
 
-/* TODO: do something with the waiting-to-animate, is-animating, done-animating classes? */
-
 .waiting-to-animate {
   overflow: visible;
   opacity: 0;

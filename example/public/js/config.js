@@ -4,93 +4,7 @@
  * @module config
  */
 (function () {
-  var config, moduleParams, util;
-
-  // ---  --- //
-
-  var easingFunctions = {
-    linear: function (t) {
-      return t;
-    },
-    easeInQuad: function (t) {
-      return t * t;
-    },
-    easeOutQuad: function (t) {
-      return t * (2 - t);
-    },
-    easeInOutQuad: function (t) {
-      return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-    },
-    easeInCubic: function (t) {
-      return t * t * t;
-    },
-    easeOutCubic: function (t) {
-      return 1 + --t * t * t;
-    },
-    easeInOutCubic: function (t) {
-      return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
-    },
-    easeInQuart: function (t) {
-      return t * t * t * t;
-    },
-    easeOutQuart: function (t) {
-      return 1 - --t * t * t * t;
-    },
-    easeInOutQuart: function (t) {
-      return t < 0.5 ? 8 * t * t * t * t : 1 - 8 * --t * t * t * t;
-    },
-    easeInQuint: function (t) {
-      return t * t * t * t * t;
-    },
-    easeOutQuint: function (t) {
-      return 1 + --t * t * t * t * t;
-    },
-    easeInOutQuint: function (t) {
-      return t < 0.5 ? 16 * t * t * t * t * t : 1 + 16 * --t * t * t * t * t;
-    }
-  };
-
-  // ---  --- //
-
-  config = {};
-
-  config.BASE_DIR = '/..';
-
-  // --- General app parameters --- //
-
-  moduleParams = {};
-  config.APP = moduleParams;
-
-  moduleParams.TITLE = 'Text Animator';
-  moduleParams.VERSION = '??.??.??';
-  moduleParams.LICENSE =
-      'The MIT License (MIT). Copyright (c) 2014 Levi Lindsey <levi@jackieandlevi.com>.';
-
-  // --- Log parameters --- //
-
-  moduleParams = {};
-  config.LOG = moduleParams;
-
-  moduleParams.RECENT_ENTRIES_LIMIT = 80;
-  moduleParams.DEBUG = true;
-  moduleParams.VERBOSE = true;
-
-  // --- Localization parameters --- //
-
-  config.L18N = {};
-
-  moduleParams = {};
-  config.L18N.EN = moduleParams;
-
-  moduleParams.BAD_BROWSER_MESSAGE =
-      ':( Sorry, but some of the fancy features of this app may not work on your browser. You should really upgrade to a newer version.';
-
-  // --- Miscellaneous parameters --- //
-
-  config.SMALL_SCREEN_WIDTH_THRESHOLD = 900;
-  config.SMALL_SCREEN_HEIGHT_THRESHOLD = 675;
-
-  config.STYLESHEET_ID = 'stylesheet';
+  var config = {};
 
   // --- Text animation parameters --- //
 
@@ -133,7 +47,7 @@
       fn: function (span, progress) {
         var topProgress, startTop, endTop, top;
 
-        topProgress = easingFunctions.easeOutQuint(progress);
+        topProgress = ta.util.easingFunctions.easeOutQuint(progress);
 
         startTop = 80;
         endTop = 0;
@@ -149,7 +63,7 @@
       fn: function (span, progress) {
         var topProgress, startTop, endTop, top;
 
-        topProgress = easingFunctions.easeOutQuint(progress);
+        topProgress = ta.util.easingFunctions.easeOutQuint(progress);
 
         startTop = -80;
         endTop = 0;
@@ -165,7 +79,7 @@
       fn: function (span, progress) {
         var leftProgress, startLeft, endLeft, left;
 
-        leftProgress = easingFunctions.easeOutQuint(progress);
+        leftProgress = ta.util.easingFunctions.easeOutQuint(progress);
 
         startLeft = -80;
         endLeft = 0;
@@ -181,7 +95,7 @@
       fn: function (span, progress) {
         var leftProgress, startLeft, endLeft, left;
 
-        leftProgress = easingFunctions.easeOutQuint(progress);
+        leftProgress = ta.util.easingFunctions.easeOutQuint(progress);
 
         startLeft = 80;
         endLeft = 0;
@@ -204,9 +118,9 @@
           { x: 0, y: 0 }
         ];
 
-        slideProgress = easingFunctions.easeOutQuad(progress);
+        slideProgress = ta.util.easingFunctions.easeOutQuad(progress);
 
-        pos = util.getXYFromPercentWithBezier(slideProgress, controlPoints);
+        pos = ta.util.getXYFromPercentWithBezier(slideProgress, controlPoints);
 
         span.style.top = pos.y + 'px';
         span.style.left = pos.x + 'px';
@@ -226,9 +140,9 @@
           { x: 0, y: 0 }
         ];
 
-        slideProgress = easingFunctions.easeOutQuad(progress);
+        slideProgress = ta.util.easingFunctions.easeOutQuad(progress);
 
-        pos = util.getXYFromPercentWithBezier(slideProgress, controlPoints);
+        pos = ta.util.getXYFromPercentWithBezier(slideProgress, controlPoints);
 
         span.style.top = pos.y + 'px';
         span.style.left = pos.x + 'px';
@@ -248,11 +162,11 @@
           { x: 0, y: 0 }
         ];
 
-        opacityProgress = easingFunctions.easeOutCubic(progress);
+        opacityProgress = ta.util.easingFunctions.easeOutCubic(progress);
 
-        slideProgress = easingFunctions.easeOutQuad(progress);
+        slideProgress = ta.util.easingFunctions.easeOutQuad(progress);
 
-        pos = util.getXYFromPercentWithBezier(slideProgress, controlPoints);
+        pos = ta.util.getXYFromPercentWithBezier(slideProgress, controlPoints);
 
         span.style.opacity = opacityProgress;
         span.style.top = pos.y + 'px';
@@ -273,11 +187,11 @@
           { x: 0, y: 0 }
         ];
 
-        opacityProgress = easingFunctions.easeOutCubic(progress);
+        opacityProgress = ta.util.easingFunctions.easeOutCubic(progress);
 
-        slideProgress = easingFunctions.easeOutQuad(progress);
+        slideProgress = ta.util.easingFunctions.easeOutQuad(progress);
 
-        pos = util.getXYFromPercentWithBezier(slideProgress, controlPoints);
+        pos = ta.util.getXYFromPercentWithBezier(slideProgress, controlPoints);
 
         span.style.opacity = opacityProgress;
         span.style.top = pos.y + 'px';
@@ -298,11 +212,11 @@
           { x: 0, y: 0 }
         ];
 
-        opacityProgress = easingFunctions.easeOutCubic(progress);
+        opacityProgress = ta.util.easingFunctions.easeOutCubic(progress);
 
-        slideProgress = easingFunctions.easeOutQuad(progress);
+        slideProgress = ta.util.easingFunctions.easeOutQuad(progress);
 
-        pos = util.getXYFromPercentWithBezier(slideProgress, controlPoints);
+        pos = ta.util.getXYFromPercentWithBezier(slideProgress, controlPoints);
 
         span.style.opacity = opacityProgress;
         span.style.top = pos.y + 'px';
@@ -316,7 +230,7 @@
       fn: function (span, progress) {
         var fontSizeProgress, endFontSize, startFontSize, fontSize;
 
-        fontSizeProgress = easingFunctions.easeOutQuad(progress);
+        fontSizeProgress = ta.util.easingFunctions.easeOutQuad(progress);
 
         startFontSize = 300;
         endFontSize = 100;
@@ -332,7 +246,7 @@
       fn: function (span, progress) {
         var fontSizeProgress, endFontSize, startFontSize, fontSize;
 
-        fontSizeProgress = easingFunctions.easeOutQuad(progress);
+        fontSizeProgress = ta.util.easingFunctions.easeOutQuad(progress);
 
         startFontSize = 5;
         endFontSize = 100;
@@ -344,33 +258,33 @@
     {
       name: 'Rotate Z Left',
       totalDuration: 4000,
-      characterDuration: 700,
+      characterDuration: 400,
       fn: function (span, progress) {
         var rotationProgress, endRotation, startRotation, rotation;
 
-        rotationProgress = easingFunctions.easeOutQuad(progress);
+        rotationProgress = ta.util.easingFunctions.easeOutQuad(progress);
 
         startRotation = 0;
         endRotation = 360;
         rotation = startRotation * (1 - rotationProgress) + endRotation * rotationProgress;
 
-        util.applyTransform(span, 'rotate(' + rotation + 'deg)');
+        ta.util.applyTransform(span, 'rotate(' + rotation + 'deg)');
       }
     },
     {
       name: 'Rotate Z Right',
       totalDuration: 4000,
-      characterDuration: 700,
+      characterDuration: 400,
       fn: function (span, progress) {
         var rotationProgress, endRotation, startRotation, rotation;
 
-        rotationProgress = easingFunctions.easeOutQuad(progress);
+        rotationProgress = ta.util.easingFunctions.easeOutQuad(progress);
 
         startRotation = 0;
         endRotation = -360;
         rotation = startRotation * (1 - rotationProgress) + endRotation * rotationProgress;
 
-        util.applyTransform(span, 'rotate(' + rotation + 'deg)');
+        ta.util.applyTransform(span, 'rotate(' + rotation + 'deg)');
       }
     },
     {
@@ -380,13 +294,13 @@
       fn: function (span, progress) {
         var rotationProgress, endRotation, startRotation, rotation;
 
-        rotationProgress = easingFunctions.easeOutQuad(progress);
+        rotationProgress = ta.util.easingFunctions.easeOutQuad(progress);
 
         startRotation = 0;
         endRotation = -360;
         rotation = startRotation * (1 - rotationProgress) + endRotation * rotationProgress;
 
-        util.applyTransform(span, 'rotateX(' + rotation + 'deg)');
+        ta.util.applyTransform(span, 'rotateX(' + rotation + 'deg)');
       }
     },
     {
@@ -396,13 +310,13 @@
       fn: function (span, progress) {
         var rotationProgress, endRotation, startRotation, rotation;
 
-        rotationProgress = easingFunctions.easeOutQuad(progress);
+        rotationProgress = ta.util.easingFunctions.easeOutQuad(progress);
 
         startRotation = 0;
         endRotation = -360;
         rotation = startRotation * (1 - rotationProgress) + endRotation * rotationProgress;
 
-        util.applyTransform(span, 'rotateY(' + rotation + 'deg)');
+        ta.util.applyTransform(span, 'rotateY(' + rotation + 'deg)');
       }
     },
     {
@@ -412,13 +326,13 @@
       fn: function (span, progress) {
         var rotationProgress, endRotation, startRotation, rotation;
 
-        rotationProgress = easingFunctions.easeOutQuad(progress);
+        rotationProgress = ta.util.easingFunctions.easeOutQuad(progress);
 
         startRotation = 0;
         endRotation = -360;
         rotation = startRotation * (1 - rotationProgress) + endRotation * rotationProgress;
 
-        util.applyTransform(span, 'rotate3D(1,1,1,' + rotation + 'deg)');
+        ta.util.applyTransform(span, 'rotate3D(1,1,1,' + rotation + 'deg)');
       }
     },
     {
@@ -437,15 +351,15 @@
 
         scaleProgress = progress;
 
-        scale = util.getXYFromPercentWithBezier(scaleProgress, controlPoints).y;
+        scale = ta.util.getXYFromPercentWithBezier(scaleProgress, controlPoints).y;
 
-        util.applyTransform(span, 'scaleY(' + scale + ')');
+        ta.util.applyTransform(span, 'scaleY(' + scale + ')');
       }
     },
     {
       name: 'Skew',
       totalDuration: 4000,
-      characterDuration: 500,
+      characterDuration: 400,
       fn: function (span, progress) {
         var controlPoints, skewProgress, skew;
 
@@ -458,9 +372,9 @@
 
         skewProgress = progress;
 
-        skew = util.getXYFromPercentWithBezier(skewProgress, controlPoints).y;
+        skew = ta.util.getXYFromPercentWithBezier(skewProgress, controlPoints).y;
 
-        util.applyTransform(span, 'skew(' + skew + 'deg,0deg)');
+        ta.util.applyTransform(span, 'skew(' + skew + 'deg,0deg)');
       }
     },
     {
@@ -540,8 +454,8 @@
     },
     {
       name: 'Shadow 1',
-      totalDuration: 5000,
-      characterDuration: 900,
+      totalDuration: 3000,
+      characterDuration: 300,
       fn: function (span, progress) {
         var shadowBlurProgress, controlPoints, pos, shadowBlurRatio, shadowOffsetRatio,
             fontSizeRatio, shadowBlur, shadowOffset, fontSize;
@@ -559,7 +473,7 @@
         shadowOffsetRatio = 3;
         fontSizeRatio = 8;
 
-        pos = util.getXYFromPercentWithBezier(shadowBlurProgress, controlPoints);
+        pos = ta.util.getXYFromPercentWithBezier(shadowBlurProgress, controlPoints);
 
         shadowBlur = shadowBlurRatio * pos.y;
         shadowOffset = shadowOffsetRatio * pos.y;
@@ -574,7 +488,7 @@
     {
       name: 'Shadow 2',
       totalDuration: 4000,
-      characterDuration: 300,
+      characterDuration: 100,
       fn: function (span, progress) {
         var borderThicknessProgress, controlPoints, borderThickness;
 
@@ -587,7 +501,7 @@
           { x: 0, y: 0 }
         ];
 
-        borderThickness = util.getXYFromPercentWithBezier(borderThicknessProgress, controlPoints).y;
+        borderThickness = ta.util.getXYFromPercentWithBezier(borderThicknessProgress, controlPoints).y;
 
         span.style.textShadow =
             borderThickness + 'px ' + borderThickness + 'px 2px #d4d5d3,' +
@@ -612,7 +526,7 @@
           { x: 0, y: 0 }
         ];
 
-        backgroundOpacity = util.getXYFromPercentWithBezier(backgroundOpacityProgress, controlPoints).y;
+        backgroundOpacity = ta.util.getXYFromPercentWithBezier(backgroundOpacityProgress, controlPoints).y;
 
         span.style.backgroundColor = 'rgba(130,240,12,' + backgroundOpacity +')';
       }
@@ -620,10 +534,6 @@
   ];
 
   // --- Expose this module --- //
-
-  config.init = function () {
-    util = app.util;
-  };
 
   if (!window.app) window.app = {};
   window.app.config = config;

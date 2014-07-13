@@ -7,7 +7,7 @@
   // ------------------------------------------------------------------------------------------- //
   // Private static variables
 
-  var config, util, log, TextAnimationJob, textAnimator;
+  var textAnimator;
 
   // TODO: there is a bug on mobile devices where zooming or rotating will kill the current animation, then no later animation can run
 
@@ -23,7 +23,7 @@
 
     if (!textAnimator.isPaused) {
       updateJobs(currentTime);
-      util.requestAnimationFrame.call(window, animationLoop);
+      ta.util.requestAnimationFrame.call(window, animationLoop);
     } else {
       textAnimator.isLooping = false;
     }
@@ -81,17 +81,6 @@
   // Public static functions
 
   /**
-   * Initializes some static state for this module.
-   */
-  function initStaticFields() {
-    config = app.config;
-    util = app.util;
-    log = new app.Log('textAnimator');
-    TextAnimationJob = app.TextAnimationJob;
-    log.d('initStaticFields', 'Module initialized');
-  }
-
-  /**
    * Creates a new TextAnimationJob, which can animate all of the text within the given element
    * according to the given parameters.
    *
@@ -100,13 +89,13 @@
    * @param {number} characterDuration In milliseconds.
    * @param {Function} animationFunction
    * @param {Function} onComplete
-   * @returns {TextAnimationJob}
+   * @returns {Window.ta.TextAnimationJob}
    */
   function createJob(element, totalDuration, characterDuration, animationFunction, onComplete) {
     // Just make sure that any state that should be completed from a previous animation is ready
     animationLoop();
 
-    return new TextAnimationJob(element, totalDuration, characterDuration, 'easeInOutQuad',
+    return new ta.TextAnimationJob(element, totalDuration, characterDuration, 'easeInOutQuad',
         animationFunction, onComplete);
   }
 
@@ -141,15 +130,14 @@
 
   textAnimator = {};
   textAnimator.jobs = [];
-  textAnimator.initStaticFields = initStaticFields;
   textAnimator.createJob = createJob;
   textAnimator.startJob = startJob;
   textAnimator.cancelJob = cancelJob;
   textAnimator.isPaused = true;
 
   // Expose this module
-  if (!window.app) window.app = {};
-  window.app.textAnimator = textAnimator;
+  if (!window.ta) window.ta = {};
+  window.ta.textAnimator = textAnimator;
 
   console.log('textAnimator module loaded');
 })();

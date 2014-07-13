@@ -25,9 +25,15 @@ function setUpStaticFiles(server) {
 
   serveStatic = require('serve-static'); // For serving static files
 
-  // Set up the public files
+  // Set up the sample's public files
   mountPath = '/';
   staticPath = config.publicPath;
+  server.use(mountPath, serveStatic(staticPath));
+  console.log('Serving static files: staticPath=' + staticPath + ', mountPath=' + mountPath);
+
+  // Set up the text-animation library's public files
+  mountPath = '/text-animation';
+  staticPath = config.textAnimationPath;
   server.use(mountPath, serveStatic(staticPath));
   console.log('Serving static files: staticPath=' + staticPath + ', mountPath=' + mountPath);
 }

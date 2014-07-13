@@ -5,11 +5,6 @@
  */
 (function () {
   // ------------------------------------------------------------------------------------------- //
-  // Private static variables
-
-  var config, util, log;
-
-  // ------------------------------------------------------------------------------------------- //
   // Private dynamic functions
 
   /**
@@ -115,19 +110,6 @@
   }
 
   // ------------------------------------------------------------------------------------------- //
-  // Public static functions
-
-  /**
-   * Initializes some static state for this module.
-   */
-  function initStaticFields() {
-    config = app.config;
-    util = app.util;
-    log = new app.Log('CharacterAnimation');
-    log.d('initStaticFields', 'Module initialized');
-  }
-
-  // ------------------------------------------------------------------------------------------- //
   // Expose this module's constructor
 
   /**
@@ -163,9 +145,8 @@
   }
 
   // Expose this module
-  if (!window.app) window.app = {};
-  window.app.CharacterAnimation = CharacterAnimation;
-  CharacterAnimation.initStaticFields = initStaticFields;
+  if (!window.ta) window.ta = {};
+  window.ta.CharacterAnimation = CharacterAnimation;
 
   console.log('CharacterAnimation module loaded');
 })();

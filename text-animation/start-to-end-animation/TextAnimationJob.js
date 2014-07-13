@@ -7,11 +7,9 @@
   // ------------------------------------------------------------------------------------------- //
   // Private static variables
 
-  var EPSILON = 0.001,
+  var EPSILON = 1,
       ELEMENT_NODE = 1,
       TEXT_NODE = 3;
-
-  var config, util, log, AnimationElementNode, AnimationTextNode, CharacterAnimation;
 
   // TODO: add the ability to shuffle the animation order!!
   // - this will require:
@@ -19,6 +17,7 @@
   //   - storing the contents of a node as a mixed array of strings and CharacterAnimations
   //   - having all characters remain in the DOM inside 'visibility: hidden' spans
   //   - and then splitting these spans and adding additional when needing to animate one of the characters
+  // - actually, this is probably too computationally expensive due to the large number of elements present in the DOM simultaneously
 
   // ------------------------------------------------------------------------------------------- //
   // Private dynamic functions
@@ -44,7 +43,7 @@
     job.totalCharacterCount = 0;
     animationTextNodesIndex = 0;
 
-    animationElementNode = new AnimationElementNode(job.element, null);
+    animationElementNode = new ta.AnimationElementNode(job.element, null);
     elementStack = [animationElementNode];
     indexStack = [0];
     stackIndex = 0;
@@ -70,8 +69,8 @@
 
           // Ignore empty text nodes
           if (text.length > 0) {
-            job.animationTextNodes[animationTextNodesIndex++] =
-              new AnimationTextNode(animationElementNode, childNode, element.childNodes[childNodeIndex + 1], text);
+            job.animationTextNodes[animationTextNodesIndex++] = new ta.AnimationTextNode(
+                animationElementNode, childNode, element.childNodes[childNodeIndex + 1], text);
             job.totalCharacterCount += text.length;
             childNode.textContent = '';
           }
@@ -93,7 +92,7 @@
 
         stackIndex++;
 
-        elementStack[stackIndex] = new AnimationElementNode(childNode, animationElementNode);
+        elementStack[stackIndex] = new ta.AnimationElementNode(childNode, animationElementNode);
         indexStack[stackIndex] = 0;
 
         // Fix the dimensions of all elements to their original values
@@ -113,10 +112,13 @@
     //logStructureForDebugging.call(job);
   }
 
+  /**
+   * For debugging purposes, it is very useful to see the actual elements parsed.
+   */
   function logStructureForDebugging() {
     var job = this;
 
-    log.d('logStructureForDebugging', '--- START TEXT NODES ---');
+    console.log('--- START TEXT NODES ---');
 
     job.animationTextNodes.forEach(function (node) {
       var animationElementNode, prefix, name;
@@ -124,18 +126,18 @@
       animationElementNode = node.parentAnimationElementNode;
       prefix = '   ';
 
-      log.d('', '=-- BASE TEXT NODE: ' + node.text);
+      console.log('=-- BASE TEXT NODE: ' + node.text);
 
       while (animationElementNode) {
         name = animationElementNode.element.tagName +
           (animationElementNode.element.id ? '#' + animationElementNode.element.id : '');
-        log.d('', prefix + '\\-- PARENT ELEMENT NODE: ' + name);
+        console.log(prefix + '\\-- PARENT ELEMENT NODE: ' + name);
         animationElementNode = animationElementNode.parentAnimationElementNode;
         prefix += '   ';
       }
     });
 
-    log.d('logStructureForDebugging', '--- END TEXT NODES ---');
+    console.log('--- END TEXT NODES ---');
   }
 
   /**
@@ -150,6 +152,11 @@
    */
   function calculateDurationValues(totalDuration, characterDuration) {
     var job = this;
+
+    // Make sure that the given total duration is not too small
+    if (totalDuration <= EPSILON) {
+      totalDuration = EPSILON + EPSILON;
+    }
 
     // Make sure that the character duration is not longer than the total duration
     if (characterDuration > totalDuration - EPSILON) {
@@ -174,7 +181,7 @@
     count = parseInt(job.characterDuration / job.characterStartTimeOffset) + 1;
 
     for (i = 0; i < count; i+=1) {
-      job.inactiveCharacterAnimations[i] = new CharacterAnimation(job.animationFunction);
+      job.inactiveCharacterAnimations[i] = new ta.CharacterAnimation(job.animationFunction);
     }
   }
 
@@ -318,7 +325,7 @@
     // harder to pre-calculate how many will be animating at any given time, so we may need to
     // create a new CharacterAnimation object here
     if (job.inactiveCharacterAnimations.length <= 0) {
-      job.inactiveCharacterAnimations[0] = new CharacterAnimation(job.animationFunction);
+      job.inactiveCharacterAnimations[0] = new ta.CharacterAnimation(job.animationFunction);
     }
 
     // Recycle a pre-existing CharacterAnimation object
@@ -352,7 +359,7 @@
 
     if (job.characterAnimationsStartedCount === job.totalCharacterCount &&
         job.activeCharacterAnimations.length === 0) {
-      log.i('checkForComplete', 'Job completed');
+      console.log('Job completed');
 
       job.isComplete = true;
       job.onComplete(true);
@@ -398,10 +405,10 @@
    * @param {'waiting-to-animate'|'is-animating'|'done-animating'} animatingClass
    */
   function setAnimatingClassOnElement(element, animatingClass) {
-    util.removeClass(element, 'waiting-to-animate');
-    util.removeClass(element, 'is-animating');
-    util.removeClass(element, 'done-animating');
-    util.addClass(element, animatingClass);
+    ta.util.removeClass(element, 'waiting-to-animate');
+    ta.util.removeClass(element, 'is-animating');
+    ta.util.removeClass(element, 'done-animating');
+    ta.util.addClass(element, animatingClass);
   }
 
   /**
@@ -437,7 +444,7 @@
   function start() {
     var job = this;
 
-    log.i('start', 'Job starting');
+    console.log('Job starting');
 
     job.startTime = Date.now();
     job.isComplete = false;
@@ -467,7 +474,7 @@
   function cancel() {
     var job = this;
 
-    log.i('cancel', 'Job cancelling');
+    console.log('Job cancelling');
 
     cancelActiveCharacterAnimations.call(job);
     resetAllContainerText.call(job);
@@ -479,22 +486,6 @@
     job.inactiveCharacterAnimations = [];
     job.rootAnimationElementNode = null;
     job.animationTextNodes = null;
-  }
-
-  // ------------------------------------------------------------------------------------------- //
-  // Public static functions
-
-  /**
-   * Initializes some static state for this module.
-   */
-  function initStaticFields() {
-    config = app.config;
-    util = app.util;
-    log = new app.Log('TextAnimationJob');
-    AnimationElementNode = app.AnimationElementNode;
-    AnimationTextNode = app.AnimationTextNode;
-    CharacterAnimation = app.CharacterAnimation;
-    log.d('initStaticFields', 'Module initialized');
   }
 
   // ------------------------------------------------------------------------------------------- //
@@ -530,8 +521,8 @@
     job.currentTextNodeIndex = 0;
     job.currentStringIndex = 0;
 
-    job.easingFunction = util.getEasingFunction(easingFunctionName);
-    job.inverseEasingFunction = util.getInverseEasingFunction(easingFunctionName);
+    job.easingFunction = ta.util.easingFunctions[easingFunctionName];
+    job.inverseEasingFunction = ta.util.inverseEasingFunctions[easingFunctionName];
     job.start = start;
     job.update = update;
     job.cancel = cancel;
@@ -541,13 +532,12 @@
     calculateDurationValues.call(job, totalDuration, characterDuration);
     createCharacterAnimationObjects.call(job);
 
-    log.i('constructor', 'Job created');
+    console.log('Job created');
   }
 
   // Expose this module
-  if (!window.app) window.app = {};
-  window.app.TextAnimationJob = TextAnimationJob;
-  TextAnimationJob.initStaticFields = initStaticFields;
+  if (!window.ta) window.ta = {};
+  window.ta.TextAnimationJob = TextAnimationJob;
 
   console.log('TextAnimationJob module loaded');
 })();

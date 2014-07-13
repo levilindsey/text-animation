@@ -76,7 +76,8 @@
       characterAnimation.isComplete = true;
     }
 
-    characterAnimation.animationFunction(characterAnimation.span, progress);
+    characterAnimation.animationFunction(characterAnimation.span, progress,
+        characterAnimation.index);
   }
 
   /**
@@ -84,15 +85,17 @@
    *
    * @param {AnimationTextNode} animationTextNode
    * @param {string} character
+   * @param {number} index
    * @param {number} startTime
    * @param {number} duration
    */
-  function reset(animationTextNode, character, startTime, duration) {
+  function reset(animationTextNode, character, index, startTime, duration) {
     var characterAnimation = this;
 
     characterAnimation.span.innerHTML = character;
     characterAnimation.animationTextNode = animationTextNode;
     characterAnimation.character = character;
+    characterAnimation.index = index;
     characterAnimation.startTime = startTime;
     characterAnimation.duration = duration;
     characterAnimation.isComplete = false;
@@ -120,10 +123,11 @@
    * @param {Function} animationFunction
    * @param {AnimationTextNode} [animationTextNode]
    * @param {string} [character]
+   * @param {number} [index]
    * @param {number} [startTime]
    * @param {number} [duration]
    */
-  function CharacterAnimation(animationFunction, animationTextNode, character, startTime,
+  function CharacterAnimation(animationFunction, animationTextNode, character, index, startTime,
                               duration) {
     var characterAnimation = this;
 
@@ -132,6 +136,7 @@
     characterAnimation.isComplete = false;
     characterAnimation.animationTextNode = null;
     characterAnimation.character = null;
+    characterAnimation.index = -1;
     characterAnimation.startTime = 0;
     characterAnimation.duration = 0;
 
@@ -141,8 +146,8 @@
 
     createSpan.call(characterAnimation);
 
-    if (animationTextNode && character && startTime && duration) {
-      reset.call(characterAnimation, animationTextNode, character, startTime, duration);
+    if (animationTextNode && character && index && startTime && duration) {
+      reset.call(characterAnimation, animationTextNode, character, index, startTime, duration);
     }
   }
 

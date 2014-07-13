@@ -331,7 +331,8 @@
     // Recycle a pre-existing CharacterAnimation object
     characterAnimation = job.inactiveCharacterAnimations.pop();
     job.activeCharacterAnimations.push(characterAnimation);
-    characterAnimation.reset(textNode, character, startTime, job.characterDuration);
+    characterAnimation.reset(textNode, character, job.characterAnimationsStartedCount, startTime,
+        job.characterDuration);
 
     job.characterAnimationsStartedCount++;
   }

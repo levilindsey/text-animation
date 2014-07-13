@@ -22,7 +22,7 @@
       name: 'Plain',
       totalDuration: 2000,
       characterDuration: 100,
-      fn: function (span, progress) {
+      fn: function (span, progress, characterIndex) {
         // Do nothing
       }
     },
@@ -30,7 +30,7 @@
       name: 'Fade In Fast',
       totalDuration: 2000,
       characterDuration: 1200,
-      fn: function (span, progress) {
+      fn: function (span, progress, characterIndex) {
         span.style.opacity = progress;
       }
     },
@@ -38,7 +38,7 @@
       name: 'Fade In Slow',
       totalDuration: 4000,
       characterDuration: 200,
-      fn: function (span, progress) {
+      fn: function (span, progress, characterIndex) {
         span.style.opacity = progress;
       }
     },
@@ -46,7 +46,7 @@
       name: 'Slide Down',
       totalDuration: 3200,
       characterDuration: 300,
-      fn: function (span, progress) {
+      fn: function (span, progress, characterIndex) {
         var topProgress, startTop, endTop, top;
 
         topProgress = ta.util.easingFunctions.easeOutQuint(progress);
@@ -62,7 +62,7 @@
       name: 'Slide Up',
       totalDuration: 3200,
       characterDuration: 300,
-      fn: function (span, progress) {
+      fn: function (span, progress, characterIndex) {
         var topProgress, startTop, endTop, top;
 
         topProgress = ta.util.easingFunctions.easeOutQuint(progress);
@@ -78,7 +78,7 @@
       name: 'Slide Right',
       totalDuration: 3200,
       characterDuration: 300,
-      fn: function (span, progress) {
+      fn: function (span, progress, characterIndex) {
         var leftProgress, startLeft, endLeft, left;
 
         leftProgress = ta.util.easingFunctions.easeOutQuint(progress);
@@ -94,7 +94,7 @@
       name: 'Slide Left',
       totalDuration: 3200,
       characterDuration: 300,
-      fn: function (span, progress) {
+      fn: function (span, progress, characterIndex) {
         var leftProgress, startLeft, endLeft, left;
 
         leftProgress = ta.util.easingFunctions.easeOutQuint(progress);
@@ -110,7 +110,7 @@
       name: 'Bounce Down',
       totalDuration: 4000,
       characterDuration: 400,
-      fn: function (span, progress) {
+      fn: function (span, progress, characterIndex) {
         var controlPoints, slideProgress, pos;
 
         controlPoints = [
@@ -125,14 +125,13 @@
         pos = ta.util.getXYFromPercentWithBezier(slideProgress, controlPoints);
 
         span.style.top = pos.y + 'px';
-        span.style.left = pos.x + 'px';
       }
     },
     {
       name: 'Bounce Up',
       totalDuration: 4000,
       characterDuration: 400,
-      fn: function (span, progress) {
+      fn: function (span, progress, characterIndex) {
         var controlPoints, slideProgress, pos;
 
         controlPoints = [
@@ -147,39 +146,35 @@
         pos = ta.util.getXYFromPercentWithBezier(slideProgress, controlPoints);
 
         span.style.top = pos.y + 'px';
-        span.style.left = pos.x + 'px';
+      }
+    },
+    {
+      name: 'Bounce Up/Down',
+      totalDuration: 4000,
+      characterDuration: 400,
+      fn: function (span, progress, characterIndex) {
+        var controlPoints, slideProgress, top;
+
+        controlPoints = [
+          { x: 0, y: 0 },
+          { x: 0, y: 160 },
+          { x: 0, y: -80 },
+          { x: 0, y: 0 }
+        ];
+
+        slideProgress = ta.util.easingFunctions.easeOutQuad(progress);
+
+        top = ta.util.getXYFromPercentWithBezier(slideProgress, controlPoints).y;
+        top = characterIndex % 2 === 0 ? -top : top;
+
+        span.style.top = top + 'px';
       }
     },
     {
       name: 'Slide Around 1',
       totalDuration: 4000,
       characterDuration: 400,
-      fn: function (span, progress) {
-        var controlPoints, opacityProgress, slideProgress, pos;
-
-        controlPoints = [
-          { x: -50, y: 50 },
-          { x: 20, y: 100 },
-          { x: 80, y: -80 },
-          { x: 0, y: 0 }
-        ];
-
-        opacityProgress = ta.util.easingFunctions.easeOutCubic(progress);
-
-        slideProgress = ta.util.easingFunctions.easeOutQuad(progress);
-
-        pos = ta.util.getXYFromPercentWithBezier(slideProgress, controlPoints);
-
-        span.style.opacity = opacityProgress;
-        span.style.top = pos.y + 'px';
-        span.style.left = pos.x + 'px';
-      }
-    },
-    {
-      name: 'Slide Around 2',
-      totalDuration: 4000,
-      characterDuration: 400,
-      fn: function (span, progress) {
+      fn: function (span, progress, characterIndex) {
         var controlPoints, opacityProgress, slideProgress, pos;
 
         controlPoints = [
@@ -201,10 +196,10 @@
       }
     },
     {
-      name: 'Slide Around 3',
+      name: 'Slide Around 2',
       totalDuration: 4000,
       characterDuration: 400,
-      fn: function (span, progress) {
+      fn: function (span, progress, characterIndex) {
         var controlPoints, opacityProgress, slideProgress, pos;
 
         controlPoints = [
@@ -226,10 +221,58 @@
       }
     },
     {
+      name: 'Slide Around 3',
+      totalDuration: 6000,
+      characterDuration: 500,
+      fn: function (span, progress, characterIndex) {
+        var controlPointsCollection, controlPoints,
+            opacityProgress, slideProgress, pos;
+
+        controlPointsCollection = [
+          [
+            { x: 0, y: -200 },
+            { x: 230, y: -200 },
+            { x: 230, y: 0 },
+            { x: 0, y: 0 }
+          ],
+          [
+            { x: 200, y: 0 },
+            { x: 200, y: 230 },
+            { x: 0, y: 230 },
+            { x: 0, y: 0 }
+          ],
+          [
+            { x: 0, y: 200 },
+            { x: -230, y: 200 },
+            { x: -230, y: 0 },
+            { x: 0, y: 0 }
+          ],
+          [
+            { x: -200, y: 0 },
+            { x: -200, y: -230 },
+            { x: 0, y: -230 },
+            { x: 0, y: 0 }
+          ]
+        ];
+
+        controlPoints = controlPointsCollection[characterIndex % 4];
+
+        opacityProgress = ta.util.easingFunctions.easeOutCubic(progress);
+
+        slideProgress = ta.util.easingFunctions.easeOutQuad(progress);
+
+        pos = ta.util.getXYFromPercentWithBezier(slideProgress, controlPoints);
+
+        span.style.opacity = opacityProgress;
+        span.style.top = pos.y + 'px';
+        span.style.left = pos.x + 'px';
+      }
+    },
+    {
       name: 'Font Size Down',
       totalDuration: 3000,
       characterDuration: 200,
-      fn: function (span, progress) {
+      fn: function (span, progress, characterIndex) {
         var fontSizeProgress, endFontSize, startFontSize, fontSize;
 
         fontSizeProgress = ta.util.easingFunctions.easeOutQuad(progress);
@@ -245,7 +288,7 @@
       name: 'Font Size Up',
       totalDuration: 2000,
       characterDuration: 400,
-      fn: function (span, progress) {
+      fn: function (span, progress, characterIndex) {
         var fontSizeProgress, endFontSize, startFontSize, fontSize;
 
         fontSizeProgress = ta.util.easingFunctions.easeOutQuad(progress);
@@ -258,42 +301,52 @@
       }
     },
     {
-      name: 'Rotate Z Left',
+      name: 'Roll Right',
       totalDuration: 4000,
       characterDuration: 400,
-      fn: function (span, progress) {
-        var rotationProgress, endRotation, startRotation, rotation;
+      fn: function (span, progress, characterIndex) {
+        var rotationProgress, endRotation, startRotation, rotation, endOffset, startOffset, offset;
 
-        rotationProgress = ta.util.easingFunctions.easeOutQuad(progress);
+        rotationProgress = ta.util.easingFunctions.easeInOutQuad(progress);
 
-        startRotation = 0;
-        endRotation = 360;
+        startRotation = -540;
+        endRotation = 0;
         rotation = startRotation * (1 - rotationProgress) + endRotation * rotationProgress;
 
+        startOffset = -120;
+        endOffset = 0;
+        offset = startOffset * (1 - rotationProgress) + endOffset * rotationProgress;
+
         ta.util.applyTransform(span, 'rotate(' + rotation + 'deg)');
+        span.style.left = offset + 'px';
       }
     },
     {
-      name: 'Rotate Z Right',
-      totalDuration: 4000,
-      characterDuration: 400,
-      fn: function (span, progress) {
-        var rotationProgress, endRotation, startRotation, rotation;
+      name: 'Roll Left',
+      totalDuration: 6000,
+      characterDuration: 700,
+      fn: function (span, progress, characterIndex) {
+        var rotationProgress, endRotation, startRotation, rotation, endOffset, startOffset, offset;
 
-        rotationProgress = ta.util.easingFunctions.easeOutQuad(progress);
+        rotationProgress = ta.util.easingFunctions.easeInOutQuad(progress);
 
-        startRotation = 0;
-        endRotation = -360;
+        startRotation = 540;
+        endRotation = 0;
         rotation = startRotation * (1 - rotationProgress) + endRotation * rotationProgress;
 
+        startOffset = 120;
+        endOffset = 0;
+        offset = startOffset * (1 - rotationProgress) + endOffset * rotationProgress;
+
         ta.util.applyTransform(span, 'rotate(' + rotation + 'deg)');
+        span.style.left = offset + 'px';
       }
     },
     {
       name: 'Rotate X',
       totalDuration: 4000,
       characterDuration: 700,
-      fn: function (span, progress) {
+      fn: function (span, progress, characterIndex) {
         var rotationProgress, endRotation, startRotation, rotation;
 
         rotationProgress = ta.util.easingFunctions.easeOutQuad(progress);
@@ -309,7 +362,7 @@
       name: 'Rotate Y',
       totalDuration: 4000,
       characterDuration: 700,
-      fn: function (span, progress) {
+      fn: function (span, progress, characterIndex) {
         var rotationProgress, endRotation, startRotation, rotation;
 
         rotationProgress = ta.util.easingFunctions.easeOutQuad(progress);
@@ -325,7 +378,7 @@
       name: 'Rotate 3D',
       totalDuration: 8000,
       characterDuration: 1600,
-      fn: function (span, progress) {
+      fn: function (span, progress, characterIndex) {
         var rotationProgress, endRotation, startRotation, rotation;
 
         rotationProgress = ta.util.easingFunctions.easeOutQuad(progress);
@@ -341,7 +394,7 @@
       name: 'Scale Y',
       totalDuration: 4000,
       characterDuration: 400,
-      fn: function (span, progress) {
+      fn: function (span, progress, characterIndex) {
         var controlPoints, scaleProgress, scale;
 
         controlPoints = [
@@ -362,7 +415,7 @@
       name: 'Skew',
       totalDuration: 4000,
       characterDuration: 400,
-      fn: function (span, progress) {
+      fn: function (span, progress, characterIndex) {
         var controlPoints, skewProgress, skew;
 
         controlPoints = [
@@ -380,10 +433,32 @@
       }
     },
     {
+      name: 'Counter Skew',
+      totalDuration: 4000,
+      characterDuration: 400,
+      fn: function (span, progress, characterIndex) {
+        var controlPoints, skewProgress, skew;
+
+        controlPoints = [
+          { x: 0, y: 0 },
+          { x: 0, y: -80 },
+          { x: 0, y: -80 },
+          { x: 0, y: 0 }
+        ];
+
+        skewProgress = progress;
+
+        skew = ta.util.getXYFromPercentWithBezier(skewProgress, controlPoints).y;
+        skew = characterIndex % 2 === 0 ? skew : -skew;
+
+        ta.util.applyTransform(span, 'skew(' + skew + 'deg,0deg)');
+      }
+    },
+    {
       name: 'Color Slow',
       totalDuration: 2000,
       characterDuration: 1200,
-      fn: function (span, progress) {
+      fn: function (span, progress, characterIndex) {
         var colorProgress, endSaturation, startSaturation, saturation, endLightness,
             startLightness, lightness, endHue, startHue, hue;
 
@@ -408,7 +483,7 @@
       name: 'Color Fast',
       totalDuration: 4000,
       characterDuration: 200,
-      fn: function (span, progress) {
+      fn: function (span, progress, characterIndex) {
         var colorProgress, endSaturation, startSaturation, saturation, endLightness,
             startLightness, lightness, endHue, startHue, hue;
 
@@ -433,7 +508,7 @@
       name: 'Color Subtle',
       totalDuration: 2400,
       characterDuration: 200,
-      fn: function (span, progress) {
+      fn: function (span, progress, characterIndex) {
         var colorProgress, endSaturation, startSaturation, saturation, endLightness,
             startLightness, lightness, endHue, startHue, hue;
 
@@ -459,7 +534,7 @@
       isStartingAnimation: true,
       totalDuration: 3000,
       characterDuration: 300,
-      fn: function (span, progress) {
+      fn: function (span, progress, characterIndex) {
         var shadowBlurProgress, controlPoints, pos, shadowBlurRatio, shadowOffsetRatio,
             fontSizeRatio, shadowBlur, shadowOffset, fontSize;
 
@@ -492,7 +567,7 @@
       name: 'Shadow 2',
       totalDuration: 4000,
       characterDuration: 100,
-      fn: function (span, progress) {
+      fn: function (span, progress, characterIndex) {
         var borderThicknessProgress, controlPoints, borderThickness;
 
         borderThicknessProgress = progress;
@@ -517,7 +592,7 @@
       name: 'Background',
       totalDuration: 4000,
       characterDuration: 300,
-      fn: function (span, progress) {
+      fn: function (span, progress, characterIndex) {
         var backgroundOpacityProgress, controlPoints, backgroundOpacity;
 
         backgroundOpacityProgress = progress;

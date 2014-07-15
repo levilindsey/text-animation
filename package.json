@@ -23,6 +23,7 @@
     "ejs": "*"
   },
   "devDependencies": {
+    "gulp": "~3.8.6"
   },
   "license": "MIT"
 }

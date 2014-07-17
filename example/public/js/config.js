@@ -378,12 +378,12 @@
         endHue = 450;
         hue = startHue * (1 - colorProgress) + endHue * colorProgress;
 
-        startSaturation = 42;
-        endSaturation = 2;
+        startSaturation = 95;
+        endSaturation = 0;
         saturation = startSaturation * (1 - colorProgress) + endSaturation * colorProgress;
 
-        startLightness = 10;
-        endLightness = 83;
+        startLightness = 80;
+        endLightness = 20;
         lightness = startLightness * (1 - colorProgress) + endLightness * colorProgress;
 
         span.style.color = 'hsl(' + hue + ',' + saturation + '%,' + lightness + '%)'
@@ -404,12 +404,12 @@
         endHue = 450;
         hue = startHue * (1 - colorProgress) + endHue * colorProgress;
 
-        startSaturation = 42;
-        endSaturation = 2;
+        startSaturation = 95;
+        endSaturation = 0;
         saturation = startSaturation * (1 - colorProgress) + endSaturation * colorProgress;
 
-        startLightness = 10;
-        endLightness = 83;
+        startLightness = 80;
+        endLightness = 20;
         lightness = startLightness * (1 - colorProgress) + endLightness * colorProgress;
 
         span.style.color = 'hsl(' + hue + ',' + saturation + '%,' + lightness + '%)'
@@ -430,12 +430,12 @@
         endHue = 80;
         hue = startHue * (1 - colorProgress) + endHue * colorProgress;
 
-        startSaturation = 24;
-        endSaturation = 3.05;
+        startSaturation = 40;
+        endSaturation = 0;
         saturation = startSaturation * (1 - colorProgress) + endSaturation * colorProgress;
 
-        startLightness = 20;
-        endLightness = 77.25;
+        startLightness = 90;
+        endLightness = 20;
         lightness = startLightness * (1 - colorProgress) + endLightness * colorProgress;
 
         span.style.color = 'hsl(' + hue + ',' + saturation + '%,' + lightness + '%)'
@@ -577,116 +577,6 @@
       }
     },
     {
-      name: 'Bounce U/D Small',
-      totalDuration: 4000,
-      characterDuration: 400,
-      easingFunctionName: 'easeInOutQuad',
-      fn: function (span, progress, characterIndex) {
-        var controlPoints, opacityProgress, slideProgress, top;
-
-        controlPoints = [
-          { x: 0, y: 0 },
-          { x: 0, y: 220 },
-          { x: 0, y: -80 },
-          { x: 0, y: 0 }
-        ];
-
-        opacityProgress = ta.util.easingFunctions.easeOutCubic(progress);
-
-        slideProgress = ta.util.easingFunctions.easeOutQuad(progress);
-
-        top = ta.util.getXYFromPercentWithBezier(slideProgress, controlPoints).y;
-        top = characterIndex % 2 === 0 ? -top : top;
-
-        span.style.opacity = opacityProgress;
-        span.style.top = top + 'px';
-      }
-    },
-    {
-      name: 'Bounce U/D Big',
-      totalDuration: 4000,
-      characterDuration: 400,
-      easingFunctionName: 'easeInOutQuad',
-      fn: function (span, progress, characterIndex) {
-        var controlPoints, slideProgress, top;
-
-        controlPoints = [
-          { x: 0, y: 0 },
-          { x: 0, y: 1600 },
-          { x: 0, y: -80 },
-          { x: 0, y: 0 }
-        ];
-
-        slideProgress = ta.util.easingFunctions.easeOutQuad(progress);
-
-        top = ta.util.getXYFromPercentWithBezier(slideProgress, controlPoints).y;
-        top = characterIndex % 2 === 0 ? -top : top;
-
-        span.style.top = top + 'px';
-      }
-    },
-    {
-      name: 'Bounce L/R',
-      totalDuration: 4000,
-      characterDuration: 400,
-      easingFunctionName: 'easeInOutQuad',
-      fn: function (span, progress, characterIndex) {
-        var controlPoints, opacityProgress, slideProgress, left;
-
-        controlPoints = [
-          { x: 0, y: 0 },
-          { x: 0, y: 220 },
-          { x: 0, y: -80 },
-          { x: 0, y: 0 }
-        ];
-
-        opacityProgress = ta.util.easingFunctions.easeOutCubic(progress);
-
-        slideProgress = ta.util.easingFunctions.easeOutQuad(progress);
-
-        left = ta.util.getXYFromPercentWithBezier(slideProgress, controlPoints).y;
-        left = characterIndex % 2 === 0 ? -left : left;
-
-        span.style.opacity = opacityProgress;
-        span.style.left = left + 'px';
-      }
-    },
-    {
-      name: 'Bounce All',
-      totalDuration: 4400,
-      characterDuration: 440,
-      easingFunctionName: 'easeInOutQuad',
-      fn: function (span, progress, characterIndex) {
-        var controlPoints, slideProgress, offset;
-
-        controlPoints = [
-          { x: 0, y: 1600 },
-          { x: 0, y: -80 },
-          { x: 0, y: -80 },
-          { x: 0, y: 0 }
-        ];
-
-        slideProgress = ta.util.easingFunctions.easeOutQuad(progress);
-
-        offset = ta.util.getXYFromPercentWithBezier(slideProgress, controlPoints).y;
-
-        switch (characterIndex % 4) {
-          case 0:
-            span.style.top = -offset + 'px';
-            break;
-          case 1:
-            span.style.left = offset + 'px';
-            break;
-          case 2:
-            span.style.top = offset + 'px';
-            break;
-          case 3:
-            span.style.left = -offset + 'px';
-            break;
-        }
-      }
-    },
-    {
       name: 'Zoom Big',
       totalDuration: 4000,
       characterDuration: 400,
@@ -791,6 +681,136 @@
       }
     },
     {
+      name: 'Jitter',
+      totalDuration: 4000,
+      characterDuration: 500,
+      easingFunctionName: 'easeInOutQuad',
+      fn: function (span, progress, characterIndex) {
+        var opacityProgress, left, top;
+
+        opacityProgress = ta.util.easingFunctions.easeOutCubic(progress);
+        span.style.opacity = opacityProgress;
+
+        if ((characterIndex % 2 === 0) === (parseInt((Date.now() / 40 ) % 2) === 0)) {
+          left = Math.random() * 4;
+          top = Math.random() * 4;
+
+          span.style.left = left + 'px';
+          span.style.top = top + 'px';
+        }
+      }
+    },
+    {
+      name: 'Bounce U/D Small',
+      totalDuration: 4000,
+      characterDuration: 400,
+      easingFunctionName: 'easeInOutQuad',
+      fn: function (span, progress, characterIndex) {
+        var controlPoints, opacityProgress, slideProgress, top;
+
+        controlPoints = [
+          { x: 0, y: 0 },
+          { x: 0, y: 220 },
+          { x: 0, y: -80 },
+          { x: 0, y: 0 }
+        ];
+
+        opacityProgress = ta.util.easingFunctions.easeOutCubic(progress);
+
+        slideProgress = ta.util.easingFunctions.easeOutQuad(progress);
+
+        top = ta.util.getXYFromPercentWithBezier(slideProgress, controlPoints).y;
+        top = characterIndex % 2 === 0 ? -top : top;
+
+        span.style.opacity = opacityProgress;
+        span.style.top = top + 'px';
+      }
+    },
+    {
+      name: 'Bounce U/D Big',
+      totalDuration: 4000,
+      characterDuration: 400,
+      easingFunctionName: 'easeInOutQuad',
+      fn: function (span, progress, characterIndex) {
+        var controlPoints, slideProgress, top;
+
+        controlPoints = [
+          { x: 0, y: 0 },
+          { x: 0, y: 2200 },
+          { x: 0, y: -80 },
+          { x: 0, y: 0 }
+        ];
+
+        slideProgress = ta.util.easingFunctions.easeOutQuad(progress);
+
+        top = ta.util.getXYFromPercentWithBezier(slideProgress, controlPoints).y;
+        top = characterIndex % 2 === 0 ? -top : top;
+
+        span.style.top = top + 'px';
+      }
+    },
+    {
+      name: 'Bounce L/R',
+      totalDuration: 4000,
+      characterDuration: 400,
+      easingFunctionName: 'easeInOutQuad',
+      fn: function (span, progress, characterIndex) {
+        var controlPoints, opacityProgress, slideProgress, left;
+
+        controlPoints = [
+          { x: 0, y: 0 },
+          { x: 0, y: 220 },
+          { x: 0, y: -80 },
+          { x: 0, y: 0 }
+        ];
+
+        opacityProgress = ta.util.easingFunctions.easeOutCubic(progress);
+
+        slideProgress = ta.util.easingFunctions.easeOutQuad(progress);
+
+        left = ta.util.getXYFromPercentWithBezier(slideProgress, controlPoints).y;
+        left = characterIndex % 2 === 0 ? -left : left;
+
+        span.style.opacity = opacityProgress;
+        span.style.left = left + 'px';
+      }
+    },
+    {
+      name: 'Bounce All',
+      totalDuration: 4400,
+      characterDuration: 440,
+      easingFunctionName: 'easeInOutQuad',
+      fn: function (span, progress, characterIndex) {
+        var controlPoints, slideProgress, offset;
+
+        controlPoints = [
+          { x: 0, y: 2000 },
+          { x: 0, y: -80 },
+          { x: 0, y: -80 },
+          { x: 0, y: 0 }
+        ];
+
+        slideProgress = ta.util.easingFunctions.easeOutQuad(progress);
+
+        offset = ta.util.getXYFromPercentWithBezier(slideProgress, controlPoints).y;
+
+        switch (characterIndex % 4) {
+          case 0:
+            span.style.top = -offset + 'px';
+            break;
+          case 1:
+            span.style.left = offset + 'px';
+            break;
+          case 2:
+            span.style.top = offset + 'px';
+            break;
+          case 3:
+            span.style.left = -offset + 'px';
+            break;
+        }
+      }
+    },
+    {
       name: 'Roll Left',
       totalDuration: 6000,
       characterDuration: 700,
@@ -835,26 +855,6 @@
       }
     },
     {
-      name: 'Jitter',
-      totalDuration: 4000,
-      characterDuration: 500,
-      easingFunctionName: 'easeInOutQuad',
-      fn: function (span, progress, characterIndex) {
-        var opacityProgress, left, top;
-
-        opacityProgress = ta.util.easingFunctions.easeOutCubic(progress);
-        span.style.opacity = opacityProgress;
-
-        if ((characterIndex % 2 === 0) === (parseInt((Date.now() / 40 ) % 2) === 0)) {
-          left = Math.random() * 4;
-          top = Math.random() * 4;
-
-          span.style.left = left + 'px';
-          span.style.top = top + 'px';
-        }
-      }
-    },
-    {
       name: 'Rainbow',
       totalDuration: 3000,
       characterDuration: 500,
@@ -873,11 +873,11 @@
         hue = startHue * (1 - hueProgress) + endHue * hueProgress;
 
         startSaturation = 70;
-        endSaturation = 3.05;
+        endSaturation = 0;
         saturation = startSaturation * (1 - colorProgress) + endSaturation * colorProgress;
 
         startLightness = 70;
-        endLightness = 77.25;
+        endLightness = 20;
         lightness = startLightness * (1 - colorProgress) + endLightness * colorProgress;
 
         span.style.color = 'hsl(' + hue + ',' + saturation + '%,' + lightness + '%)'

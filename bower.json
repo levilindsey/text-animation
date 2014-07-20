@@ -1,6 +1,6 @@
 {
   "name": "text-animation",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Character-by-character animation of text",
   "repository": {
     "type": "git",

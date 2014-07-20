@@ -6,9 +6,11 @@ _See this running at [www.jackieandlevi.com/text-animation](http://www.jackieand
 
 _...or at [http://codepen.io/levisl176/full/HGJdF](http://codepen.io/levisl176/full/HGJdF)!_
 
-This text-animation module makes it easy to animate the text of any collection of HTML elements. 
-With this module, each character animates individually, and it is simple to customize this 
+This text-animation package makes it easy to animate the text of any collection of HTML elements. 
+With this package, each character animates individually, and it is simple to customize this 
 character animation.
+
+This package is available in the Bower registry as `text-animation`.
 
 ===============================
 ### Running the example locally

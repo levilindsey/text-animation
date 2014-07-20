@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * This static module drives the text-animation app.
  *

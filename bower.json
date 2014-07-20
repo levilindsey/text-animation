@@ -21,25 +21,21 @@
     "email": "levisl176@gmail.com",
     "url": "http://jackieandlevi.com/levi"
   },
-  "main": "example/init",
-  "scripts": {
-    "start": "node example/init.js"
-  },
+  "main": "dist/text-animation.min.js",
   "dependencies": {
-    "express": "~4.0.0",
-    "morgan": "~1.0.0",
-    "serve-favicon": "~2.0.0",
-    "serve-static": "~1.0.0",
-    "q": "~1.0.1",
-    "ejs": "*"
   },
   "devDependencies": {
-    "gulp": "~3.8.6",
-    "gulp-rename": "~1.2.0",
-    "gulp-uglify": "~0.3.1",
-    "gulp-concat": "~2.3.3",
-    "gulp-clean": "~0.3.1",
-    "gulp-jshint": "~1.7.1",
-    "gulp-notify": "~1.4.0"
-  }
+  },
+  "ignore": [
+    "src",
+    "example",
+    ".bowerrc",
+    ".gitignore",
+    ".jshintignore",
+    ".jshintrc",
+    "bower.json",
+    "gulpfile.js",
+    "package.json",
+    "README.md"
+  ]
 }

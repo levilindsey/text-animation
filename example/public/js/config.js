@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * This module defines a collection of parameters used throughout this app.
  *

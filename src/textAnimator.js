@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * This module defines a singleton for animating text.
  *

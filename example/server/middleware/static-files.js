@@ -32,7 +32,7 @@ function setUpStaticFiles(server) {
   console.log('Serving static files: staticPath=' + staticPath + ', mountPath=' + mountPath);
 
   // Set up the text-animation library's public files
-  mountPath = '/text-animation';
+  mountPath = '/dist';
   staticPath = config.textAnimationPath;
   server.use(mountPath, serveStatic(staticPath));
   console.log('Serving static files: staticPath=' + staticPath + ', mountPath=' + mountPath);

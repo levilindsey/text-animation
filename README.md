@@ -37,7 +37,7 @@ Within a console, navigate to the text-animation project directory and run `npm 
 
 #### Open the page
 
-Open a browser and navigate to [localhost:3031](localhost:3031).
+Open a browser and navigate to [localhost:3000](localhost:3000).
 
 ====================================
 ### The In-Order Animation Algorithm

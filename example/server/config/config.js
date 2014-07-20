@@ -13,12 +13,12 @@ config = {};
 
 config.app = {};
 
-config.app.port = 3031;
+config.app.port = 3000;
 config.app.url = 'http://localhost:' + config.app.port;
 
 // The locations of some important files
 config.publicPath = root + '/example/public';
-config.textAnimationPath = root + '/text-animation';
+config.textAnimationPath = root + '/dist';
 config.faviconPath = config.publicPath + '/img/favicon.ico';
 config.viewsPath = root + '/example/server/views';
 

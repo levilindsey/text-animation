@@ -10,7 +10,7 @@ This text-animation package makes it easy to animate the text of any collection 
 With this package, each character animates individually, and it is simple to customize this 
 character animation.
 
-This package is available in the Bower registry as `text-animation`.
+This package is available in the Bower registry as [`text-animation`][bower-url].
 
 ===============================
 ### Running the example locally
@@ -111,3 +111,7 @@ how this algorithm flattens and stores the DOM representation.
 ======
 
 [![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=levisl176&url=github.com/levisl176/text-animation&title=text-animation&language=javascript&tags=github&category=software)
+
+
+
+[bower-url]: http://bower.io/search/?q=text-animation

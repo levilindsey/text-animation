@@ -2,7 +2,7 @@
 
 #### Character-by-character animation of text
 
-_See this running at [www.jackieandlevi.com/text-animation](http://www.jackieandlevi.com/text-animation)!_
+_See this running at [levi.dev/text-animation](https://levi.dev/text-animation)!_
 
 _...or at [http://codepen.io/levisl176/full/HGJdF](http://codepen.io/levisl176/full/HGJdF)!_
 

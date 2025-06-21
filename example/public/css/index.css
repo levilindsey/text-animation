@@ -10,7 +10,14 @@ body {
   background: #e8e8e8;
   color: #343534;
   font-size: 18px;
-  font-family: sans-serif;
+  font-family: sans-serif; 
+  
+  /* Disable kerning. */
+  font-kerning: none; 
+
+  /* Disable "Contextual Alternates" and ligatures. */
+  font-variant-ligatures: no-contextual;
+  font-feature-settings: "calt" 0;
 }
 
 h1 {
